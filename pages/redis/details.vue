@@ -1,0 +1,208 @@
+<template>
+  <div>
+    <div>
+      <v-btn to="/redis" class="mr-4 white--text" color="blue">Back</v-btn>
+
+      <v-row v-if="redisData[schemeID]" class="mt-5">
+        <v-col cols="4">
+          <v-card height="100px">
+            <v-card-title class="justify-center">
+              <div class="text-center">Stream</div>
+            </v-card-title>
+            <v-card-text>
+              <div class="text-center">
+                {{ redisData[schemeID].Stream }}
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col cols="4">
+          <v-card height="100px">
+            <v-card-title class="justify-center">
+              <div class="text-center">Len</div>
+            </v-card-title>
+            <v-card-text>
+              <div class="text-center">
+                {{ redisData[schemeID].Len }}
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col cols="4">
+          <v-card height="100px">
+            <v-card-title class="justify-center">
+              <div class="text-center">RedisPool</div>
+            </v-card-title>
+            <v-card-text>
+              <div class="text-center">
+                {{ redisData[schemeID].RedisPool }}
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </div>
+    <v-data-table
+      :headers="groupHeaders"
+      :items="groupItems"
+      :expanded="expanded"
+      item-key="Group"
+      :show-expand="false"
+      hide-default-footer
+      class="elevation-1 mt-5"
+    >
+      <!-- 766662986*(1e-9) -->
+      <template v-slot:item.LastDeliveredDuration="{ value }">
+        {{ value }}
+        <!-- {{ value === 0 ? 0 : (value * 1e-9).toFixed(2) }}s -->
+      </template>
+      <template v-slot:item.LowerDuration="{ value }">
+        {{ value === 0 ? 0 : (value * 1e-9).toFixed(2) }}s
+      </template>
+      <template v-slot:item.HigherDuration="{ value }">
+        {{ value === 0 ? 0 : (value * 1e-9).toFixed(2) }}s
+      </template>
+
+      <template v-slot:expanded-item="{ headers, item }">
+        <td :colspan="headers.length" class="py-4">
+          <table width="100%" class="table">
+            <thead>
+              <tr>
+                <td class="table__td table__td--th px-2 py-1">Name</td>
+                <td class="table__td table__td--th px-2 py-1">Pending</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(row, key) in item.Consumers" :key="key">
+                <td class="table__td px-2 py-1">{{ row.Name }}</td>
+                <td class="table__td px-2 py-1">{{ row.Pending }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </template>
+
+      <template v-slot:item.Consumers="{ value }">
+        <td>{{ value.length }}</td>
+      </template>
+    </v-data-table>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'RedisChild',
+  props: {
+    redisData: {
+      type: Array,
+      default: () => {
+        return []
+      },
+    },
+  },
+  data: () => {
+    return {
+      // expanded: [0, 1, 2],
+      groupHeaders: [
+        {
+          text: 'Group Name',
+          value: 'Group',
+          width: '15%',
+          sortable: false,
+        },
+        {
+          text: 'Pending',
+          value: 'Pending',
+          width: '10%',
+          sortable: false,
+        },
+        {
+          text: 'LastDeliveredID',
+          value: 'LastDeliveredID',
+          width: '12%',
+          sortable: false,
+        },
+        {
+          text: 'LastDeliveredDuration',
+          value: 'LastDeliveredDuration',
+          width: '10%',
+          sortable: false,
+        },
+        {
+          text: 'Lower',
+          value: 'Lower',
+          width: '10%',
+          sortable: false,
+        },
+        {
+          text: 'LowerDuration',
+          value: 'LowerDuration',
+          width: '15%',
+          sortable: false,
+        },
+        {
+          text: 'Higher',
+          value: 'Higher',
+          width: '10%',
+          sortable: false,
+        },
+        {
+          text: 'HigherDuration',
+          value: 'HigherDuration',
+          width: '10%',
+          sortable: false,
+        },
+        {
+          text: 'Consumers',
+          value: 'Consumers',
+          width: '8%',
+          sortable: false,
+        },
+      ],
+    }
+  },
+  computed: {
+    schemeID() {
+      return this.$route.query.id
+    },
+    groupItems() {
+      return this.redisData[this.schemeID]?.Groups
+    },
+    // expanded: {
+    //   get() {
+    //     const indexes = []
+    //     const arrLength = this.redisData[this.schemeID]?.Groups.length
+    //     for (let index = 0; index < arrLength; index++) {
+    //       indexes.push(index)
+    //     }
+    //     return indexes
+    //   },
+    //   set() {
+    //     const indexes = []
+    //     const arrLength = this.redisData[this.schemeID]?.Groups.length
+    //     for (let index = 0; index < arrLength; index++) {
+    //       indexes.push(index)
+    //     }
+    //     return indexes
+    //   },
+    // },
+    expanded() {
+      return this.redisData[this.schemeID]?.Groups
+    },
+  },
+}
+</script>
+<style lang="scss" scoped>
+.table {
+  border-collapse: collapse;
+
+  &__td {
+    width: 50%;
+    border: 1px solid #cccccc;
+
+    &--th {
+      font-weight: bold;
+    }
+  }
+}
+</style>
