@@ -6,13 +6,26 @@
           height="125"
           class="d-flex justify-center align-center white--text"
           color="green"
+          :disabled="loading[index]"
           @click="execute(action.URL, index)"
         >
           <v-card-text class="white--text text-center">
-            <h2 v-if="!loading[index]">
+            <template v-if="!loading[index]">
+              <v-icon size="20px" class="mx-auto mb-4" color="white">
+                {{ icons[action.icon] }}
+              </v-icon>
+            </template>
+            <template v-else>
+              <v-progress-circular
+                indeterminate
+                color="white"
+                size="20"
+                class="mb-4"
+              ></v-progress-circular>
+            </template>
+            <h2>
               {{ action.Label }}
             </h2>
-            <span v-else>loading...</span>
           </v-card-text>
         </v-card>
       </v-col>
@@ -21,6 +34,8 @@
 </template>
 
 <script>
+import { mdiBroom, mdiCached, mdiLoading } from '@mdi/js'
+
 export default {
   name: 'Actions',
   async fetch() {
@@ -30,6 +45,11 @@ export default {
     return {
       actionsData: undefined,
       loading: {},
+      icons: {
+        mdiBroom,
+        mdiCached,
+        mdiLoading,
+      },
     }
   },
   methods: {
