@@ -73,7 +73,7 @@ export default {
           console.log(response)
           this.$notification.show({
             type: 'success',
-            message: response.data.Result,
+            message: 'Success',
           })
         })
         .catch((error) => {
