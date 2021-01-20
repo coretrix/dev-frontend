@@ -4,11 +4,11 @@
       <v-col v-for="(entry, id) in redisData" :key="id" cols="md-3">
         <v-card
           :to="`/redis/details?id=${id}`"
-          height="200px"
+          height="150px"
           class="d-flex flex-column"
         >
           <h3
-            class="text-center mt-5 len"
+            class="text-center mt-7 len"
             :class="{
               'green--text': entry.Len <= 100000,
               'orange--text': entry.Len > 100000 && entry.Len <= 500000,
@@ -46,6 +46,6 @@ export default {
 }
 .stream {
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
 }
 </style>

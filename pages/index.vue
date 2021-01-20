@@ -12,7 +12,7 @@
           <v-card-text class="white--text text-center">
             <template v-if="!loading[index]">
               <v-icon size="20px" class="mx-auto mb-4" color="white">
-                {{ icons[action.icon] }}
+                {{ icons[action.Icon] }}
               </v-icon>
             </template>
             <template v-else>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { mdiBroom, mdiCached, mdiLoading } from '@mdi/js'
+import { mdiBroom, mdiCached, mdiLoading, mdiCalculator } from '@mdi/js'
 
 export default {
   name: 'Actions',
@@ -49,6 +49,7 @@ export default {
         mdiBroom,
         mdiCached,
         mdiLoading,
+        mdiCalculator,
       },
     }
   },
