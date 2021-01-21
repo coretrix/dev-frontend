@@ -4,7 +4,7 @@
       <v-col v-for="entry in redisData" :key="entry.stream" cols="md-3">
         <v-card
           :to="`/redis/details?stream=${entry.Stream}`"
-          height="150px"
+          height="125px"
           class="d-flex flex-column"
         >
           <h3
