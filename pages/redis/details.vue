@@ -53,14 +53,14 @@
     >
       <!-- 766662986*(1e-9) -->
       <template v-slot:item.LastDeliveredDuration="{ value }">
-        {{ value }}
+        {{ value || 0 }}
         <!-- {{ value === 0 ? 0 : (value * 1e-9).toFixed(2) }}s -->
       </template>
       <template v-slot:item.LowerDuration="{ value }">
-        {{ value === 0 ? 0 : (value * 1e-9).toFixed(2) }}s
+        {{ value || 0 }}
       </template>
       <template v-slot:item.HigherDuration="{ value }">
-        {{ value === 0 ? 0 : (value * 1e-9).toFixed(2) }}s
+        {{ value || 0 }}
       </template>
 
       <template v-slot:expanded-item="{ headers, item }">
