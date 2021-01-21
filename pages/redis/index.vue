@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-row v-if="redisData">
-      <v-col v-for="(entry, id) in redisData" :key="id" cols="md-3">
+      <v-col v-for="entry in redisData" :key="entry.stream" cols="md-3">
         <v-card
-          :to="`/redis/details?id=${id}`"
+          :to="`/redis/details?stream=${entry.Stream}`"
           height="150px"
           class="d-flex flex-column"
         >

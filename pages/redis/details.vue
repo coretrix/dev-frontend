@@ -3,7 +3,7 @@
     <div>
       <v-btn to="/redis" class="mr-4 white--text" color="blue">Back</v-btn>
 
-      <v-row v-if="redisData[schemeID]" class="mt-5">
+      <v-row v-if="scheme" class="mt-5">
         <v-col cols="4">
           <v-card height="100px">
             <v-card-title class="justify-center">
@@ -11,7 +11,7 @@
             </v-card-title>
             <v-card-text>
               <div class="text-center">
-                {{ redisData[schemeID].Stream }}
+                {{ scheme.Stream }}
               </div>
             </v-card-text>
           </v-card>
@@ -23,7 +23,7 @@
             </v-card-title>
             <v-card-text>
               <div class="text-center">
-                {{ redisData[schemeID].Len }}
+                {{ scheme.Len }}
               </div>
             </v-card-text>
           </v-card>
@@ -35,7 +35,7 @@
             </v-card-title>
             <v-card-text>
               <div class="text-center">
-                {{ redisData[schemeID].RedisPool }}
+                {{ scheme.RedisPool }}
               </div>
             </v-card-text>
           </v-card>
@@ -162,32 +162,19 @@ export default {
     }
   },
   computed: {
-    schemeID() {
-      return this.$route.query.id
+    scheme() {
+      const streamName = this.$route.query.stream
+      const result = this.redisData.filter((stream) => {
+        return stream.Stream === streamName
+      })
+
+      return result[0]
     },
     groupItems() {
-      return this.redisData[this.schemeID]?.Groups
+      return this.scheme?.Groups
     },
-    // expanded: {
-    //   get() {
-    //     const indexes = []
-    //     const arrLength = this.redisData[this.schemeID]?.Groups.length
-    //     for (let index = 0; index < arrLength; index++) {
-    //       indexes.push(index)
-    //     }
-    //     return indexes
-    //   },
-    //   set() {
-    //     const indexes = []
-    //     const arrLength = this.redisData[this.schemeID]?.Groups.length
-    //     for (let index = 0; index < arrLength; index++) {
-    //       indexes.push(index)
-    //     }
-    //     return indexes
-    //   },
-    // },
     expanded() {
-      return this.redisData[this.schemeID]?.Groups
+      return this.scheme?.Groups
     },
   },
 }

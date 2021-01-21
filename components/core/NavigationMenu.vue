@@ -29,7 +29,7 @@
             v-show="!configDrawer['mini-variant']"
             class="m-0 p-0 primary--text"
           >
-            Coretrix
+            CoreTrix
           </h1>
           <button
             v-if="!isMobile"
