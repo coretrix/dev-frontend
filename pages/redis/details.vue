@@ -49,7 +49,7 @@
       item-key="Group"
       :show-expand="false"
       hide-default-footer
-      class="elevation-1 mt-5"
+      class="elevation-1 mt-5 expandable-table"
     >
       <!-- 766662986*(1e-9) -->
       <template v-slot:item.LastDeliveredDuration="{ value }">
