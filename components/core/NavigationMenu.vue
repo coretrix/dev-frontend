@@ -70,7 +70,12 @@
 </template>
 
 <script>
-import { mdiPowerStandby, mdiViewDashboard, mdiSpeedometer } from '@mdi/js'
+import {
+  mdiPowerStandby,
+  mdiViewDashboard,
+  mdiSpeedometer,
+  mdiAlertDecagramOutline,
+} from '@mdi/js'
 export default {
   props: {
     appclass: {
@@ -92,7 +97,12 @@ export default {
       },
       drawer: true,
       email: localStorage.getItem('userEmail'),
-      icons: { mdiPowerStandby, mdiViewDashboard, mdiSpeedometer },
+      icons: {
+        mdiPowerStandby,
+        mdiViewDashboard,
+        mdiSpeedometer,
+        mdiAlertDecagramOutline,
+      },
     }
   },
   computed: {
@@ -144,6 +154,12 @@ export default {
         location: '/redis',
         name: 'Redis',
         icon: 'mdiSpeedometer',
+        isVisible: true,
+      },
+      {
+        location: '/errors-log',
+        name: 'Errors log',
+        icon: 'mdiAlertDecagramOutline',
         isVisible: true,
       },
     ]
