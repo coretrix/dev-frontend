@@ -62,7 +62,7 @@ const ApiUtilities = {
           errorMsg += ' ' + error.response.data.GlobalError
         }
         if (errorMsg) {
-          this.$dialog.message.error(errorMsg)
+          this.$notification.show({ type: 'error', message: errorMsg })
         }
       }
     },
