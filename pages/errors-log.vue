@@ -96,7 +96,7 @@
               small
               class="mr-2"
               v-bind="attrs"
-              @click="deleteItem(item)"
+              @click.stop="deleteItem(item)"
               v-on="on"
             >
               {{ icons.mdiDelete }}
