@@ -17,6 +17,7 @@
       item-key="ID"
       :hide-default-footer="!items.length"
       :footer-props="{ 'items-per-page-options': [5, 15, 50, 100, -1] }"
+      @click:row="onClickRow"
     >
       <template #top>
         <v-toolbar flat>
@@ -156,7 +157,6 @@ export default {
       },
       headers: [],
       items: [],
-      test: [],
     }
   },
   methods: {
@@ -248,6 +248,9 @@ export default {
         })
         .catch(this.apiOnCatchError())
         .then(this.apiOnFinishRequest)
+    },
+    onClickRow(row, slotData) {
+      slotData.expand(!slotData.isExpanded)
     },
   },
 }
