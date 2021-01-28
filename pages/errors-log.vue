@@ -168,7 +168,6 @@ export default {
       this.expanded = [{ ID: this.$route.hash.substr(5) }]
     }
   },
-  mounted() {},
   methods: {
     setHeaders() {
       this.headers = [
