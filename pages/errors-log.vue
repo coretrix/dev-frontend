@@ -15,6 +15,7 @@
       single-expand
       show-expand
       item-key="ID"
+      :expanded.sync="expanded"
       :hide-default-footer="!items.length"
       :footer-props="{ 'items-per-page-options': [5, 15, 50, 100, -1] }"
       @click:row="onClickRow"
@@ -107,7 +108,9 @@
       </template>
       <template #item.lp="{ index }">{{ ++index }}</template>
       <template #item.Time="{ item }">
-        {{ new Date(item.Time).toLocaleString() }}
+        <span :id="`err-${item.ID}`">
+          {{ new Date(item.Time).toLocaleString() }}
+        </span>
       </template>
       <template #item.Description="{ item }">
         <div class="px-1 py-2 text-break">
@@ -157,6 +160,12 @@ export default {
       },
       headers: [],
       items: [],
+      expanded: [],
+    }
+  },
+  created() {
+    if (this.$route.hash.substr(0, 5) === '#err-') {
+      this.expanded = [{ ID: this.$route.hash.substr(5) }]
     }
   },
   methods: {
