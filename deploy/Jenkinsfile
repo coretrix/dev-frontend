@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    environment {
+        APP_NAME = "dev-frontend"
+        PROJECT_ZONE = "${PROJECT_ZONE}"
+        PROJECT_ID = "${PROJECT_ID}"
+        PROD_CLUSTER = "${K8S_PROD}"
+        GCR_REGISTRY = "https://eu.gcr.io"
+        GCR_IMAGE = "eu.gcr.io/${PROJECT_ID}/${APP_NAME}:${BUILD_ID}"
+        MANIFEST = "deploy/manifest.yaml"
+        CREDENTIALS_ID = "jenkins-sa"
+        IMAGE = ""
+    }
+
+    stages {
+        stage("Build Image") {
+            steps {
+                script {
+                    withEnv(['NODE_ENV=production', 'NUXT_API_BASE_URL=http://api.blulog.summer-api.com/']) {
+                        IMAGE = docker.build("${PROJECT_ID}/${APP_NAME}:${BUILD_ID}", "-f deploy/docker/Dockerfile --build-arg=\"NODE_VERSION=14.15.4-alpine3.12\" --build-arg=\"NGINX_VERSION=1.18\" --build-arg=\"NODE_ENV=production\" .")
+                    }
+                }
+            }
+        }
+        stage("Push to GCR") {
+    	    steps {
+                script {
+                    docker.withRegistry("${GCR_REGISTRY}", 'gcr:jenkins-sa') {
+                        IMAGE.push()
+                        IMAGE.push("latest")
+                    }
+                }
+    	    }
+        }
+    	stage("Deploy to Production") {
+    	    steps{
+    	        sh "sed -i s#eu.gcr.io/blulog-cloud/${APP_NAME}:latest#${GCR_IMAGE}#g ${MANIFEST}"
+    	        step([
+                    $class: 'KubernetesEngineBuilder',
+                    projectId: env.PROJECT_ID,
+                    clusterName: env.PROD_CLUSTER,
+                    location: env.PROJECT_ZONE,
+                    manifestPattern: env.MANIFEST,
+                    credentialsId: env.CREDENTIALS_ID,
+                    verifyDeployments: true])
+    		}
+    	}
+    }
+}

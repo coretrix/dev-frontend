@@ -1,0 +1,25 @@
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    cert-manager.io/issue-temporary-certificate: "true"
+    acme.cert-manager.io/http01-edit-in-place: "true"
+    # To issue for the first time ssl-redirect should be false
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  name: dev-frontend
+  namespace: default
+spec:
+  tls:
+    - hosts:
+      - dev.blulog.summer-api.com
+      secretName: dev-frontend-prod-tls
+  rules:
+    - host: dev.blulog.summer-api.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: dev-frontend
+              servicePort: 80

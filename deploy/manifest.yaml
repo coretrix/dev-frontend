@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-frontend
+spec:
+  selector:
+    app: dev-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      name: webinterface
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dev-frontend
+  name: dev-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dev-frontend
+  template:
+    metadata:
+      labels:
+        app: dev-frontend
+    spec:
+      containers:
+        - name: dev-frontend
+          image: eu.gcr.io/blulog-cloud/dev-frontend:latest
+          env:
+            - name: K8_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: K8_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: K8_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: K8_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: TZ
+              value: "UTC"
+            # - name: DEBUG_POD
+            #  value: "yes"
+          ports:
+            - containerPort: 80
+              name: webinterface
+      imagePullSecrets:
+        - name: gcr-secret
