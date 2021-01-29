@@ -70,7 +70,6 @@ export default {
       await this.$axios
         .get(apiURL)
         .then((response) => {
-          console.log(response)
           this.$notification.show({
             type: 'success',
             message: 'Success',
