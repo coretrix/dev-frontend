@@ -151,8 +151,14 @@ export default {
         isVisible: true,
       },
       {
-        location: '/redis',
-        name: 'Redis',
+        location: '/redis-stats',
+        name: 'Redis Stats',
+        icon: 'mdiSpeedometer',
+        isVisible: true,
+      },
+      {
+        location: '/redis-stream',
+        name: 'Redis Stream',
         icon: 'mdiSpeedometer',
         isVisible: true,
       },
@@ -162,6 +168,12 @@ export default {
         icon: 'mdiAlertDecagramOutline',
         isVisible: true,
       },
+      // {
+      //   location: '/alters',
+      //   name: 'Alters',
+      //   icon: 'mdiSpeedometer',
+      //   isVisible: true,
+      // },
     ]
     this.updateDrawer()
     this.$root.$refs.navigationMenu = this

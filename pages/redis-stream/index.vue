@@ -3,7 +3,7 @@
     <v-row v-if="redisData">
       <v-col v-for="entry in redisData" :key="entry.stream" cols="md-3">
         <v-card
-          :to="`/redis/details?stream=${entry.Stream}`"
+          :to="`/redis-stream/details?stream=${entry.Stream}`"
           height="125px"
           class="d-flex flex-column"
         >
