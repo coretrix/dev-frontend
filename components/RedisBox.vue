@@ -15,6 +15,7 @@
 
 <script>
 export default {
+  name: 'RedisBox',
   props: {
     url: {
       type: String,

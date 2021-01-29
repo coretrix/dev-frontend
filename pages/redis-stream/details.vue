@@ -1,7 +1,9 @@
 <template>
   <div>
     <div>
-      <v-btn to="/redis" class="mr-4 white--text" color="blue">Back</v-btn>
+      <v-btn to="/redis-stream" class="mr-4 white--text" color="blue">
+        Back
+      </v-btn>
 
       <v-row v-if="scheme" class="mt-5">
         <v-col cols="4">

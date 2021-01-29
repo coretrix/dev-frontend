@@ -2,12 +2,20 @@
   <div v-if="redisData">
     <div v-for="entry in filteredData" :key="entry.RedisPool">
       <v-divider v-if="filteredData.indexOf(entry) !== 0" class="my-3" />
-      <v-btn
-        :to="`/redis-stats/details?RedisPool=${entry.RedisPool}`"
-        color="primary"
-      >
-        {{ entry.RedisPool }}
-      </v-btn>
+      <div class="d-flex align-center">
+        <h2>
+          {{ entry.RedisPool }}
+        </h2>
+        <v-btn
+          :to="`/redis-stats/details?RedisPool=${entry.RedisPool}`"
+          icon
+          small
+          color="primary"
+          class="ml-3"
+        >
+          <v-icon>{{ icons.mdiCodeBraces }}</v-icon>
+        </v-btn>
+      </div>
       <v-divider class="my-3" />
       <v-row>
         <v-col v-for="(row, key) in entry.Info" :key="key">
@@ -96,6 +104,7 @@
 </template>
 
 <script>
+import { mdiCodeBraces } from '@mdi/js'
 export default {
   name: 'RedisIndex',
   props: {
@@ -108,7 +117,9 @@ export default {
   },
   data: () => {
     return {
-      // expanded: [0, 1, 2],
+      icons: {
+        mdiCodeBraces,
+      },
       redisKeys: [
         'active_defrag_hits',
         'active_defrag_key_hits',

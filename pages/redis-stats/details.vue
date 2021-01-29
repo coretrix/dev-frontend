@@ -1,6 +1,10 @@
 <template>
   <div>
-    {{ JSON.parse(pool) }}
+    <v-btn to="/redis-stats" class="mr-4 white--text" color="blue">Back</v-btn>
+    <pre class="mt-5">
+    {{ JSON.stringify(pool, null, 2) }}
+  </pre
+    >
   </div>
 </template>
 
