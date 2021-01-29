@@ -1,8 +1,19 @@
 <template>
-  <v-card :to="url" height="75px" class="d-flex flex-column">
+  <v-card height="75px" class="d-flex flex-column">
     <slot name="top">
       <h4 class="text-center mt-3 mb-2 len">
-        <span>{{ focusText }}</span>
+        <span
+          v-if="keyType === 'connectionKeys'"
+          :class="{
+            'orange--text': focusText >= 50 && focusText < 100,
+            'red--text': focusText > 100,
+          }"
+        >
+          {{ focusText }}
+        </span>
+        <span v-else>
+          {{ focusText }}
+        </span>
       </h4>
     </slot>
     <slot name="bottom">
@@ -17,15 +28,15 @@
 export default {
   name: 'RedisBox',
   props: {
-    url: {
-      type: String,
-      default: undefined,
-    },
     focusText: {
       type: String,
       default: undefined,
     },
     secondaryText: {
+      type: String,
+      default: undefined,
+    },
+    keyType: {
       type: String,
       default: undefined,
     },

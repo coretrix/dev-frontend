@@ -74,6 +74,7 @@ import {
   mdiPowerStandby,
   mdiViewDashboard,
   mdiSpeedometer,
+  mdiPlaylistPlay,
   mdiAlertDecagramOutline,
 } from '@mdi/js'
 export default {
@@ -102,6 +103,7 @@ export default {
         mdiViewDashboard,
         mdiSpeedometer,
         mdiAlertDecagramOutline,
+        mdiPlaylistPlay,
       },
     }
   },
@@ -159,7 +161,7 @@ export default {
       {
         location: '/redis-stream',
         name: 'Redis Stream',
-        icon: 'mdiSpeedometer',
+        icon: 'mdiPlaylistPlay',
         isVisible: true,
       },
       {

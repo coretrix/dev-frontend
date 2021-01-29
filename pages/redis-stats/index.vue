@@ -95,6 +95,7 @@
               v-if="key !== 'memoryUsageKeys' && key !== 'dbKeys'"
               :focus-text="value"
               :secondary-text="k"
+              :key-type="key"
             />
           </div>
         </v-col>
