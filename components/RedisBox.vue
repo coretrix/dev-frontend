@@ -3,9 +3,9 @@
     <slot name="top">
       <h4 class="text-center mt-3 mb-2 len">
         <span
-          v-if="keyType === 'connectionKeys'"
+          v-if="secondaryText === 'blocked_clients'"
           :class="{
-            'orange--text': focusText >= 50 && focusText < 100,
+            'orange--text': focusText > 50 && focusText <= 100,
             'red--text': focusText > 100,
           }"
         >
