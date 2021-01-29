@@ -36,6 +36,10 @@ export default {
         path: '~/components/core/',
         prefix: 'Core',
       },
+      {
+        path: '~/components/',
+        prefix: '',
+      },
     ],
   },
 
@@ -60,7 +64,7 @@ export default {
 
   axios: {
     credentials: true,
-    baseURL: process.env.NUXT_ENV_API_ULR || 'https://api.ovh.blutest.ovh',
+    baseURL: process.env.NUXT_ENV_API_URL || 'https://api.ovh.blutest.ovh',
   },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
