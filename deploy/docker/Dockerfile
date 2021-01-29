@@ -2,8 +2,8 @@ ARG NODE_VERSION
 ARG NGINX_VERSION
 FROM node:${NODE_VERSION} AS builder
 
-ARG NUXT_API_BASE_URL
-ENV NUXT_API_BASE_URL ${NUXT_API_BASE_URL}
+ARG NUXT_ENV_API_URL
+ENV NUXT_ENV_API_URL ${NUXT_ENV_API_URL}
 WORKDIR /app
 
 RUN apk add python3 make g++ autoconf automake libtool file pkgconf build-base alpine-sdk nasm
