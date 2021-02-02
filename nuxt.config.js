@@ -64,7 +64,7 @@ export default {
 
   axios: {
     credentials: true,
-    baseURL: process.env.NUXT_ENV_API_URL || 'https://api.ovh.blutest.ovh',
+    baseURL: process.env.NUXT_API_BASE_URL || 'https://api.ovh.blutest.ovh',
   },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
