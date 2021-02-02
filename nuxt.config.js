@@ -29,6 +29,12 @@ export default {
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: ['~/plugins/notification'],
 
+  // https://nuxtjs.org/guide/runtime-config
+  publicRuntimeConfig: {
+    everything: process.env, // Do not remove,
+    env: process.env.NODE_ENV, // Do not remove,
+    baseURL: process.env.NUXT_API_BASE_URL, // Do not remove,
+  },
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: {
     dirs: [
