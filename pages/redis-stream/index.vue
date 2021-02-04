@@ -26,13 +26,45 @@
             color="red"
             icon
             class="action-btn"
-            @click="removeStream(entry.Stream)"
+            @click="
+              focusStream = entry.Stream
+              dialog = true
+            "
           >
             <v-icon small>{{ icons.mdiDelete }}</v-icon>
           </v-btn>
         </div>
       </v-col>
     </v-row>
+
+    <v-dialog v-model="dialog" max-width="400">
+      <v-card>
+        <v-card-title class="headline">Delete stream?</v-card-title>
+
+        <v-card-text>
+          Are you really, really sure you want to delete
+          <strong class="red--text">{{ focusStream }}</strong>
+          ???
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn color="#676767" text @click="dialog = false">Disagree</v-btn>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="
+              removeStream()
+              dialog = false
+            "
+          >
+            Agree
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -53,12 +85,14 @@ export default {
       icons: {
         mdiDelete,
       },
+      dialog: false,
+      focusStream: undefined,
     }
   },
   methods: {
-    async removeStream(streamName) {
+    async removeStream() {
       await this.$axios
-        .delete(`/dev/delete-redis-stream/${streamName}/`)
+        .delete(`/dev/delete-redis-stream/${this.focusStream}/`)
         .then((response) => {
           this.$notification.show({
             type: 'success',
