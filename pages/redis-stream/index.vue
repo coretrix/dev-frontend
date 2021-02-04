@@ -37,27 +37,49 @@
       </v-col>
     </v-row>
 
-    <v-dialog v-model="dialog" max-width="400">
+    <v-dialog v-model="dialog" max-width="500">
       <v-card>
         <v-card-title class="headline">Delete stream?</v-card-title>
-
+        <v-card-text>
+          Are you sure you want to delete
+          <strong class="red--text">{{ focusStream }}</strong>
+          ???
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="#676767" text @click="dialog = false">Disagree</v-btn>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="
+              dialog = false
+              secondDialog = true
+            "
+          >
+            Agree
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="secondDialog" max-width="500">
+      <v-card>
+        <v-card-title class="headline">Wait!</v-card-title>
         <v-card-text>
           Are you really, really sure you want to delete
           <strong class="red--text">{{ focusStream }}</strong>
           ???
         </v-card-text>
-
         <v-card-actions>
           <v-spacer></v-spacer>
-
-          <v-btn color="#676767" text @click="dialog = false">Disagree</v-btn>
-
+          <v-btn color="#676767" text @click="secondDialog = false">
+            Disagree
+          </v-btn>
           <v-btn
             color="green darken-1"
             text
             @click="
               removeStream()
-              dialog = false
+              secondDialog = false
             "
           >
             Agree
@@ -86,6 +108,7 @@ export default {
         mdiDelete,
       },
       dialog: false,
+      secondDialog: false,
       focusStream: undefined,
     }
   },
