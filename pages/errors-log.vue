@@ -179,6 +179,7 @@ export default {
           value: 'lp',
         },
         { text: 'Counter', value: 'Counter', align: 'center' },
+        { text: 'Application', value: 'AppName', width: '150px' },
         { text: 'Time', value: 'Time' },
         { text: 'Description', value: 'Description', sortable: false },
         { text: '', value: 'data-table-expand' },
