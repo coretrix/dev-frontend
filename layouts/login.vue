@@ -1,6 +1,5 @@
 <template>
   <v-app>
-    <CoreNavigationMenu />
     <v-main class="r-main">
       <nuxt class="r-body" :class="{ mobile: $vuetify.breakpoint.mdAndDown }" />
     </v-main>
@@ -10,7 +9,7 @@
 
 <script>
 export default {
-  middleware: 'logged',
+  middleware: 'unauth',
   data() {
     return {}
   },
@@ -23,10 +22,6 @@ export default {
 }
 .r-body {
   padding: 40px 20px;
-
-  &.mobile {
-    padding-top: 75px;
-  }
 }
 </style>
 

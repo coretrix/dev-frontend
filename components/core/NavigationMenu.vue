@@ -64,6 +64,23 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
+
+        <v-list dense nav class="c-menu__list mt-auto">
+          <v-list-item
+            v-ripple="{ class: 'primary--text' }"
+            :class="['flex-start c-menu__list-item']"
+            @click="$auth.logout()"
+          >
+            <v-list-item-icon>
+              <v-icon style="color: currentColor">
+                {{ icons.mdiPowerStandby }}
+              </v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <div class="c-menu__list-text">Logout</div>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
       </div>
     </v-navigation-drawer>
   </div>

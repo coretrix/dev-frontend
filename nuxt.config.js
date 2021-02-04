@@ -27,7 +27,12 @@ export default {
   loading: false,
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: ['~/plugins/notification'],
+  plugins: [
+    '~/plugins/notification',
+    '~/plugins/validate',
+    '~/plugins/auth',
+    '~/plugins/axios',
+  ],
 
   // https://nuxtjs.org/guide/runtime-config
   publicRuntimeConfig: {
