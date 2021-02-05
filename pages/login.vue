@@ -1,9 +1,21 @@
 <template>
   <v-row class="fill-height d-flex justify-center align-center" no-gutters>
     <div>
-      <v-card>
-        <v-card-title class="justify-center">Login</v-card-title>
-        <v-card-text>
+      <div class="mb-8">
+        <div class="mb-lg-0 text-center primary--text">
+          <h1 class="c-title">Dev Panel</h1>
+          <span class="c-subtext">
+            powered by
+            <strong>CoreTrix</strong>
+          </span>
+        </div>
+      </div>
+
+      <v-card min-width="320px">
+        <v-card-title class="justify-center p-6">
+          <h2 class="mb-4">Login</h2>
+        </v-card-title>
+        <v-card-text class="px-6 pb-6">
           <v-form ref="form" v-model="valid">
             <v-row no-gutters>
               <v-text-field
@@ -14,8 +26,6 @@
                 ]"
                 :error-messages="formErrors.Username"
                 placeholder="Username"
-                dense
-                flat
                 outlined
               ></v-text-field>
             </v-row>
@@ -29,8 +39,6 @@
                 :error-messages="formErrors.Password"
                 type="password"
                 placeholder="Password"
-                dense
-                flat
                 outlined
               ></v-text-field>
             </v-row>
@@ -39,6 +47,7 @@
                 color="primary"
                 :disabled="!valid"
                 width="100%"
+                large
                 @click="login"
               >
                 Submit
@@ -47,10 +56,6 @@
           </v-form>
         </v-card-text>
       </v-card>
-
-      <div class="c-version mb-16 mb-lg-0 text-center">
-        <span>Dev Panel powered by CoreTrix</span>
-      </div>
     </div>
   </v-row>
 </template>
@@ -102,11 +107,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.c-version {
-  margin-top: 20px;
-  font-size: 13px;
+.c-title {
+  font-size: 48px;
+  line-height: 1;
+}
+.c-subtext {
+  font-size: 14px;
   font-weight: 300;
   color: #737373;
   padding: 0 10px;
+
+  strong {
+    font-weight: bold;
+    color: #000;
+  }
 }
 </style>
