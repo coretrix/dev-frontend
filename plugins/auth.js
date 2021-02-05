@@ -18,17 +18,6 @@ export default ({ app }, inject) => {
     logout() {
       auth.clearLocalStorage()
       app.router.push('/login')
-      // await app.$axios
-      //   .get('/account/logout/')
-      //   .then(() => {
-      //     auth.clearLocalStorage()
-      //     app.router.push('/login')
-      //   })
-      //   .catch((err) => {
-      //     console.log(err)
-      //     console.log(err.response)
-      //     throw err
-      //   })
     },
   }
   inject('auth', auth)

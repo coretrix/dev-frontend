@@ -8,8 +8,12 @@
             <v-row no-gutters>
               <v-text-field
                 v-model="loginData.Username"
+                :rules="[
+                  $v.clearErrorMsg(formErrors, 'Username'),
+                  $v.required(),
+                ]"
+                :error-messages="formErrors.Username"
                 placeholder="Username"
-                :rules="[$v.required()]"
                 dense
                 flat
                 outlined
@@ -18,9 +22,13 @@
             <v-row no-gutters>
               <v-text-field
                 v-model="loginData.Password"
-                placeholder="Password"
-                :rules="[$v.required()]"
+                :rules="[
+                  $v.clearErrorMsg(formErrors, 'Password'),
+                  $v.required(),
+                ]"
+                :error-messages="formErrors.Password"
                 type="password"
+                placeholder="Password"
                 dense
                 flat
                 outlined
@@ -68,12 +76,21 @@ export default {
       await this.$axios
         .post('/dev/login/', this.loginData)
         .then((response) => {
-          console.log(response)
           this.$auth.login(response.data?.Result)
           this.$router.push('/')
         })
         .catch((error) => {
-          console.error(error.response.data)
+          if (error.response?.data?.FieldsError) {
+            this.formErrors = Object.assign(
+              {},
+              error.response?.data?.FieldsError
+            )
+          } else if (error.response?.data?.GlobalError) {
+            this.$notification.show({
+              type: 'error',
+              message: error.response?.data?.GlobalError,
+            })
+          }
         })
     },
   },

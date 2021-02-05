@@ -25,7 +25,9 @@ export default {
       await this.$axios
         .get('dev/redis-streams/')
         .then((response) => {
-          this.redisData = response.data.Result
+          if (response) {
+            this.redisData = response.data.Result
+          }
         })
         .catch((error) => {
           console.error(error)

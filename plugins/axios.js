@@ -1,4 +1,4 @@
-export default ({ $axios, $notification, redirect, app }) => {
+export default ({ $axios, $notification, redirect, $auth }) => {
   let isRefreshing = false
 
   $axios.onRequest((config) => {
@@ -24,25 +24,10 @@ export default ({ $axios, $notification, redirect, app }) => {
 
     switch (code) {
       case 400:
-        if (error.GlobalError) {
-          if (error.GlobalError === 'bluconsole.forms.login.locked') {
-            $notification.show({
-              type: 'error',
-              message: app.i18n.t('global.accountLocked'),
-            })
-          } else if (error.GlobalError === 'invalid username or password') {
-            $notification.show({
-              type: 'error',
-              message: app.i18n.t('validation.invalidUsernameOrPassword'),
-            })
-          }
-        } else if (
-          error.FieldsError &&
-          error.FieldsError.Email === 'Email must be a valid email address'
-        ) {
-          $notification.show({
+        if (!error.GlobalError && !error.FieldsError) {
+          this.$notification.show({
             type: 'error',
-            message: error.FieldsError.Email,
+            message: error.response,
           })
         }
 
@@ -50,33 +35,33 @@ export default ({ $axios, $notification, redirect, app }) => {
       case 401:
         if (isRefreshing) {
           isRefreshing = false
-          // app.store.dispatch('localStorage/saveUrl', route.fullPath)
-          app.$auth.logout()
-          // logout
-
-          // store.dispatch('localStorage/setUser', null)
+          $auth.logout()
           break
         }
 
         try {
           isRefreshing = true
-          const response = await app.$auth.refreshTokens()
-          // refresh tokens
+          const response = await $axios.post(
+            '/dev/generate-token/',
+            {},
+            {
+              headers: {
+                Authorization: localStorage.getItem('RefreshToken'),
+              },
+            }
+          )
 
           if (response.data) {
+            $auth.setTokens(response.data.Result)
+            error.config.headers.Authorization = localStorage.getItem('Token')
             await $axios(error.config)
               .then((resp) => {
                 isRefreshing = false
-                $nuxt.$emit('update:failed-request', resp.data)
                 return resp
               })
               .catch((e) => {
                 isRefreshing = false
-                // app.store.dispatch('localStorage/saveUrl', route.fullPath)
-                app.$auth.logout()
-                // logout
-
-                // store.dispatch('localStorage/setUser', null)
+                $auth.logout()
                 $notification.show({
                   type: 'error',
                   message: e.GlobalError || e,
@@ -90,11 +75,7 @@ export default ({ $axios, $notification, redirect, app }) => {
           }
 
           $notification.show({ type: 'error', message: 'ERROR: 401' })
-          app.$auth.logout()
-          // logout
-
-          // store.dispatch('localStorage/setUser', null)
-          // app.store.dispatch('localStorage/saveUrl', route.fullPath)
+          $auth.logout()
           return redirect('/login')
         }
         break
