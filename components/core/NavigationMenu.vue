@@ -81,6 +81,9 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
+        <div class="c-version mb-16 mb-lg-0">
+          <span>Dev Panel powered by CoreTrix</span>
+        </div>
       </div>
     </v-navigation-drawer>
   </div>
@@ -357,7 +360,7 @@ export default {
   margin-top: 20px;
   font-size: 13px;
   font-weight: 300;
-  color: var(--v-disabledtextcolor-base);
+  color: #737373;
   padding: 0 10px;
 }
 </style>

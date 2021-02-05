@@ -47,6 +47,10 @@
           </v-form>
         </v-card-text>
       </v-card>
+
+      <div class="c-version mb-16 mb-lg-0 text-center">
+        <span>Dev Panel powered by CoreTrix</span>
+      </div>
     </div>
   </v-row>
 </template>
@@ -96,3 +100,13 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.c-version {
+  margin-top: 20px;
+  font-size: 13px;
+  font-weight: 300;
+  color: #737373;
+  padding: 0 10px;
+}
+</style>
