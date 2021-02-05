@@ -13,8 +13,9 @@
 
       <v-card min-width="320px">
         <v-card-title class="justify-center p-6">
-          <h2 class="mb-4">Login</h2>
+          <h2>Login</h2>
         </v-card-title>
+        <v-divider class="my-2"></v-divider>
         <v-card-text class="px-6 pb-6">
           <v-form ref="form" v-model="valid">
             <v-row no-gutters>
@@ -110,6 +111,9 @@ export default {
 .c-title {
   font-size: 48px;
   line-height: 1;
+}
+h2 {
+  font-weight: normal;
 }
 .c-subtext {
   font-size: 14px;
