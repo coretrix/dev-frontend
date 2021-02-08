@@ -73,10 +73,10 @@
                 <td class="table__td table__td--th px-2 py-1">Name</td>
                 <td class="table__td table__td--th px-2 py-1">Pending</td>
                 <td class="table__td table__td--th px-2 py-1">
-                  SpeedEventNanoseconds
+                  Speed last 10000
                 </td>
                 <td class="table__td table__td--th px-2 py-1">
-                  SpeedLastMeasurement
+                  Speed last measurment
                 </td>
               </tr>
             </thead>
