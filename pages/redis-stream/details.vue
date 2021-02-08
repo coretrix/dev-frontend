@@ -171,6 +171,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .table {
+  table-layout: fixed;
   border-collapse: collapse;
 
   &__td {
