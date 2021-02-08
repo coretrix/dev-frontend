@@ -73,10 +73,10 @@
                 <td class="table__td table__td--th px-2 py-1">Name</td>
                 <td class="table__td table__td--th px-2 py-1">Pending</td>
                 <td class="table__td table__td--th px-2 py-1">
-                  Speed last 10000
+                  Average speed last 10000
                 </td>
                 <td class="table__td table__td--th px-2 py-1">
-                  Speed last measurment
+                  Average speed last 10000 measured at
                 </td>
               </tr>
             </thead>
@@ -88,7 +88,11 @@
                   {{ row.SpeedEventNanoseconds / 1000000 || 0 }}ms
                 </td>
                 <td class="table__td px-2 py-1">
-                  {{ row.SpeedLastMeasurement / 1000000 || 0 }}ms
+                  {{
+                    row.SpeedLastMeasurement
+                      ? new Date(row.SpeedLastMeasurement).toLocaleString()
+                      : row.SpeedLastMeasurement
+                  }}
                 </td>
               </tr>
             </tbody>
