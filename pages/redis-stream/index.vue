@@ -28,7 +28,7 @@
             class="action-btn"
             @click="
               focusStream = entry.Stream
-              dialog = true
+              confirm()
             "
           >
             <v-icon small>{{ icons.mdiDelete }}</v-icon>
@@ -36,57 +36,8 @@
         </div>
       </v-col>
     </v-row>
-
-    <v-dialog v-model="dialog" max-width="500">
-      <v-card>
-        <v-card-title class="headline">Delete stream?</v-card-title>
-        <v-card-text>
-          Are you sure you want to delete
-          <strong class="red--text">{{ focusStream }}</strong>
-          ???
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="#676767" text @click="dialog = false">Disagree</v-btn>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="
-              dialog = false
-              secondDialog = true
-            "
-          >
-            Agree
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <v-dialog v-model="secondDialog" max-width="500">
-      <v-card>
-        <v-card-title class="headline">Wait!</v-card-title>
-        <v-card-text>
-          Are you really, really sure you want to delete
-          <strong class="red--text">{{ focusStream }}</strong>
-          ???
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="#676767" text @click="secondDialog = false">
-            Disagree
-          </v-btn>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="
-              removeStream()
-              secondDialog = false
-            "
-          >
-            Agree
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <CoreConfirmation ref="confirmationModal" />
+    <CoreConfirmation ref="secondConfirm" />
   </div>
 </template>
 
@@ -116,7 +67,7 @@ export default {
     async removeStream() {
       await this.$axios
         .delete(`/dev/delete-redis-stream/${this.focusStream}/`)
-        .then((response) => {
+        .then(() => {
           this.$notification.show({
             type: 'success',
             message: 'Success',
@@ -127,6 +78,30 @@ export default {
             type: 'error',
             message: error,
           })
+        })
+    },
+    confirm() {
+      this.$refs.confirmationModal
+        .show({
+          title: 'Delete stream?',
+          message: `Are you sure you want to delete ${this.focusStream}?`,
+        })
+        .then((result) => {
+          if (result) {
+            this.secondConfirm()
+          }
+        })
+    },
+    secondConfirm() {
+      this.$refs.secondConfirm
+        .show({
+          title: 'Wait!!!',
+          message: `Are you really, really sure you want to delete ${this.focusStream}? It cannot be undone.`,
+        })
+        .then((result) => {
+          if (result) {
+            this.removeStream()
+          }
         })
     },
   },
