@@ -72,12 +72,24 @@
               <tr>
                 <td class="table__td table__td--th px-2 py-1">Name</td>
                 <td class="table__td table__td--th px-2 py-1">Pending</td>
+                <td class="table__td table__td--th px-2 py-1">
+                  SpeedEventNanoseconds
+                </td>
+                <td class="table__td table__td--th px-2 py-1">
+                  SpeedLastMeasurement
+                </td>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(row, key) in item.Consumers" :key="key">
                 <td class="table__td px-2 py-1">{{ row.Name }}</td>
                 <td class="table__td px-2 py-1">{{ row.Pending }}</td>
+                <td class="table__td px-2 py-1">
+                  {{ row.SpeedEventNanoseconds / 1000000 || 0 }}ms
+                </td>
+                <td class="table__td px-2 py-1">
+                  {{ row.SpeedLastMeasurement / 1000000 || 0 }}ms
+                </td>
               </tr>
             </tbody>
           </table>
@@ -119,33 +131,9 @@ export default {
           sortable: false,
         },
         {
-          text: 'LastDeliveredID',
-          value: 'LastDeliveredID',
-          width: '12%',
-          sortable: false,
-        },
-        {
-          text: 'LastDeliveredDuration',
-          value: 'LastDeliveredDuration',
-          width: '10%',
-          sortable: false,
-        },
-        {
-          text: 'Lower',
-          value: 'Lower',
-          width: '10%',
-          sortable: false,
-        },
-        {
           text: 'LowerDuration',
           value: 'LowerDuration',
           width: '15%',
-          sortable: false,
-        },
-        {
-          text: 'Higher',
-          value: 'Higher',
-          width: '10%',
           sortable: false,
         },
         {
