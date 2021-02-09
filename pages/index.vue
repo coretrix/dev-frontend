@@ -1,7 +1,13 @@
 <template>
   <div>
     <v-row>
-      <v-col v-for="(action, index) in actionsData" :key="index" cols="3">
+      <v-col
+        v-for="(action, index) in actionsData"
+        :key="index"
+        cols="12"
+        md="4"
+        lg="3"
+      >
         <v-card
           height="125"
           class="d-flex justify-center align-center white--text"
