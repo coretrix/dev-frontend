@@ -6,7 +6,7 @@
       </v-btn>
 
       <v-row v-if="scheme" class="mt-5">
-        <v-col cols="4">
+        <v-col cols="12" sm="4">
           <v-card height="100px">
             <v-card-title class="justify-center">
               <div class="text-center">Stream</div>
@@ -18,7 +18,7 @@
             </v-card-text>
           </v-card>
         </v-col>
-        <v-col cols="4">
+        <v-col cols="12" sm="4">
           <v-card height="100px">
             <v-card-title class="justify-center">
               <div class="text-center">Len</div>
@@ -30,7 +30,7 @@
             </v-card-text>
           </v-card>
         </v-col>
-        <v-col cols="4">
+        <v-col cols="12" sm="4">
           <v-card height="100px">
             <v-card-title class="justify-center">
               <div class="text-center">RedisPool</div>
