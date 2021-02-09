@@ -7,7 +7,7 @@
           class="d-flex justify-center align-center white--text"
           color="green"
           :disabled="loading[index]"
-          @click="execute(action.URL, index)"
+          @click="confirm(action.URL, index)"
         >
           <v-card-text class="white--text text-center">
             <template v-if="!loading[index]">
@@ -30,6 +30,8 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <CoreConfirmation ref="confirmationModal" />
   </div>
 </template>
 
@@ -69,14 +71,13 @@ export default {
       this.loading[index] = true
       await this.$axios
         .get(apiURL)
-        .then((response) => {
+        .then(() => {
           this.$notification.show({
             type: 'success',
             message: 'Success',
           })
         })
         .catch((error) => {
-          console.error(error)
           this.$notification.show({
             type: 'error',
             message: error,
@@ -84,9 +85,19 @@ export default {
         })
         .then(() => {
           this.loading[index] = false
-          console.log('loading false')
-
           this.fetchData()
+        })
+    },
+    confirm(apiURL, index) {
+      this.$refs.confirmationModal
+        .show({
+          title: 'Wait!!!',
+          message: 'Are you sure you want to proceed? It cannot be undone.',
+        })
+        .then((result) => {
+          if (result) {
+            this.execute(apiURL, index)
+          }
         })
     },
   },
