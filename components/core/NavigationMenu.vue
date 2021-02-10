@@ -190,12 +190,12 @@ export default {
         icon: 'mdiAlertDecagramOutline',
         isVisible: true,
       },
-      // {
-      //   location: '/alters',
-      //   name: 'Alters',
-      //   icon: 'mdiSpeedometer',
-      //   isVisible: true,
-      // },
+      {
+        location: '/alters',
+        name: 'Alters',
+        icon: 'mdiSpeedometer',
+        isVisible: true,
+      },
     ]
     this.updateDrawer()
     this.$root.$refs.navigationMenu = this

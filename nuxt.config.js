@@ -32,6 +32,7 @@ export default {
     '~/plugins/validate',
     '~/plugins/auth',
     '~/plugins/axios',
+    '~/plugins/utils',
   ],
 
   // https://nuxtjs.org/guide/runtime-config

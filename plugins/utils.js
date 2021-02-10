@@ -1,0 +1,17 @@
+export default ({ app }, inject) => {
+  const util = {
+    parseReadableNanoSeconds(timeInNanoSeconds) {
+      if (!timeInNanoSeconds) {
+        return null
+      }
+      const h = Math.floor(timeInNanoSeconds / 1000000000 / 60 / 60)
+      const m = Math.floor((timeInNanoSeconds / 1000000000 / 60 / 60 - h) * 60)
+      const s = Math.floor(
+        ((timeInNanoSeconds / 1000000000 / 60 / 60 - h) * 60 - m) * 60
+      )
+
+      return `${h}h ${m}m ${s}s`
+    },
+  }
+  inject('util', util)
+}
