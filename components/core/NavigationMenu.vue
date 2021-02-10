@@ -96,6 +96,7 @@ import {
   mdiSpeedometer,
   mdiPlaylistPlay,
   mdiAlertDecagramOutline,
+  mdiTable,
 } from '@mdi/js'
 export default {
   props: {
@@ -124,6 +125,7 @@ export default {
         mdiSpeedometer,
         mdiAlertDecagramOutline,
         mdiPlaylistPlay,
+        mdiTable,
       },
     }
   },
@@ -193,7 +195,7 @@ export default {
       {
         location: '/alters',
         name: 'Alters',
-        icon: 'mdiSpeedometer',
+        icon: 'mdiTable',
         isVisible: true,
       },
     ]
