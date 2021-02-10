@@ -1,11 +1,17 @@
 <template>
   <div>
     <v-row v-if="redisData">
-      <v-col v-for="entry in redisData" :key="entry.stream" cols="md-3">
+      <v-col
+        v-for="entry in redisData"
+        :key="entry.stream"
+        cols="12"
+        sm="4"
+        md="3"
+      >
         <div class="box-container">
           <v-card
             :to="`/redis-stream/details?stream=${entry.Stream}`"
-            height="125px"
+            height="150px"
             class="d-flex flex-column"
           >
             <h3
@@ -25,7 +31,17 @@
                 {{ entry.Seconds }}s
               </span>
             </h3>
-            <v-card-text class="mt-auto">
+            <div
+              v-show="entry.Len >= 100000"
+              class="text-center mt-1"
+              :class="{
+                'orange--text': entry.Len >= 100000 && entry.Len < 500000,
+                'red--text': entry.Len >= 500000,
+              }"
+            >
+              {{ entry.Len }}
+            </div>
+            <v-card-text class="mt-auto pt-2">
               <div class="text-center stream">{{ entry.Stream }}</div>
             </v-card-text>
           </v-card>
