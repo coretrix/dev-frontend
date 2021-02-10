@@ -11,12 +11,19 @@
             <h3
               class="text-center mt-7 len"
               :class="{
-                'green--text': entry.Len <= 100000,
-                'orange--text': entry.Len > 100000 && entry.Len <= 500000,
-                'red--text': entry.Len > 500000,
+                'green--text': entry.Minutes < 2 && !entry.Hours,
+                'orange--text':
+                  entry.Minutes >= 2 && entry.Minutes < 5 && !entry.Hours,
+                'red--text': entry.Minutes > 5 || entry.Hours,
               }"
             >
-              <span>{{ entry.Len }}</span>
+              <span v-if="entry.Hours" class="mx-1">{{ entry.Hours }}h</span>
+              <span v-if="entry.Minutes" class="mx-1">
+                {{ entry.Minutes }}m
+              </span>
+              <span v-if="entry.Seconds" class="mx-1">
+                {{ entry.Seconds }}s
+              </span>
             </h3>
             <v-card-text class="mt-auto">
               <div class="text-center stream">{{ entry.Stream }}</div>
