@@ -81,7 +81,10 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
-        <div class="c-version mb-16 mb-lg-0">
+        <div
+          v-show="!configDrawer['mini-variant']"
+          class="c-version mb-16 mb-lg-0"
+        >
           <span>Dev Panel powered by CoreTrix</span>
         </div>
       </div>
