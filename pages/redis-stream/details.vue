@@ -72,19 +72,19 @@
               <tr>
                 <td class="table__td table__td--th px-2 py-1">Name</td>
                 <td class="table__td table__td--th px-2 py-1">Pending</td>
-                <td class="table__td table__td--th px-2 py-1">
+                <!-- <td class="table__td table__td--th px-2 py-1">
                   Average speed last 10000
                 </td>
                 <td class="table__td table__td--th px-2 py-1">
                   Average speed last 10000 measured at
-                </td>
+                </td> -->
               </tr>
             </thead>
             <tbody>
               <tr v-for="(row, key) in item.Consumers" :key="key">
                 <td class="table__td px-2 py-1">{{ row.Name }}</td>
                 <td class="table__td px-2 py-1">{{ row.Pending }}</td>
-                <td class="table__td px-2 py-1">
+                <!-- <td class="table__td px-2 py-1">
                   {{ row.SpeedEventNanoseconds / 1000000 || 0 }}ms
                 </td>
                 <td class="table__td px-2 py-1">
@@ -93,7 +93,7 @@
                       ? new Date(row.SpeedLastMeasurement).toLocaleString()
                       : row.SpeedLastMeasurement
                   }}
-                </td>
+                </td> -->
               </tr>
             </tbody>
           </table>
@@ -102,6 +102,9 @@
 
       <template v-slot:item.Consumers="{ value }">
         <td>{{ value.length }}</td>
+      </template>
+      <template v-slot:item.SpeedMilliseconds="{ value }">
+        <td>{{ value.toFixed(2) }}ms</td>
       </template>
     </v-data-table>
   </div>
@@ -125,19 +128,19 @@ export default {
         {
           text: 'Group Name',
           value: 'Group',
-          width: '15%',
+          width: '14%',
           sortable: false,
         },
         {
           text: 'Pending',
           value: 'Pending',
-          width: '10%',
+          width: '8%',
           sortable: false,
         },
         {
           text: 'LowerDuration',
           value: 'LowerDuration',
-          width: '15%',
+          width: '10%',
           sortable: false,
         },
         {
@@ -150,6 +153,18 @@ export default {
           text: 'Consumers',
           value: 'Consumers',
           width: '8%',
+          sortable: false,
+        },
+        {
+          text: 'Events today',
+          value: 'SpeedEvents',
+          width: '8%',
+          sortable: false,
+        },
+        {
+          text: 'Event consume speed',
+          value: 'SpeedMilliseconds',
+          width: '12%',
           sortable: false,
         },
       ],
