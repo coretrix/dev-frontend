@@ -31,14 +31,7 @@
                 {{ entry.Seconds }}s
               </span>
             </h3>
-            <div
-              v-show="entry.Len >= 100000"
-              class="text-center mt-1"
-              :class="{
-                'orange--text': entry.Len >= 100000 && entry.Len < 500000,
-                'red--text': entry.Len >= 500000,
-              }"
-            >
+            <div v-show="entry.Len >= 100000" class="text-center mt-1">
               {{ entry.Len }}
             </div>
             <v-card-text class="mt-auto pt-2">
