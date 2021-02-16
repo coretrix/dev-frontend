@@ -15,11 +15,10 @@
     </v-row>
     <v-card class="mt-5">
       <v-card-text>
-        <pre>{{ responseData }}</pre>
-
-        <CoreConfirmation ref="confirmationModal" />
+        <code>{{ responseData }}</code>
       </v-card-text>
     </v-card>
+    <CoreConfirmation ref="confirmationModal" />
   </div>
 </template>
 
