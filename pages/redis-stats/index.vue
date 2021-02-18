@@ -86,7 +86,10 @@
               <template v-slot:top>
                 <div class="px-3 py-2 text-center">
                   <div v-for="dbEntry in value.split(',')" :key="dbEntry">
-                    {{ dbEntry.replace('=', ': ') }}
+                    <!-- {{ $utils.parseThousandsToReadable(value) }} -->
+                    {{ dbEntry.split('=')[0] }}:
+                    {{ $utils.parseThousandsToReadable(dbEntry.split('=')[1]) }}
+                    <!-- {{ dbEntry.replace('=', ': ') }} -->
                   </div>
                 </div>
               </template>

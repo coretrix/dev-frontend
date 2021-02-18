@@ -1,5 +1,5 @@
 export default ({ app }, inject) => {
-  const util = {
+  const utils = {
     parseReadableNanoSeconds(timeInNanoSeconds) {
       if (!timeInNanoSeconds) {
         return null
@@ -12,6 +12,9 @@ export default ({ app }, inject) => {
 
       return `${h}h ${m}m ${s}s`
     },
+    parseThousandsToReadable(value, separator = ' ') {
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator)
+    },
   }
-  inject('util', util)
+  inject('utils', utils)
 }

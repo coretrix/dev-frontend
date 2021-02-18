@@ -16,7 +16,13 @@
           <tbody>
             <tr v-for="entry in Object.entries(pool.Info)" :key="entry[0]">
               <td>{{ entry[0] }}</td>
-              <td>{{ entry[1] }}</td>
+              <td>
+                {{
+                  parseInt(entry[1])
+                    ? $utils.parseThousandsToReadable(entry[1])
+                    : entry[1]
+                }}
+              </td>
             </tr>
           </tbody>
         </table>

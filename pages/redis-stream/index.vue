@@ -32,7 +32,7 @@
               </span>
             </h3>
             <div v-show="entry.Len >= 100000" class="text-center mt-1">
-              {{ entry.Len }}
+              {{ $utils.parseThousandsToReadable(entry.Len) }}
             </div>
             <v-card-text class="mt-auto pt-2">
               <div class="text-center stream">{{ entry.Stream }}</div>

@@ -25,7 +25,7 @@
             </v-card-title>
             <v-card-text>
               <div class="text-center">
-                {{ scheme.Len }}
+                {{ $utils.parseThousandsToReadable(scheme.Len) }}
               </div>
             </v-card-text>
           </v-card>
@@ -106,6 +106,25 @@
       <template v-slot:item.SpeedMilliseconds="{ value }">
         <td>{{ value.toFixed(2) }}ms</td>
       </template>
+      <!--  -->
+      <template v-slot:item.SpeedEvents="{ value }">
+        <td style="white-space: nowrap">
+          {{ $utils.parseThousandsToReadable(value) }}
+        </td>
+      </template>
+
+      <template v-slot:item.DBQueriesPerEvent="{ value }">
+        <td>{{ value.toFixed(2) }}ms</td>
+      </template>
+      <template v-slot:item.DBQueriesMillisecondsPerEvent="{ value }">
+        <td>{{ value.toFixed(2) }}ms</td>
+      </template>
+      <template v-slot:item.RedisQueriesPerEvent="{ value }">
+        <td>{{ value.toFixed(2) }}</td>
+      </template>
+      <template v-slot:item.RedisQueriesMillisecondsPerEvent="{ value }">
+        <td>{{ value.toFixed(2) }}</td>
+      </template>
     </v-data-table>
   </div>
 </template>
@@ -164,6 +183,30 @@ export default {
         {
           text: 'Event consume speed',
           value: 'SpeedMilliseconds',
+          width: '12%',
+          sortable: false,
+        },
+        {
+          text: 'DBq/event',
+          value: 'DBQueriesPerEvent',
+          width: '12%',
+          sortable: false,
+        },
+        {
+          text: 'DBq ms/event',
+          value: 'DBQueriesMillisecondsPerEvent',
+          width: '12%',
+          sortable: false,
+        },
+        {
+          text: 'Redisq/event',
+          value: 'RedisQueriesPerEvent',
+          width: '12%',
+          sortable: false,
+        },
+        {
+          text: 'Redisq ms/event',
+          value: 'RedisQueriesMillisecondsPerEvent',
           width: '12%',
           sortable: false,
         },

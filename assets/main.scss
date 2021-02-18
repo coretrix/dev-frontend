@@ -4,6 +4,12 @@
   }
 }
 
+.v-data-table-header {
+  th {
+    white-space: nowrap;
+  }
+}
+
 //Overrides
 input:-internal-autofill-selected {
   background-color: #ffffff !important;
