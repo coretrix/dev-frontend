@@ -114,7 +114,7 @@
       </template>
 
       <template v-slot:item.DBQueriesPerEvent="{ value }">
-        <td>{{ value.toFixed(2) }}ms</td>
+        <td>{{ value.toFixed(2) }}</td>
       </template>
       <template v-slot:item.DBQueriesMillisecondsPerEvent="{ value }">
         <td>{{ value.toFixed(2) }}ms</td>
@@ -123,7 +123,7 @@
         <td>{{ value.toFixed(2) }}</td>
       </template>
       <template v-slot:item.RedisQueriesMillisecondsPerEvent="{ value }">
-        <td>{{ value.toFixed(2) }}</td>
+        <td>{{ value.toFixed(2) }}ms</td>
       </template>
     </v-data-table>
   </div>
