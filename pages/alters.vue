@@ -15,7 +15,15 @@
     </v-row>
     <v-card class="mt-5">
       <v-card-text>
-        <code>{{ responseData }}</code>
+        <div
+          v-for="(query, index) in responseData"
+          :key="index"
+          :class="{ 'mt-5': index !== 0 }"
+        >
+          <code>
+            {{ query }}
+          </code>
+        </div>
       </v-card-text>
     </v-card>
     <CoreConfirmation ref="confirmationModal" />
