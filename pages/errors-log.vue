@@ -125,8 +125,22 @@
       </template>
       <template #expanded-item="{ headers, item }">
         <td :colspan="headers.length">
-          <v-subheader>Stack:</v-subheader>
-          <div class="pb-6 stack">{{ item.Stack }}</div>
+          <v-tabs v-model="tab" background-color="transparent">
+            <v-tab>
+              <v-subheader class="text-capitalize">Stack</v-subheader>
+            </v-tab>
+            <v-tab :disabled="!item.Request">
+              <v-subheader class="text-capitalize">Request</v-subheader>
+            </v-tab>
+          </v-tabs>
+          <v-tabs-items v-model="tab" class="mb-4 stack-window">
+            <v-tab-item>
+              <div class="pb-6 stack">{{ item.Stack }}</div>
+            </v-tab-item>
+            <v-tab-item>
+              <div class="pb-6 stack">{{ item.Request }}</div>
+            </v-tab-item>
+          </v-tabs-items>
         </td>
       </template>
     </v-data-table>
@@ -161,6 +175,7 @@ export default {
       headers: [],
       items: [],
       expanded: [],
+      tab: 0,
     }
   },
   created() {
@@ -278,6 +293,11 @@ export default {
   .stack {
     white-space: pre-line;
     font-style: italic;
+    min-height: 300px;
+    padding: 16px;
+    &-window {
+      background-color: #f7ecec6e !important;
+    }
   }
   .v-data-table__expanded {
     background-color: #f7ecec6e !important;
