@@ -275,6 +275,7 @@ export default {
         .then(this.apiOnFinishRequest)
     },
     onClickRow(row, slotData) {
+      this.tab = 0
       slotData.expand(!slotData.isExpanded)
     },
   },
