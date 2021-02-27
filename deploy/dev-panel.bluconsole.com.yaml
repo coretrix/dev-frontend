@@ -8,15 +8,15 @@ metadata:
     acme.cert-manager.io/http01-edit-in-place: "true"
     # To issue for the first time ssl-redirect should be false
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-  name: dev-frontend
+  name: dev-panel-bluconsole-com
   namespace: default
 spec:
   tls:
     - hosts:
-      - dev.blulog.summer-api.com
-      secretName: dev-frontend-prod-tls
+      - dev-panel.bluconsole.com
+      secretName: bluconsole-tls
   rules:
-    - host: dev.blulog.summer-api.com
+    - host: dev-panel.bluconsole.com
       http:
         paths:
           - path: /
