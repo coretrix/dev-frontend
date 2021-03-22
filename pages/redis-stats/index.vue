@@ -27,10 +27,7 @@
                     <SpeedBox
                       :speed="
                         parseInt(
-                          (
-                            (row.used_memory / row.total_system_memory) *
-                            100
-                          ).toFixed(3)
+                          ((row.used_memory / row.maxmemory) * 100).toFixed(3)
                         )
                       "
                     />
@@ -139,6 +136,7 @@ export default {
         'used_cpu_sys',
         'total_system_memory',
         'used_memory',
+        'maxmemory',
         'used_memory_peak',
 
         'total_system_memory_human',
@@ -164,6 +162,7 @@ export default {
         'used_cpu_sys',
         'total_system_memory',
         'used_memory',
+        'maxmemory',
         'used_memory_peak',
         'total_system_memory_human',
         'used_memory_human',
