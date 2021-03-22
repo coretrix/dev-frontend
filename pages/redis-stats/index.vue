@@ -36,15 +36,16 @@
               </RedisBox>
             </div>
             <div class="mb-3">
-              <RedisBox
-                style="height: unset"
-                secondary-text="Memory usage(data)"
-              >
+              <RedisBox style="height: unset">
                 <template v-slot:top>
                   <div class="px-3 py-2 text-center">
                     <div>
                       <div class="text-sm">total_system_memory</div>
                       <h4>{{ row['total_system_memory_human'] }}</h4>
+                    </div>
+                    <div>
+                      <div class="text-sm">maxmemory_human</div>
+                      <h4>{{ row['maxmemory_human'] }}</h4>
                     </div>
                     <div>
                       <div class="text-sm">used_memory</div>
@@ -138,6 +139,7 @@ export default {
         'used_memory',
         'maxmemory',
         'used_memory_peak',
+        'maxmemory_human',
 
         'total_system_memory_human',
         'used_memory_human',
@@ -163,6 +165,7 @@ export default {
         'total_system_memory',
         'used_memory',
         'maxmemory',
+        'maxmemory_human',
         'used_memory_peak',
         'total_system_memory_human',
         'used_memory_human',
