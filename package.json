@@ -16,10 +16,13 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.11.0",
     "core-js": "^3.6.5",
+    "elliptic": "^6.5.4",
     "fibers": "^5.0.0",
+    "is-svg": "^4.2.2",
     "lodash": "^4.17.15",
     "nuxt": "^2.14.6",
     "nuxt-vuex-localstorage": "^1.2.6",
+    "ssri": "^8.0.1",
     "vuelidate": "^0.7.6",
     "vuetify-dialog": "^2.0.6"
   },
