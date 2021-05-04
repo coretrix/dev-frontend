@@ -9,7 +9,7 @@ spec:
   tls:
     - hosts:
       - dev-panel.bluconsole.com
-      secretName: bluconsole-tls
+      secretName: blu-tls
   rules:
     - host: dev-panel.bluconsole.com
       http:
