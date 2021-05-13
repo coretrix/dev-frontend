@@ -76,8 +76,7 @@ export default {
 
   axios: {
     credentials: true,
-    baseURL:
-      process.env.NUXT_API_BASE_URL || 'https://api.blulog.summer-api.com/',
+    baseURL: process.env.NUXT_API_BASE_URL || 'https://api.bluconsole.com/',
   },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
