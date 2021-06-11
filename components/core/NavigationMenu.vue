@@ -202,7 +202,7 @@ export default {
         isVisible: true,
       },
     ]
-    if (this.$config.showAdvancedRedis) {
+    if (this.$config.showRedisSearch) {
       this.generalMenu.splice(this.generalMenu.length - 2, 0, {
         location: '/redis-search-alters',
         name: 'Redis Search Alters',

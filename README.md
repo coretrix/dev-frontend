@@ -29,7 +29,7 @@ $ NODE_ENV
 $ NUXT_API_BASE_URL
 
 # Show/hide advanced redis stats - Boolean
-$ SHOW_ADVANCED_REDIS
+$ SHOW_REDIS_SEARCH
 ```
 
 ##

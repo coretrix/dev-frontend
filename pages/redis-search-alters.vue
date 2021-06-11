@@ -40,8 +40,8 @@ export default {
   },
 
   middleware({ app, redirect }) {
-    console.log(!app.$config.showAdvancedRedis)
-    if (!app.$config.showAdvancedRedis) {
+    console.log(!app.$config.showRedisSearch)
+    if (!app.$config.showRedisSearch) {
       return redirect('/')
     }
   },

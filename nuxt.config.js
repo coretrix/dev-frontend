@@ -40,7 +40,7 @@ export default {
     everything: process.env, // Do not remove,
     env: process.env.NODE_ENV, // Do not remove,
     baseURL: process.env.NUXT_API_BASE_URL, // Do not remove,
-    showAdvancedRedis: process.env.SHOW_ADVANCED_REDIS,
+    showRedisSearch: process.env.SHOW_REDIS_SEARCH,
   },
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: {
