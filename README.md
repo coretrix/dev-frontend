@@ -22,13 +22,13 @@ For detailed explanation on how things work, check out [Nuxt.js docs](https://nu
 
 ## Env variables
 ```bash
-# show env
+# Current env variable. String - "development" || "production"
 $ NODE_ENV
 
-# API url
+# API url. String - Example: https://api.mydomain.com/
 $ NUXT_API_BASE_URL
 
-# Show/hide advanced redis stats
+# Show/hide advanced redis stats - Boolean
 $ SHOW_ADVANCED_REDIS
 ```
 
