@@ -190,18 +190,26 @@ export default {
         isVisible: true,
       },
       {
+        location: '/mysql-alters',
+        name: 'MySQL Alters',
+        icon: 'mdiTable',
+        isVisible: true,
+      },
+      {
         location: '/errors-log',
         name: 'Errors log',
         icon: 'mdiAlertDecagramOutline',
         isVisible: true,
       },
-      {
-        location: '/alters',
-        name: 'Alters',
+    ]
+    if (this.$config.showAdvancedRedis) {
+      this.generalMenu.splice(this.generalMenu.length - 2, 0, {
+        location: '/redis-search-alters',
+        name: 'Redis Search Alters',
         icon: 'mdiTable',
         isVisible: true,
-      },
-    ]
+      })
+    }
     this.updateDrawer()
     this.$root.$refs.navigationMenu = this
   },

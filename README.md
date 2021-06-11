@@ -22,8 +22,14 @@ For detailed explanation on how things work, check out [Nuxt.js docs](https://nu
 
 ## Env variables
 ```bash
-NODE_ENV
-NUXT_API_BASE_URL
+# show env
+$ NODE_ENV
+
+# API url
+$ NUXT_API_BASE_URL
+
+# Show/hide advanced redis stats
+$ SHOW_ADVANCED_REDIS
 ```
 
 ##
