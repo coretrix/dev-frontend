@@ -17,7 +17,7 @@ pipeline {
         stage("Build Image") {
             steps {
                 script {
-                    IMAGE = docker.build("${PROJECT_ID}/${APP_NAME}:${BUILD_ID}", "-f deploy/docker/Dockerfile --build-arg=\"NODE_VERSION=14.15.4-alpine3.12\" --build-arg=\"NGINX_VERSION=1.18\" --build-arg=\"NODE_ENV=production\" --build-arg=\"NUXT_API_BASE_URL=https://api.bluconsole.com/\"  .")
+                    IMAGE = docker.build("${PROJECT_ID}/${APP_NAME}:${BUILD_ID}", "-f deploy/docker/Dockerfile --build-arg=\"NODE_VERSION=14.15.4-alpine3.12\" --build-arg=\"NGINX_VERSION=1.18\" --build-arg=\"NODE_ENV=production\" --build-arg=\"SHOW_REDIS_SEARCH=true\" --build-arg=\"NUXT_API_BASE_URL=https://api.bluconsole.com/\"  .")
                 }
             }
         }
