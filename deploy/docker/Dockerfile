@@ -12,6 +12,8 @@ COPY . .
 RUN yarn
 ARG NODE_ENV=development
 ENV NODE_ENV ${NODE_ENV}
+ARG SHOW_REDIS_SEARCH
+ENV SHOW_REDIS_SEARCH ${SHOW_REDIS_SEARCH}
 RUN yarn generate
 
 ### Second stage
