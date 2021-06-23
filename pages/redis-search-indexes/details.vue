@@ -1,9 +1,11 @@
 <template>
   <div>
-    <v-btn to="/redis-stats" class="mr-4 white--text" color="blue">Back</v-btn>
-    <v-card v-if="pool" class="mt-5">
+    <v-btn to="/redis-search-indexes" class="mr-4 white--text" color="blue">
+      Back
+    </v-btn>
+    <v-card v-if="details" class="mt-5">
       <v-card-title>
-        <h1 class="m-0 mb-5">{{ pool.RedisPool }}</h1>
+        <h1 class="m-0 mb-5">{{ details.Name }}</h1>
       </v-card-title>
       <v-card-text>
         <table class="text-left table">
@@ -14,7 +16,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="entry in Object.entries(pool.Info)" :key="entry[0]">
+            <tr v-for="(entry, index) in Object.entries(details)" :key="index">
               <td>{{ entry[0] }}</td>
               <td>
                 {{
@@ -29,34 +31,33 @@
       </v-card-text>
     </v-card>
     <v-card v-else class="mt-5">
-      <v-card-text>Erm...no data in JSON?</v-card-text>
+      <v-card-text>"name" query missing or no data in JSON?</v-card-text>
     </v-card>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'RedisChild',
-  props: {
-    redisData: {
-      type: Array,
-      default: () => {
-        return []
-      },
-    },
-  },
-  computed: {
-    pool() {
-      const redisPool = this.$route.query.RedisPool
-      const result = this.redisData.find((pool) => {
-        return pool.RedisPool === redisPool
-      })
+  async asyncData({ route, $axios }) {
+    try {
+      const name = route.query.name
 
-      return result
-    },
+      if (!name) return
+
+      const { Result: details } = await $axios.$get(
+        `/dev/redis-search/index/info/${name}/`
+      )
+      return { details }
+    } catch (error) {
+      console.error(error)
+    }
   },
+  data: () => ({
+    details: null,
+  }),
 }
 </script>
+
 <style lang="scss" scoped>
 .table {
   width: 100%;

@@ -184,6 +184,12 @@ export default {
         isVisible: true,
       },
       {
+        location: '/redis-search-indexes',
+        name: 'Redis Search Indexes',
+        icon: 'mdiSpeedometer',
+        isVisible: true,
+      },
+      {
         location: '/redis-stream',
         name: 'Redis Stream',
         icon: 'mdiPlaylistPlay',

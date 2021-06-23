@@ -26,6 +26,13 @@ export default {
 
   loading: false,
 
+  // Vue.config (https://nuxtjs.org/guides/configuration-glossary/configuration-vue-config)
+  vue: {
+    config: {
+      productionTip: false,
+    },
+  },
+
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
     '~/plugins/notification',
