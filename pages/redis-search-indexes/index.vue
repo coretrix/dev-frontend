@@ -5,6 +5,7 @@
     <v-data-table
       :headers="headers"
       :items="indexesComputed"
+      :items-per-page="-1"
       hide-default-header
       hide-default-footer
       class="d-inline-block elevation-1 font-weight-bold"
