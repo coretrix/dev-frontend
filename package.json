@@ -22,6 +22,7 @@
     "lodash": "4.17.21",
     "nuxt": "^2.14.6",
     "nuxt-vuex-localstorage": "^1.2.6",
+    "path-parse": "^1.0.7",
     "ssri": "^8.0.1",
     "vuelidate": "^0.7.6",
     "vuetify-dialog": "^2.0.6"
