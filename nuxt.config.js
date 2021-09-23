@@ -65,14 +65,16 @@ export default {
 
   // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
   buildModules: [
-    [
-      '@nuxtjs/eslint-module',
-      {
-        fix: true,
-      },
-    ],
-    '@nuxtjs/stylelint-module',
+    '@nuxt/typescript-build',
+    // [
+    //   '@nuxtjs/eslint-module',
+    //   {
+    //     fix: true,
+    //   },
+    // ],
+    // '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
+    'nuxt-typed-vuex',
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)

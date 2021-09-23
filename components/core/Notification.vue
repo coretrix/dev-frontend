@@ -39,7 +39,7 @@ export default {
     }
   },
   created() {
-    this.$store.subscribe((mutation, state) => {
+    this.$store.subscribe((mutation) => {
       if (mutation.type === `app/SHOW_NOTIFICATION`) {
         this.notification = mutation.payload
         this.show = true

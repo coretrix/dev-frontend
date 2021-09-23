@@ -14,46 +14,84 @@
   </v-dialog>
 </template>
 
-<script>
+<script lang="ts">
 import { mdiClose } from '@mdi/js'
+import { Vue, Component } from 'nuxt-property-decorator';
 
-export default {
-  data() {
-    return {
-      icons: {
-        mdiClose,
-      },
-      showDialog: false,
-      resolvePromise: undefined,
-      rejectPromise: undefined,
-      message: undefined,
-      title: undefined,
-    }
-  },
-  methods: {
-    show(opts = {}) {
-      this.showDialog = true
-      this.message = opts.message
-      this.title = opts.title
+@Component
+export default class Confirmation extends Vue {
+  icons: object = {
+    mdiClose,
+  }
+  showDialog: boolean = false
+  resolvePromise: any = undefined
+  rejectPromise: any = undefined
+  message: string | undefined = ''
+  title: string | undefined = ''
 
-      return new Promise((resolve, reject) => {
-        this.resolvePromise = resolve
-        this.rejectPromise = reject
-      })
-    },
-    hide() {
-      this.showDialog = false
-    },
-    cancel() {
-      this.hide()
-      this.resolvePromise(false)
-    },
-    confirm() {
-      this.hide()
-      this.resolvePromise(true)
-    },
-  },
+  show(opts: {message: string, title: string}) {
+    this.showDialog = true
+    this.message = opts.message
+    this.title = opts.title
+
+    return new Promise((resolve, reject) => {
+      this.resolvePromise = resolve
+      this.rejectPromise = reject
+    })
+  }
+
+  hide():void {
+    this.showDialog = false
+  }
+
+  cancel(): void {
+    this.hide()
+    this.resolvePromise(false)
+  }
+
+  confirm(): void {
+    this.hide()
+    this.resolvePromise(true)
+  }
 }
+
+// export default {
+//   data() {
+//     return {
+//       icons: {
+//         mdiClose,
+//       },
+//       showDialog: false,
+//       resolvePromise: undefined,
+//       rejectPromise: undefined,
+//       message: undefined,
+//       title: undefined,
+//     }
+//   },
+//   methods: {
+//     show(opts = {}) {
+//       this.showDialog = true
+//       this.message = opts.message
+//       this.title = opts.title
+
+//       return new Promise((resolve, reject) => {
+//         this.resolvePromise = resolve
+//         this.rejectPromise = reject
+//       })
+//     },
+//     hide() {
+//       this.showDialog = false
+//     },
+//     cancel() {
+//       this.hide()
+//       this.resolvePromise(false)
+//     },
+//     confirm() {
+//       this.hide()
+//       this.resolvePromise(true)
+//     },
+//   },
+// }
 </script>
 
 <style lang="scss" scoped>

@@ -3,17 +3,18 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt --port 9000 --fix",
-    "dev-local": "cross-env NUXT_API_BASE_URL=http://localhost:18080 nuxt --port 9000",
-    "build": "nuxt build",
-    "start": "nuxt start --port 9000",
-    "generate": "nuxt generate -m",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
+    "dev": "nuxt-ts --port 9000 --fix",
+    "dev-local": "cross-env NUXT_API_BASE_URL=http://localhost:18080 nuxt-ts --port 9000",
+    "build": "nuxt-ts build",
+    "start": "nuxt-ts start --port 9000",
+    "generate": "nuxt-ts generate -m",
+    "lint": "eslint --ext .ts,.js,.vue . --ignore-path .gitignore"
   },
   "lint-staged": {
     "*.{js,vue}": "eslint --fix"
   },
   "dependencies": {
+    "@nuxt/typescript-runtime": "^2.1.0",
     "@nuxtjs/axios": "^5.11.0",
     "core-js": "^3.6.5",
     "elliptic": "^6.5.4",
@@ -21,6 +22,8 @@
     "is-svg": "^4.2.2",
     "lodash": "4.17.21",
     "nuxt": "^2.14.6",
+    "nuxt-property-decorator": "^2.9.1",
+    "nuxt-typed-vuex": "^0.2.0",
     "nuxt-vuex-localstorage": "^1.2.6",
     "path-parse": "^1.0.7",
     "ssri": "^8.0.1",
@@ -29,7 +32,9 @@
   },
   "devDependencies": {
     "@mdi/js": "^5.3.45",
-    "@nuxtjs/eslint-config": "^3.0.0",
+    "@nuxt/types": "^2.15.8",
+    "@nuxt/typescript-build": "^2.1.0",
+    "@nuxtjs/eslint-config-typescript": "^6.0.1",
     "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/stylelint-module": "^4.0.0",
     "@nuxtjs/vuetify": "^1.11.2",
