@@ -187,13 +187,9 @@ export default class NavigationMenu extends Vue {
   watchDrawer() {
     const appClass:any = Object.assign({}, this.appclass)
     appClass['bl-menu-drawer-open'] = this.drawer
-
-    // This works
-    // this.$emit('update:appclass', appClass)
     this.updateAppClass(appClass)
   }
 
-  // This doesnt work
   @Emit('update:appClass')
   updateAppClass(e: any) {
     return e

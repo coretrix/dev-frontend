@@ -48,6 +48,7 @@ import Confirmation from '@/components/core/Confirmation.vue'
 
 @Component({})
 export default class IndexPage extends Vue {
+  [x: string]: any
   actionsData: object[] = []
   loading: any = {}
   icons: object = {
@@ -111,69 +112,4 @@ export default class IndexPage extends Vue {
       })
   }
 }
-
-// export default {
-//   name: 'Actions',
-//   async fetch() {
-//     await this.fetchData()
-//   },
-//   data: () => {
-//     return {
-//       actionsData: undefined,
-//       loading: {},
-//       icons: {
-//         mdiBroom,
-//         mdiCached,
-//         mdiLoading,
-//         mdiCalculator,
-//       },
-//     }
-//   },
-//   methods: {
-//     async fetchData() {
-//       await this.$axios
-//         .get('/dev/action-list/')
-//         .then((response) => {
-//           this.actionsData = response.data
-//         })
-//         .catch((error) => {
-//           console.error(error)
-//         })
-//     },
-//     async execute(apiURL, index) {
-//       this.$set(this.loading, index, true)
-//       this.loading[index] = true
-//       await this.$axios
-//         .get(apiURL)
-//         .then(() => {
-//           this.$notification.show({
-//             type: 'success',
-//             message: 'Success',
-//           })
-//         })
-//         .catch((error) => {
-//           this.$notification.show({
-//             type: 'error',
-//             message: error,
-//           })
-//         })
-//         .then(() => {
-//           this.loading[index] = false
-//           this.fetchData()
-//         })
-//     },
-//     confirm(apiURL, index) {
-//       this.$refs.confirmationModal
-//         .show({
-//           title: 'Wait!!!',
-//           message: 'Are you sure you want to proceed? It cannot be undone.',
-//         })
-//         .then((result) => {
-//           if (result) {
-//             this.execute(apiURL, index)
-//           }
-//         })
-//     },
-//   },
-// }
 </script>
