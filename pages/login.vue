@@ -61,49 +61,48 @@
   </v-row>
 </template>
 
-<script>
-// import { mdiBroom, mdiCached, mdiLoading, mdiCalculator } from '@mdi/js'
+<script lang="ts">
+import { Component, Vue, Ref } from 'nuxt-property-decorator';
+import { LoginData, LoginErrors } from '~/interface/login'
 
-export default {
-  name: 'Actions',
-  layout: 'login',
-  data: () => {
-    return {
-      loginData: {
-        Username: '',
-        Password: '',
-      },
-      formErrors: {
-        Username: '',
-        Password: '',
-      },
-      valid: false,
-    }
-  },
-  methods: {
-    async login() {
-      this.$refs.form.resetValidation()
-      await this.$axios
-        .post('/dev/login/', this.loginData)
-        .then((response) => {
-          this.$auth.login(response.data?.Result)
-          this.$router.push('/')
-        })
-        .catch((error) => {
-          if (error.response?.data?.FieldsError) {
-            this.formErrors = Object.assign(
-              {},
-              error.response?.data?.FieldsError
-            )
-          } else if (error.response?.data?.GlobalError) {
-            this.$notification.show({
-              type: 'error',
-              message: error.response?.data?.GlobalError,
-            })
-          }
-        })
-    },
-  },
+@Component({
+  layout: 'login'
+})
+
+export default class LoginPage extends Vue {
+  loginData: LoginData = {
+    Username: '',
+    Password: '',
+  }
+  formErrors: LoginErrors = {
+    Username: '',
+    Password: '',
+  }
+  valid:boolean = false
+
+  @Ref('form') readonly form!: any
+  async login() {
+    this.form.resetValidation()
+    await this.$axios
+      .post('/dev/login/', this.loginData)
+      .then((response) => {
+        this.$auth.login(response.data?.Result)
+        this.$router.push('/')
+      })
+      .catch((error) => {
+        if (error.response?.data?.FieldsError) {
+          this.formErrors = Object.assign(
+            {},
+            error.response?.data?.FieldsError
+          )
+        } else if (error.response?.data?.GlobalError) {
+          this.$notification.show({
+            type: 'error',
+            message: error.response?.data?.GlobalError,
+          })
+        }
+      })
+  }
 }
 </script>
 
