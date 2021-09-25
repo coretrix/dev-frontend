@@ -1,3 +1,4 @@
+import { Component } from 'nuxt-property-decorator';
 <template>
   <div>
     <v-app-bar
@@ -92,7 +93,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   mdiPowerStandby,
   mdiViewDashboard,
@@ -101,74 +102,94 @@ import {
   mdiAlertDecagramOutline,
   mdiTable,
 } from '@mdi/js'
-export default {
-  props: {
-    appclass: {
-      type: Object,
-      default: null,
-    },
-  },
-  data() {
-    return {
-      generalMenu: [],
-      intervals: {},
-      configDrawer: {
-        'mobile-breakpoint': this.$vuetify.breakpoint.mobileBreakpoint,
-        width: null,
-        fixed: false,
-        'mini-variant': true,
-        isMobile: true,
-        right: false,
-      },
-      drawer: true,
-      email: localStorage.getItem('userEmail'),
-      icons: {
-        mdiPowerStandby,
-        mdiViewDashboard,
-        mdiSpeedometer,
-        mdiAlertDecagramOutline,
-        mdiPlaylistPlay,
-        mdiTable,
-      },
-    }
-  },
-  computed: {
-    filteredGeneralMenu() {
-      const filteredMenu = this.generalMenu.map((item) => {
-        if (item.iconsSelector) {
-          item.iconsSelector.updateIconData(item)
-        }
-        if (item.resource !== undefined) {
-          item.isVisible = this.$hasPermissions(item.resource, 'read')
-        }
-        return item
-      })
+import {Vue, Component, Watch, Prop} from 'nuxt-property-decorator'
 
-      return filteredMenu.filter((item) => {
-        return item.isVisible
-      })
-    },
-    isMobile() {
-      return this.$vuetify.breakpoint.mobile
-    },
-    organizationLogo() {
-      return ''
-      // return (
-      //   this.$store.state.localStorage.userData?.Personalization?.Logo ||
-      //   require('~/assets/svg/logo.svg')
-      // )
-    },
-  },
-  watch: {
-    isMobile() {
-      this.updateDrawer()
-    },
-    drawer() {
-      const appClass = Object.assign({}, this.appclass)
-      appClass['bl-menu-drawer-open'] = this.drawer
-      this.$emit('update:appclass', appClass)
-    },
-  },
+@Component
+export default class NavigationMenu extends Vue {
+  @Prop({ default: null }) readonly appclass!: Object
+
+  generalMenu: Object[] = []
+  intervals: Object = {}
+  configDrawer: Object = {
+    'mobile-breakpoint': this.$vuetify.breakpoint.mobileBreakpoint,
+    width: null,
+    fixed: false,
+    'mini-variant': true,
+    isMobile: true,
+    right: false,
+  }
+  drawer: Boolean = true
+  email: string | null = localStorage.getItem('userEmail')
+  icons: Object = {
+    mdiPowerStandby,
+    mdiViewDashboard,
+    mdiSpeedometer,
+    mdiAlertDecagramOutline,
+    mdiPlaylistPlay,
+    mdiTable,
+  }
+
+  get filteredGeneralMenu() {
+    const filteredMenu = this.generalMenu.map((item: any) => {
+      if (item.iconsSelector) {
+        item.iconsSelector.updateIconData(item)
+      }
+      if (item.resource !== undefined) {
+        item.isVisible = this.$hasPermissions(item.resource, 'read')
+      }
+      return item
+    })
+
+    return filteredMenu.filter((item) => {
+      return item.isVisible
+    })
+  }
+
+  get isMobile() {
+    return this.$vuetify.breakpoint.mobile
+  }
+
+  get organizationLogo() {
+    return ''
+    // return (
+    //   this.$store.state.localStorage.userData?.Personalization?.Logo ||
+    //   require('~/assets/svg/logo.svg')
+    // )
+  }
+
+
+  @Watch('isMobile')
+  updateDrawer() {
+    if (this.isMobile) {
+      this.configDrawer = {
+        'mobile-breakpoint': this.$vuetify.breakpoint.mobileBreakpoint,
+        width: '320',
+        fixed: true,
+        'mini-variant': false,
+        isMobile: true,
+        right: true,
+      }
+      this.drawer = false
+    } else {
+      this.configDrawer = {
+        'mobile-breakpoint': this.$vuetify.breakpoint.mobileBreakpoint,
+        width: '240',
+        fixed: false,
+        'mini-variant': false,
+        isMobile: false,
+        right: false,
+      }
+      this.drawer = true
+    }
+  }
+
+  @Watch('drawer')
+  watchDrawer() {
+    const appClass:any = Object.assign({}, this.appclass)
+    appClass['bl-menu-drawer-open'] = this.drawer
+    this.$emit('update:appclass', appClass)
+  }
+
   created() {
     this.generalMenu = [
       {
@@ -218,32 +239,7 @@ export default {
     }
     this.updateDrawer()
     this.$root.$refs.navigationMenu = this
-  },
-  methods: {
-    updateDrawer() {
-      if (this.isMobile) {
-        this.configDrawer = {
-          'mobile-breakpoint': this.$vuetify.breakpoint.mobileBreakpoint,
-          width: '320',
-          fixed: true,
-          'mini-variant': false,
-          isMobile: true,
-          right: true,
-        }
-        this.drawer = false
-      } else {
-        this.configDrawer = {
-          'mobile-breakpoint': this.$vuetify.breakpoint.mobileBreakpoint,
-          width: '240',
-          fixed: false,
-          'mini-variant': false,
-          isMobile: false,
-          right: false,
-        }
-        this.drawer = true
-      }
-    },
-  },
+  }
 }
 </script>
 

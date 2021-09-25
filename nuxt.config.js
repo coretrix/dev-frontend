@@ -65,7 +65,12 @@ export default {
 
   // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
   buildModules: [
-    '@nuxt/typescript-build',
+    [
+      '@nuxt/typescript-build',
+      {
+        ignoreNotFoundWarnings: true
+      }
+    ],
     // [
     //   '@nuxtjs/eslint-module',
     //   {
@@ -86,7 +91,7 @@ export default {
 
   axios: {
     credentials: true,
-    baseURL: process.env.NUXT_API_BASE_URL || 'https://api.bluconsole.com/',
+    baseURL: process.env.NUXT_API_BASE_URL ||  'https://api.bluconsole.com/' || 'https://dev-panel-demo.projectrivers.com/',
   },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
