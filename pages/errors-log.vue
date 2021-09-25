@@ -147,7 +147,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import {
   mdiEyeOutline,
   mdiDelete,
@@ -156,129 +156,131 @@ import {
   mdiPlaylistPlus,
 } from '@mdi/js'
 import { ApiUtilities } from '~/components/mixins/Global'
-export default {
-  name: 'ErrorsLog',
-  mixins: [ApiUtilities],
+import { Component, mixins } from 'nuxt-property-decorator';
+
+@Component
+export default class ErrorsLog extends mixins( ApiUtilities ) {
+
   async fetch() {
     this.setHeaders()
-    await this.getErrorsList()
-  },
-  data: () => {
-    return {
-      icons: {
-        mdiEyeOutline,
-        mdiDelete,
-        mdiRefresh,
-        mdiDeleteAlertOutline,
-        mdiPlaylistPlus,
-      },
-      headers: [],
-      items: [],
-      expanded: [],
-      tab: 0,
-    }
-  },
+    this.getErrorsList()
+  }
+
+  icons = {
+    mdiEyeOutline,
+    mdiDelete,
+    mdiRefresh,
+    mdiDeleteAlertOutline,
+    mdiPlaylistPlus,
+  }
+  headers:any = []
+  items:any = []
+  expanded:any = []
+  tab:number = 0
+  isLoading:boolean = false
+
   created() {
     if (this.$route.hash.substr(0, 5) === '#err-') {
-      this.expanded = [{ ID: this.$route.hash.substr(5) }]
-    }
-  },
-  methods: {
-    setHeaders() {
-      this.headers = [
-        {
-          text: '#',
-          align: 'start',
-          sortable: false,
-          width: '50px',
-          value: 'lp',
-        },
-        { text: 'Counter', value: 'Counter', align: 'center' },
-        { text: 'Application', value: 'AppName', width: '150px' },
-        { text: 'Time', value: 'Time' },
-        { text: 'Description', value: 'Description', sortable: false },
-        { text: '', value: 'data-table-expand' },
-        { text: '', value: 'actions', sortable: false },
+      this.expanded = [
+        { ID: this.$route.hash.substr(5) }
       ]
-    },
-    getErrorsList(force = false) {
-      if (!force && this.isLoading) {
-        return false
+    }
+  }
+
+  setHeaders() {
+    this.headers = [
+      {
+        text: '#',
+        align: 'start',
+        sortable: false,
+        width: '50px',
+        value: 'lp',
+      },
+      { text: 'Counter', value: 'Counter', align: 'center' },
+      { text: 'Application', value: 'AppName', width: '150px' },
+      { text: 'Time', value: 'Time' },
+      { text: 'Description', value: 'Description', sortable: false },
+      { text: '', value: 'data-table-expand' },
+      { text: '', value: 'actions', sortable: false },
+    ]
+  }
+  getErrorsList(force = false) {
+    if (!force && this.isLoading) {
+      return false
+    }
+    this.api()
+      .get('/error-log/errors/')
+      .then((resp: any) => {
+        const rows:any = []
+        if (resp.data?.Result) {
+          Object.keys(resp.data.Result).forEach((key) => {
+            rows.push({ ...resp.data.Result[key], ID: key })
+          })
+          this.items = resp.data.Result
+        }
+        this.items = rows
+      })
+      .catch(this.apiOnCatchError())
+      .then(this.apiOnFinishRequest)
+  }
+  async deleteItem(item:any) {
+    const confirm = await this.$dialog.confirm({
+      title: 'Are you sure?',
+      text: 'Delete current error?',
+      actions: {
+        false: 'Cancel',
+        true: 'Confirm',
       }
+    })
+    if (confirm) {
       this.api()
-        .get('/error-log/errors/')
-        .then((resp) => {
-          const rows = []
-          if (resp.data?.Result) {
-            Object.keys(resp.data.Result).forEach((key) => {
-              rows.push({ ...resp.data.Result[key], ID: key })
-            })
-            this.items = resp.data.Result
-          }
-          this.items = rows
+        .get(`/error-log/remove/${item.ID}/`)
+        .then(() => {
+          this.$dialog.message.success('Deleted', {
+            position: 'botton-right',
+            timeout: 3000,
+          })
+          this.getErrorsList(true)
         })
         .catch(this.apiOnCatchError())
         .then(this.apiOnFinishRequest)
-    },
-    async deleteItem(item) {
-      const confirm = await this.$dialog.confirm({
-        title: 'Are you sure?',
-        text: 'Delete current error?',
-        actions: {
-          false: 'Cancel',
-          true: 'Confirm',
-        },
-      })
-      if (confirm) {
-        this.api()
-          .get(`/error-log/remove/${item.ID}/`)
-          .then(() => {
-            this.$dialog.message.success('Deleted', {
-              position: 'botton-right',
-              timeout: 3000,
-            })
-            this.getErrorsList(true)
-          })
-          .catch(this.apiOnCatchError())
-          .then(this.apiOnFinishRequest)
+    }
+  }
+  async clearAll() {
+    const confirm = await this.$dialog.confirm({
+      title: 'Are you sure?',
+      text: 'Delete all errors?',
+      actions: {
+        false: 'Cancel',
+        true: 'Confirm',
       }
-    },
-    async clearAll() {
-      const confirm = await this.$dialog.confirm({
-        title: 'Are you sure?',
-        text: 'Delete all errors?',
-        actions: {
-          false: 'Cancel',
-          true: 'Confirm',
-        },
-      })
-      if (confirm) {
-        this.api()
-          .get('/error-log/remove-all/')
-          .then(() => {
-            this.getErrorsList(true)
-          })
-          .catch(this.apiOnCatchError())
-          .then(this.apiOnFinishRequest)
-      }
-    },
-    generateError() {
-      if (this.isLoading) {
-        return false
-      }
+    })
+    if (confirm) {
       this.api()
-        .get('/error-log/panic/')
+        .get('/error-log/remove-all/')
         .then(() => {
           this.getErrorsList(true)
         })
         .catch(this.apiOnCatchError())
         .then(this.apiOnFinishRequest)
-    },
-    onClickRow(row, slotData) {
-      this.tab = 0
-      slotData.expand(!slotData.isExpanded)
-    },
-  },
+    }
+  }
+  generateError() {
+    if (this.isLoading) {
+      return false
+    }
+    this.api()
+      .get('/error-log/panic/')
+      .then(() => {
+        this.getErrorsList(true)
+      })
+      .catch(this.apiOnCatchError())
+      .then(this.apiOnFinishRequest)
+  }
+  onClickRow(row: any, slotData: any) {
+    this.tab = 0
+    slotData.expand(!slotData.isExpanded)
+  }
 }
 </script>
 
