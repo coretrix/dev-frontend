@@ -30,15 +30,14 @@ import NotificationTypes from '~/interface/notifications'
 
 @Component
 export default class Notification extends Vue {
-
-    icons:Object = {
-      mdiClose,
-    }
-    show:Boolean = false
-    notification:NotificationTypes = {
-      type: '',
-      message: ''
-    }
+  icons:Object = {
+    mdiClose,
+  }
+  show:Boolean = false
+  notification:NotificationTypes = {
+    type: '',
+    message: ''
+  }
 
   created() {
     this.$store.subscribe((mutation: any) => {

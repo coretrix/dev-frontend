@@ -18,6 +18,7 @@
 </template>
 
 <script>
+// TODO: rewrite in TS
 export default {
   props: {
     speed: {

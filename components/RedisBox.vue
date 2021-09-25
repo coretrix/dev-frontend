@@ -25,6 +25,8 @@
 </template>
 
 <script>
+// TODO: rewrite in TS
+
 export default {
   name: 'RedisBox',
   props: {

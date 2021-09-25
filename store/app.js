@@ -1,3 +1,4 @@
+// TODO: rewrite in TS
 export const state = () => ({
   notification: null,
 })
