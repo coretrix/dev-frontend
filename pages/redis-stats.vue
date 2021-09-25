@@ -4,39 +4,34 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'RedisParent',
-  layout: 'redis',
+<script lang="ts">
+import { Component, Vue } from 'nuxt-property-decorator';
+
+@Component
+export default class RedisStatsParent extends Vue {
   async fetch() {
     await this.fetchData()
-  },
-  data: () => {
-    return {
-      redisData: undefined,
-      loopRequest: undefined,
-    }
-  },
-  mounted() {
-    this.loopRequest = setInterval(this.fetchData, 5000)
-  },
-  methods: {
-    async fetchData() {
-      await this.$axios
-        .get('dev/redis-statistics/')
-        .then((response) => {
-          if (response) {
-            this.redisData = response.data.Result
-          }
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-    },
-  },
-  beforeRouteLeave(to, from, next) {
+  }
+
+  redisData:any = []
+  loopRequest = setInterval(this.fetchData, 5000)
+
+  async fetchData() {
+    await this.$axios
+      .get('dev/redis-statistics/')
+      .then((response) => {
+        if (response) {
+          this.redisData = response.data.Result
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
+
+  beforeRouteLeave(to: string, from: string, next: any) {
     clearInterval(this.loopRequest)
     next()
-  },
+  }
 }
 </script>

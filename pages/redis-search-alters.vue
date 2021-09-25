@@ -30,75 +30,74 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue } from 'nuxt-property-decorator';
 import { mdiRefresh, mdiLoading } from '@mdi/js'
 
-export default {
-  name: 'Actions',
-  async fetch() {
-    await this.fetchData()
-  },
-
-  middleware({ app, redirect }) {
+@Component({
+  middleware({ app, redirect }:any) {
     console.log(!app.$config.showRedisSearch)
     if (!app.$config.showRedisSearch) {
       return redirect('/')
     }
-  },
-  data: () => {
-    return {
-      icons: {
-        mdiRefresh,
-        mdiLoading,
-      },
-      responseData: undefined,
-      loading: {},
-    }
-  },
-  methods: {
-    async fetchData() {
-      await this.$axios
-        .get('/dev/redis-search/alters/')
-        .then((response) => {
-          this.responseData = response.data.Result
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-    },
-    async execute() {
-      await this.$axios
-        .get('/dev/redis-search/alters/?force=1')
-        .then((response) => {
-          console.log(response)
-          this.responseData = response.data.Result
-          this.$notification.show({
-            type: 'success',
-            message: 'Success',
-          })
-        })
-        .catch((error) => {
-          console.error(error)
-          this.$notification.show({
-            type: 'error',
-            message: error,
-          })
-        })
-        .then(() => {})
-    },
+  }
+})
+export default class RedisSearchAlters extends Vue {
+  async fetch() {
+    await this.fetchData()
+  }
 
-    confirm() {
-      this.$refs.confirmationModal
-        .show({
-          title: 'Wait!!!',
-          message: 'Are you sure you want to proceed? It cannot be undone.',
+
+  icons = {
+    mdiRefresh,
+    mdiLoading,
+  }
+  responseData = undefined
+  loading = {}
+  confirmationModal:any = this.$refs.confirmationModal
+
+  async fetchData() {
+    await this.$axios
+      .get('/dev/redis-search/alters/')
+      .then((response) => {
+        this.responseData = response.data.Result
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
+  async execute() {
+    await this.$axios
+      .get('/dev/redis-search/alters/?force=1')
+      .then((response) => {
+        console.log(response)
+        this.responseData = response.data.Result
+        this.$notification.show({
+          type: 'success',
+          message: 'Success',
         })
-        .then((result) => {
-          if (result) {
-            this.execute()
-          }
+      })
+      .catch((error) => {
+        console.error(error)
+        this.$notification.show({
+          type: 'error',
+          message: error,
         })
-    },
-  },
+      })
+      .then(() => {})
+  }
+
+  confirm() {
+    this.confirmationModal
+      .show({
+        title: 'Wait!!!',
+        message: 'Are you sure you want to proceed? It cannot be undone.',
+      })
+      .then((result: any) => {
+        if (result) {
+          this.execute()
+        }
+      })
+  }
 }
 </script>

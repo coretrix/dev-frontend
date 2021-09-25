@@ -4,24 +4,19 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'RedisParent',
-  layout: 'redis',
+<script lang="ts">
+import { Component, Vue } from 'nuxt-property-decorator';
+
+@Component
+export default class RedisStreamParent extends Vue {
   async fetch() {
     await this.fetchData()
-  },
-  data: () => {
-    return {
-      redisData: undefined,
-      loopRequest: undefined,
-    }
-  },
-  mounted() {
-    this.loopRequest = setInterval(this.fetchData, 5000)
-  },
-  methods: {
-    async fetchData() {
+  }
+
+  redisData:any = []
+  loopRequest:any = setInterval(this.fetchData, 5000)
+
+  async fetchData() {
       await this.$axios
         .get('dev/redis-streams/')
         .then((response) => {
@@ -32,11 +27,11 @@ export default {
         .catch((error) => {
           console.error(error)
         })
-    },
-  },
-  beforeRouteLeave(to, from, next) {
+  }
+
+  beforeRouteLeave(to: string, from: string, next:any) {
     clearInterval(this.loopRequest)
     next()
-  },
+  }
 }
 </script>
