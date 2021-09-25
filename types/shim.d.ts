@@ -4,13 +4,6 @@ declare module "*.vue" {
   export default Vue
 }
 
-// declare module '@nuxt/types' {
-//   import { Vuetify } from 'vuetify/lib';
-//   interface Context {
-//     $vuetify: Vuetify
-//   }
-// }
-
 declare module '@nuxt/types' {
   import { NuxtAxiosInstance } from '@nuxtjs/axios';
   interface Context {

@@ -102,7 +102,7 @@ import {
   mdiAlertDecagramOutline,
   mdiTable,
 } from '@mdi/js'
-import {Vue, Component, Watch, Prop} from 'nuxt-property-decorator'
+import {Vue, Component, Watch, Prop, Emit} from 'nuxt-property-decorator'
 
 @Component
 export default class NavigationMenu extends Vue {
@@ -134,9 +134,9 @@ export default class NavigationMenu extends Vue {
       if (item.iconsSelector) {
         item.iconsSelector.updateIconData(item)
       }
-      if (item.resource !== undefined) {
-        item.isVisible = this.$hasPermissions(item.resource, 'read')
-      }
+      // if (item.resource !== undefined) {
+      //   item.isVisible = this.$auth.$hasPermissions(item.resource, 'read')
+      // }
       return item
     })
 
@@ -187,8 +187,18 @@ export default class NavigationMenu extends Vue {
   watchDrawer() {
     const appClass:any = Object.assign({}, this.appclass)
     appClass['bl-menu-drawer-open'] = this.drawer
-    this.$emit('update:appclass', appClass)
+
+    // This works
+    // this.$emit('update:appclass', appClass)
+    this.updateAppClass(appClass)
   }
+
+  // This doesnt work
+  @Emit('update:appClass')
+  updateAppClass(e: any) {
+    return e
+  }
+
 
   created() {
     this.generalMenu = [

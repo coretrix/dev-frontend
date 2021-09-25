@@ -1,4 +1,6 @@
-export default {
+import { Plugin } from "@nuxt/types";
+
+const vuetifyOptions: Plugin = {
   icons: {
     iconfont: "mdiSvg"
   },
@@ -6,7 +8,7 @@ export default {
     options: {
       cspNonce: undefined,
       customProperties: true,
-      minifyTheme(css) {
+      minifyTheme(css:any) {
         return css.replace(/[\r\n|\r|\n]/g, "");
       },
       options: { variations: false }
@@ -36,3 +38,5 @@ export default {
     mobileBreakpoint: 1264
   }
 };
+
+export default vuetifyOptions
