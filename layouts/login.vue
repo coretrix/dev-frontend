@@ -7,13 +7,13 @@
   </v-app>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { Component, Vue} from 'nuxt-property-decorator';
+
+@Component({
   middleware: 'unauth',
-  data() {
-    return {}
-  },
-}
+})
+export default class LoginLayout extends Vue {}
 </script>
 
 <style lang="scss" scoped>
@@ -24,5 +24,3 @@ export default {
   padding: 40px 20px;
 }
 </style>
-
-NavigationMenu
