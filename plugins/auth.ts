@@ -1,20 +1,28 @@
 import { Plugin } from '@nuxt/types'
 
-interface Tokens {
+type AuthPayload = {
   Token: string,
   RefreshToken: string
 }
 
-const auth:Plugin = ({ app }: any, inject: any) => {
-  const auth = {
+type IAuth = {
+  isLoggedIn(): boolean,
+  login(payload: AuthPayload): void,
+  setTokens(payload: AuthPayload): void,
+  clearLocalStorage(): void,
+  logout(): void,
+}
+
+const authPlugin:Plugin = ({ app }, inject) => {
+  const auth:IAuth = {
     isLoggedIn() {
       return !!localStorage.getItem('Token')
     },
-    login(tokens: Tokens) {
+    login(tokens: AuthPayload) {
       auth.clearLocalStorage()
       auth.setTokens(tokens)
     },
-    setTokens(tokens: Tokens) {
+    setTokens(tokens: AuthPayload) {
       localStorage.setItem('Token', tokens.Token)
       localStorage.setItem('RefreshToken', tokens.RefreshToken)
     },
@@ -24,11 +32,28 @@ const auth:Plugin = ({ app }: any, inject: any) => {
     },
     logout() {
       auth.clearLocalStorage()
-      app.router.push('/login')
+      app?.router?.push('/login')
     },
   }
   inject('auth', auth)
 }
 
+declare module 'vue/types/vue' {
+  // this.$auth inside Vue components
+  interface Vue {
+      $auth: IAuth
+  }
+}
 
-export default auth
+declare module '@nuxt/types' {
+  // nuxtContext.app.$auth inside asyncData, fetch, plugins, middleware, nuxtServerInit
+  interface NuxtAppOptions {
+      $auth: IAuth
+  }
+  // nuxtContext.$auth
+  interface Context {
+      $auth: IAuth
+  }
+}
+
+export default authPlugin

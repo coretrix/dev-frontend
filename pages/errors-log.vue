@@ -204,14 +204,15 @@ export default class ErrorsLog extends mixins( ApiUtilities ) {
       { text: '', value: 'actions', sortable: false },
     ]
   }
+
   getErrorsList(force = false) {
     if (!force && this.isLoading) {
       return false
     }
     this.api()
       .get('/error-log/errors/')
-      .then((resp: any) => {
-        const rows:any = []
+      .then((resp) => {
+        const rows:object[] = []
         if (resp.data?.Result) {
           Object.keys(resp.data.Result).forEach((key) => {
             rows.push({ ...resp.data.Result[key], ID: key })
@@ -220,7 +221,7 @@ export default class ErrorsLog extends mixins( ApiUtilities ) {
         }
         this.items = rows
       })
-      .catch(this.apiOnCatchError())
+      .catch(this.apiOnCatchError)
       .then(this.apiOnFinishRequest)
   }
   async deleteItem(item:any) {
@@ -242,7 +243,7 @@ export default class ErrorsLog extends mixins( ApiUtilities ) {
           })
           this.getErrorsList(true)
         })
-        .catch(this.apiOnCatchError())
+        .catch(this.apiOnCatchError)
         .then(this.apiOnFinishRequest)
     }
   }
@@ -261,7 +262,7 @@ export default class ErrorsLog extends mixins( ApiUtilities ) {
         .then(() => {
           this.getErrorsList(true)
         })
-        .catch(this.apiOnCatchError())
+        .catch(this.apiOnCatchError)
         .then(this.apiOnFinishRequest)
     }
   }
@@ -274,7 +275,7 @@ export default class ErrorsLog extends mixins( ApiUtilities ) {
       .then(() => {
         this.getErrorsList(true)
       })
-      .catch(this.apiOnCatchError())
+      .catch(this.apiOnCatchError)
       .then(this.apiOnFinishRequest)
   }
   onClickRow(row: any, slotData: any) {

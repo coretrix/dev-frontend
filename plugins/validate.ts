@@ -1,7 +1,7 @@
 import { Plugin } from "@nuxt/types"
 const validators = require('vuelidate/lib/validators')
 
-const validate:Plugin = (_:any, inject:any) => {
+const validate:Plugin = (_, inject) => {
   const validate = {
     required(message: string) {
       return (v: any) => validators.required(v) || message || 'Field is required'

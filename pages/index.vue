@@ -48,7 +48,6 @@ import Confirmation from '@/components/core/Confirmation.vue'
 
 @Component({})
 export default class IndexPage extends Vue {
-  [x: string]: any
   actionsData: object[] = []
   loading: any = {}
   icons: object = {

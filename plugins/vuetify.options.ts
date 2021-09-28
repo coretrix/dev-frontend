@@ -1,6 +1,4 @@
-import { Plugin } from "@nuxt/types";
-
-const vuetifyOptions: Plugin = {
+const vuetifyOptions = {
   icons: {
     iconfont: "mdiSvg"
   },

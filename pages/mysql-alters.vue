@@ -44,7 +44,7 @@ export default class MysqlAlters extends Vue {
     mdiRefresh,
     mdiLoading,
   }
-  responseData = undefined
+  responseData = []
   loading = {}
   confirmationModal:any = this.$refs.confirmationModal
 

@@ -1,6 +1,6 @@
 import { Plugin } from '@nuxt/types'
 
-const axios:Plugin = ({ $axios, $notification, redirect, $auth }: any) => {
+const axiosPlugin:Plugin = ({ $axios, $notification, redirect, $auth }) => {
   let isRefreshing = false
 
   $axios.onRequest((config: any) => {
@@ -87,4 +87,4 @@ const axios:Plugin = ({ $axios, $notification, redirect, $auth }: any) => {
   })
 }
 
-export default axios
+export default axiosPlugin

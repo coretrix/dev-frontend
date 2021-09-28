@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt-ts --port 9000 --fix",
-    "dev-local": "cross-env NUXT_API_BASE_URL=http://localhost:18080 nuxt-ts --port 9000",
-    "build": "nuxt-ts build",
-    "start": "nuxt-ts start --port 9000",
-    "generate": "nuxt-ts generate -m",
+    "dev": "nuxt --port 9000 --fix",
+    "dev-local": "cross-env NUXT_API_BASE_URL=http://localhost:18080 nuxt --port 9000",
+    "build": "nuxt build",
+    "start": "nuxt start --port 9000",
+    "generate": "nuxt generate -m",
     "lint": "eslint --ext .ts,.js,.vue . --ignore-path .gitignore"
   },
   "lint-staged": {

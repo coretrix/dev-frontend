@@ -29,7 +29,8 @@
       "@types/node",
       "@nuxt/types",
       "@nuxtjs/vuetify",
-      "@types/lodash",
+      "@nuxtjs/axios",
+      "vuetify-dialog/types"
     ]
   },
   "exclude": [
