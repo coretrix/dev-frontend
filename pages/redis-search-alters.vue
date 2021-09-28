@@ -31,11 +31,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Vue, Ref } from 'nuxt-property-decorator';
 import { mdiRefresh, mdiLoading } from '@mdi/js'
+import CoreConfirmation from '~/components/core/Confirmation.vue'
 
 @Component({
-  middleware({ app, redirect }:any) {
+  middleware({ app, redirect }) {
     console.log(!app.$config.showRedisSearch)
     if (!app.$config.showRedisSearch) {
       return redirect('/')
@@ -54,7 +55,7 @@ export default class RedisSearchAlters extends Vue {
   }
   responseData = undefined
   loading = {}
-  confirmationModal:any = this.$refs.confirmationModal
+  @Ref('confirmationModal') readonly confirmationModal!:CoreConfirmation
 
   async fetchData() {
     await this.$axios

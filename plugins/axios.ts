@@ -57,7 +57,7 @@ const axiosPlugin:Plugin = ({ $axios, $notification, redirect, $auth }) => {
             $auth.setTokens(response.data.Result)
             error.config.headers.Authorization = localStorage.getItem('Token')
             await $axios(error.config)
-              .then((resp: any) => {
+              .then((resp) => {
                 isRefreshing = false
                 return resp
               })
@@ -70,7 +70,7 @@ const axiosPlugin:Plugin = ({ $axios, $notification, redirect, $auth }) => {
                 })
               })
           }
-        } catch (err:any) {
+        } catch (err) {
           isRefreshing = false
           if (err.response && err.response.status !== 401) {
             return

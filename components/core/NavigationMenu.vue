@@ -104,9 +104,13 @@ import {
 } from '@mdi/js'
 import {Vue, Component, Watch, Prop, Emit} from 'nuxt-property-decorator'
 
+type IAppClass = {
+  [key: string]: String | Boolean
+}
+
 @Component
 export default class NavigationMenu extends Vue {
-  @Prop({ default: null }) readonly appclass!: Object
+  @Prop({ default: null }) readonly appclass!: IAppClass
 
   generalMenu: Object[] = []
   intervals: Object = {}
@@ -185,7 +189,7 @@ export default class NavigationMenu extends Vue {
 
   @Watch('drawer')
   watchDrawer() {
-    const appClass:any = Object.assign({}, this.appclass)
+    const appClass:IAppClass = Object.assign({}, this.appclass)
     appClass['bl-menu-drawer-open'] = this.drawer
     this.updateAppClass(appClass)
   }

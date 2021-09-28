@@ -13,7 +13,7 @@ export default class RedisStatsParent extends Vue {
     await this.fetchData()
   }
 
-  redisData:any = []
+  redisData = []
   loopRequest = setInterval(this.fetchData, 5000)
 
   async fetchData() {

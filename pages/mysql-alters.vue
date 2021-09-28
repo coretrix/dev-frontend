@@ -32,7 +32,8 @@
 
 <script lang="ts">
 import { mdiRefresh, mdiLoading } from '@mdi/js'
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Ref, Vue } from 'nuxt-property-decorator';
+import CoreConfirmation from '~/components/core/Confirmation.vue'
 
 @Component
 export default class MysqlAlters extends Vue {
@@ -46,7 +47,7 @@ export default class MysqlAlters extends Vue {
   }
   responseData = []
   loading = {}
-  confirmationModal:any = this.$refs.confirmationModal
+  @Ref('confirmationModal') readonly confirmationModal!:CoreConfirmation
 
   async fetchData() {
     await this.$axios

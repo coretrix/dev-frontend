@@ -1,4 +1,3 @@
-// TODO: rewrite in TS
 import { Component, Vue } from 'nuxt-property-decorator';
 
 
@@ -34,7 +33,6 @@ export class FormsUtilities extends Vue {
       this.$set(this.$data.formsValidation, formName, true)
     })
   }
-
 
   resetForm(formName: string) {
     const form:any = this.$refs[formName]

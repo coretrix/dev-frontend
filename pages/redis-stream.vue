@@ -13,8 +13,8 @@ export default class RedisStreamParent extends Vue {
     await this.fetchData()
   }
 
-  redisData:any = []
-  loopRequest:any = setInterval(this.fetchData, 5000)
+  redisData = []
+  loopRequest:NodeJS.Timer = setInterval(this.fetchData, 5000)
 
   async fetchData() {
       await this.$axios
@@ -29,7 +29,7 @@ export default class RedisStreamParent extends Vue {
         })
   }
 
-  beforeRouteLeave(to: string, from: string, next:any) {
+  beforeRouteLeave(to: string, from: string, next:()=>void) {
     clearInterval(this.loopRequest)
     next()
   }
