@@ -17,22 +17,12 @@
   </div>
 </template>
 
-<script>
-// TODO: rewrite in TS
-export default {
-  props: {
-    speed: {
-      type: Number,
-      default: undefined,
-    },
-  },
-  data() {
-    return {}
-  },
-  computed: {},
-  watch: {},
-  created() {},
-  methods: {},
+<script lang="ts">
+import { Component, Vue, Prop } from 'nuxt-property-decorator';
+
+@Component
+export default class SpeedBox extends Vue {
+  @Prop({default: undefined}) readonly speed!:number
 }
 </script>
 

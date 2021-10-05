@@ -1,4 +1,3 @@
-// TODO make it as class
 import { Plugin } from "@nuxt/types"
 
 type NotificationPayload = {type: 'success' | 'error', message: string}

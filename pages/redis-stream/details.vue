@@ -129,108 +129,103 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'RedisChild',
-  props: {
-    redisData: {
-      type: Array,
-      default: () => {
-        return []
-      },
-    },
-  },
-  data: () => {
-    return {
-      // expanded: [0, 1, 2],
-      groupHeaders: [
-        {
-          text: 'Group Name',
-          value: 'Group',
-          width: '14%',
-          sortable: false,
-        },
-        {
-          text: 'Pending',
-          value: 'Pending',
-          width: '8%',
-          sortable: false,
-        },
-        {
-          text: 'LowerDuration',
-          value: 'LowerDuration',
-          width: '10%',
-          sortable: false,
-        },
-        {
-          text: 'HigherDuration',
-          value: 'HigherDuration',
-          width: '10%',
-          sortable: false,
-        },
-        {
-          text: 'Consumers',
-          value: 'Consumers',
-          width: '8%',
-          sortable: false,
-        },
-        {
-          text: 'Events today',
-          value: 'SpeedEvents',
-          width: '8%',
-          sortable: false,
-        },
-        {
-          text: 'Event consume speed',
-          value: 'SpeedMilliseconds',
-          width: '12%',
-          sortable: false,
-        },
-        {
-          text: 'DBq/event',
-          value: 'DBQueriesPerEvent',
-          width: '12%',
-          sortable: false,
-        },
-        {
-          text: 'DBq ms/event',
-          value: 'DBQueriesMillisecondsPerEvent',
-          width: '12%',
-          sortable: false,
-        },
-        {
-          text: 'Redisq/event',
-          value: 'RedisQueriesPerEvent',
-          width: '12%',
-          sortable: false,
-        },
-        {
-          text: 'Redisq ms/event',
-          value: 'RedisQueriesMillisecondsPerEvent',
-          width: '12%',
-          sortable: false,
-        },
-      ],
-    }
-  },
-  computed: {
-    scheme() {
-      const streamName = this.$route.query.stream
-      const result = this.redisData.filter((stream) => {
-        return stream.Stream === streamName
-      })
+<script lang="ts">
+import { Component, Vue, Prop } from 'nuxt-property-decorator';
 
-      return result[0]
+type IRedisData = {
+  [key: string]: string | boolean | number | object[]
+}[]
+
+@Component
+export default class RedisStreamChild extends Vue {
+  @Prop({ default: [] }) readonly redisData!: IRedisData
+
+  groupHeaders = [
+    {
+      text: 'Group Name',
+      value: 'Group',
+      width: '14%',
+      sortable: false,
     },
-    groupItems() {
-      return this.scheme?.Groups
+    {
+      text: 'Pending',
+      value: 'Pending',
+      width: '8%',
+      sortable: false,
     },
-    expanded() {
-      return this.scheme?.Groups
+    {
+      text: 'LowerDuration',
+      value: 'LowerDuration',
+      width: '10%',
+      sortable: false,
     },
-  },
+    {
+      text: 'HigherDuration',
+      value: 'HigherDuration',
+      width: '10%',
+      sortable: false,
+    },
+    {
+      text: 'Consumers',
+      value: 'Consumers',
+      width: '8%',
+      sortable: false,
+    },
+    {
+      text: 'Events today',
+      value: 'SpeedEvents',
+      width: '8%',
+      sortable: false,
+    },
+    {
+      text: 'Event consume speed',
+      value: 'SpeedMilliseconds',
+      width: '12%',
+      sortable: false,
+    },
+    {
+      text: 'DBq/event',
+      value: 'DBQueriesPerEvent',
+      width: '12%',
+      sortable: false,
+    },
+    {
+      text: 'DBq ms/event',
+      value: 'DBQueriesMillisecondsPerEvent',
+      width: '12%',
+      sortable: false,
+    },
+    {
+      text: 'Redisq/event',
+      value: 'RedisQueriesPerEvent',
+      width: '12%',
+      sortable: false,
+    },
+    {
+      text: 'Redisq ms/event',
+      value: 'RedisQueriesMillisecondsPerEvent',
+      width: '12%',
+      sortable: false,
+    },
+  ]
+
+  get scheme() {
+    const streamName = this.$route.query.stream
+    const result = this.redisData.filter((stream) => {
+      return stream.Stream === streamName
+    })
+
+    return result[0]
+  }
+  get groupItems() {
+    return this.scheme?.Groups
+  }
+  get expanded() {
+    return this.scheme?.Groups
+  }
 }
 </script>
+
 <style lang="scss" scoped>
 .table {
   table-layout: fixed;

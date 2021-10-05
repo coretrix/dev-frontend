@@ -36,8 +36,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { Component, Vue } from 'nuxt-property-decorator';
+
+@Component({
   async asyncData({ route, $axios }) {
     try {
       const name = route.query.name
@@ -51,10 +53,10 @@ export default {
     } catch (error) {
       console.error(error)
     }
-  },
-  data: () => ({
-    details: null,
-  }),
+  }
+})
+export default class RedisSearchIndexesChild extends Vue {
+  details = null
 }
 </script>
 

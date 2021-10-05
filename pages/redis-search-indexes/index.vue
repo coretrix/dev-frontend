@@ -55,10 +55,16 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue, Ref } from 'nuxt-property-decorator';
 import { mdiInformationOutline, mdiRefresh } from '@mdi/js'
+import CoreConfirmation from '~/components/core/Confirmation.vue'
 
-export default {
+type IItem = {
+  [key: string]: string | boolean | number
+}
+
+@Component({
   async asyncData({ $axios }) {
     try {
       const { Result: indexes } = await $axios.$get(
@@ -68,75 +74,73 @@ export default {
     } catch (error) {
       console.error(error)
     }
-  },
-  data: () => {
-    return {
-      headers: [
-        {
-          text: 'Index',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-        },
-        {
-          text: '',
-          align: 'end',
-          sortable: false,
-          value: 'actions',
-        },
-      ],
-      indexes: [],
-      reindexing: false,
-      icons: {
-        mdiInformationOutline,
-        mdiRefresh,
-      },
+  }
+})
+export default class RedisSearchIndexesParent extends Vue {
+  @Ref('confirmationModal') readonly confirmationModal!:CoreConfirmation
+
+  headers = [
+    {
+      text: 'Index',
+      align: 'start',
+      sortable: false,
+      value: 'name',
+    },
+    {
+      text: '',
+      align: 'end',
+      sortable: false,
+      value: 'actions',
+    },
+  ]
+  indexes = []
+  reindexing = false
+  icons = {
+    mdiInformationOutline,
+    mdiRefresh,
+  }
+
+  get indexesComputed() {
+    return this.indexes.map((i) => ({ name: i }))
+  }
+
+  async reindex(item: IItem) {
+    console.log('itemReindex')
+
+    this.reindexing = true
+
+    try {
+      const { Result: indexes } = await this.$axios.$get(
+        `/dev/redis-search/force-reindex/${item.name}/`
+      )
+      this.indexes = indexes
+
+      this.$notification.show({
+        type: 'success',
+        message: 'Success',
+      })
+    } catch (error) {
+      console.error(error)
+      this.$notification.show({
+        type: 'error',
+        message: error,
+      })
+    } finally {
+      this.reindexing = false
     }
-  },
-  computed: {
-    indexesComputed() {
-      return this.indexes.map((i) => ({ name: i }))
-    },
-  },
-  methods: {
-    async reindex(item) {
-      console.log('itemReindex')
+  }
 
-      this.reindexing = true
-
-      try {
-        const { Result: indexes } = await this.$axios.$get(
-          `/dev/redis-search/force-reindex/${item.name}/`
-        )
-        this.indexes = indexes
-
-        this.$notification.show({
-          type: 'success',
-          message: 'Success',
-        })
-      } catch (error) {
-        console.error(error)
-        this.$notification.show({
-          type: 'error',
-          message: error,
-        })
-      } finally {
-        this.reindexing = false
-      }
-    },
-
-    confirm(item) {
-      this.$refs.confirmationModal
-        .show({
-          title: 'Wait!!!',
-          message: 'Are you sure you want to proceed? It cannot be undone.',
-        })
-        .then((result) => {
-          if (result) {
-            this.reindex(item)
-          }
-        })
-    },
-  },
+  confirm(item: IItem) {
+    this.confirmationModal
+      .show({
+        title: 'Wait!!!',
+        message: 'Are you sure you want to proceed? It cannot be undone.',
+      })
+      .then((result) => {
+        if (result) {
+          this.reindex(item)
+        }
+      })
+  }
 }
 </script>

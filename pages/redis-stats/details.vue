@@ -34,27 +34,25 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'RedisChild',
-  props: {
-    redisData: {
-      type: Array,
-      default: () => {
-        return []
-      },
-    },
-  },
-  computed: {
-    pool() {
-      const redisPool = this.$route.query.RedisPool
-      const result = this.redisData.find((pool) => {
-        return pool.RedisPool === redisPool
-      })
+<script lang="ts">
+import { Component, Vue, Prop } from 'nuxt-property-decorator';
 
-      return result
-    },
-  },
+type IRedisData = {
+  [key: string]: string | boolean | number | object[]
+}[]
+
+@Component
+export default class RedisStatsChild extends Vue {
+  @Prop({ default: [] }) readonly redisData!: IRedisData
+
+  get pool() {
+    const redisPool = this.$route.query.RedisPool
+    const result = this.redisData.find((pool) => {
+      return pool.RedisPool === redisPool
+    })
+
+    return result
+  }
 }
 </script>
 <style lang="scss" scoped>

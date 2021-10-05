@@ -27,7 +27,6 @@ import { mdiClose } from '@mdi/js'
 import { Vue, Component } from 'nuxt-property-decorator';
 import NotificationTypes from '~/interface/notifications'
 
-
 @Component
 export default class Notification extends Vue {
   icons:Object = {

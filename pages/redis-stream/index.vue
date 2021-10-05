@@ -53,74 +53,72 @@
       </v-col>
     </v-row>
     <CoreConfirmation ref="confirmationModal" />
-    <CoreConfirmation ref="secondConfirm" />
+    <CoreConfirmation ref="secondConfirmModal" />
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue, Prop, Ref } from 'nuxt-property-decorator';
 import { mdiDelete } from '@mdi/js'
-export default {
-  name: 'RedisIndex',
-  props: {
-    redisData: {
-      type: Array,
-      default: () => {
-        return []
-      },
-    },
-  },
-  data: () => {
-    return {
-      icons: {
-        mdiDelete,
-      },
-      dialog: false,
-      secondDialog: false,
-      focusStream: undefined,
-    }
-  },
-  methods: {
-    async removeStream() {
-      await this.$axios
-        .delete(`/dev/delete-redis-stream/${this.focusStream}/`)
-        .then(() => {
-          this.$notification.show({
-            type: 'success',
-            message: 'Success',
-          })
+import CoreConfirmation from '~/components/core/Confirmation.vue'
+
+type IRedisData = {
+  [key: string]: string | boolean | number | object[]
+}[]
+
+@Component
+export default class RedisStreamIndex extends Vue {
+  @Prop({ default: [] }) readonly redisData!: IRedisData
+  @Ref('confirmationModal') readonly confirmationModal!:CoreConfirmation
+  @Ref('secondConfirmModal') readonly secondConfirmModal!:CoreConfirmation
+
+  icons = {
+    mdiDelete,
+  }
+  dialog = false
+  secondDialog = false
+  focusStream = undefined
+
+  async removeStream():Promise<void> {
+    await this.$axios
+      .delete(`/dev/delete-redis-stream/${this.focusStream}/`)
+      .then(() => {
+        this.$notification.show({
+          type: 'success',
+          message: 'Success',
         })
-        .catch((error) => {
-          this.$notification.show({
-            type: 'error',
-            message: error,
-          })
+      })
+      .catch((error) => {
+        this.$notification.show({
+          type: 'error',
+          message: error,
         })
-    },
-    confirm() {
-      this.$refs.confirmationModal
-        .show({
-          title: 'Delete stream?',
-          message: `Are you sure you want to delete ${this.focusStream}?`,
-        })
-        .then((result) => {
-          if (result) {
-            this.secondConfirm()
-          }
-        })
-    },
-    secondConfirm() {
-      this.$refs.secondConfirm
-        .show({
-          title: 'Wait!!!',
-          message: `Are you really, really sure you want to delete ${this.focusStream}? It cannot be undone.`,
-        })
-        .then((result) => {
-          if (result) {
-            this.removeStream()
-          }
-        })
-    },
-  },
+      })
+  }
+  confirm():void {
+    this.confirmationModal
+      .show({
+        title: 'Delete stream?',
+        message: `Are you sure you want to delete ${this.focusStream}?`,
+      })
+      .then((result) => {
+        if (result) {
+          this.secondConfirm()
+        }
+      })
+  }
+  secondConfirm():void {
+    this.secondConfirmModal
+      .show({
+        title: 'Wait!!!',
+        message: `Are you really, really sure you want to delete ${this.focusStream}? It cannot be undone.`,
+      })
+      .then((result) => {
+        if (result) {
+          this.removeStream()
+        }
+      })
+  }
 }
 </script>
 <style lang="scss" scoped>

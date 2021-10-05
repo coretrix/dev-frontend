@@ -105,116 +105,122 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Component, Vue, Prop } from 'nuxt-property-decorator';
 import { mdiCodeBraces } from '@mdi/js'
-export default {
-  name: 'RedisIndex',
-  props: {
-    redisData: {
-      type: Array,
-      default: () => {
-        return []
-      },
-    },
-  },
-  data: () => {
-    return {
-      icons: {
-        mdiCodeBraces,
-      },
-      redisKeys: [
-        'active_defrag_hits',
-        'active_defrag_key_hits',
-        'active_defrag_key_misses',
-        'active_defrag_misses',
-        'active_defrag_running',
-        'connected_clients',
-        'blocked_clients',
-        'clients_in_timeout_table',
-        'connected_slaves',
-        'pubsub_channels',
-        'pubsub_patterns',
-        'used_cpu_sys',
-        'total_system_memory',
-        'used_memory',
-        'maxmemory',
-        'used_memory_peak',
-        'maxmemory_human',
 
-        'total_system_memory_human',
-        'used_memory_human',
-        'used_memory_peak_human',
-      ],
-      activeKeys: [
-        'active_defrag_hits',
-        'active_defrag_key_hits',
-        'active_defrag_key_misses',
-        'active_defrag_misses',
-        'active_defrag_running',
-      ],
-      connectionKeys: [
-        'connected_clients',
-        'blocked_clients',
-        'clients_in_timeout_table',
-        'connected_slaves',
-      ],
-      dbKeys: [],
-      putsbKeys: ['pubsub_channels', 'pubsub_patterns'],
-      memoryUsageKeys: [
-        'used_cpu_sys',
-        'total_system_memory',
-        'used_memory',
-        'maxmemory',
-        'maxmemory_human',
-        'used_memory_peak',
-        'total_system_memory_human',
-        'used_memory_human',
-        'used_memory_peak_human',
-      ],
-    }
-  },
-  computed: {
-    filteredData() {
-      const result = this.redisData.map((element) => {
-        const tempElement = Object.entries(element.Info).filter(
-          ([key, value]) => {
-            return (
-              this.redisKeys.includes(key) ||
-              (key.includes('db') && key.indexOf('db') === 0)
-            )
-          }
-        )
+type IRedisData = {
+  [key: string]: string | boolean | number | object[]
+}[]
 
-        const restructuredEl = {
-          activeKeys: {},
-          connectionKeys: {},
-          putsbKeys: {},
-          memoryUsageKeys: {},
-          dbKeys: {},
+type IRestructuredEl = {
+  [key: string]: string | boolean | number
+}
+
+type IRestructuredElObj = {
+  activeKeys: IRestructuredEl,
+  connectionKeys: IRestructuredEl,
+  putsbKeys: IRestructuredEl,
+  memoryUsageKeys: IRestructuredEl,
+  dbKeys: IRestructuredEl,
+}
+
+@Component
+export default class RedisIndex extends Vue {
+  @Prop({ default: [] }) readonly redisData!:IRedisData
+  icons = {
+    mdiCodeBraces,
+  }
+  redisKeys = [
+    'active_defrag_hits',
+    'active_defrag_key_hits',
+    'active_defrag_key_misses',
+    'active_defrag_misses',
+    'active_defrag_running',
+    'connected_clients',
+    'blocked_clients',
+    'clients_in_timeout_table',
+    'connected_slaves',
+    'pubsub_channels',
+    'pubsub_patterns',
+    'used_cpu_sys',
+    'total_system_memory',
+    'used_memory',
+    'maxmemory',
+    'used_memory_peak',
+    'maxmemory_human',
+
+    'total_system_memory_human',
+    'used_memory_human',
+    'used_memory_peak_human',
+  ]
+  activeKeys = [
+    'active_defrag_hits',
+    'active_defrag_key_hits',
+    'active_defrag_key_misses',
+    'active_defrag_misses',
+    'active_defrag_running',
+  ]
+  connectionKeys = [
+    'connected_clients',
+    'blocked_clients',
+    'clients_in_timeout_table',
+    'connected_slaves',
+  ]
+  dbKeys = []
+  putsbKeys = ['pubsub_channels', 'pubsub_patterns']
+  memoryUsageKeys = [
+    'used_cpu_sys',
+    'total_system_memory',
+    'used_memory',
+    'maxmemory',
+    'maxmemory_human',
+    'used_memory_peak',
+    'total_system_memory_human',
+    'used_memory_human',
+    'used_memory_peak_human',
+  ]
+
+  get filteredData() {
+    const result = this.redisData.map((element) => {
+      const tempElement = Object.entries(element.Info).filter(
+        ([key, value]) => {
+          return (
+            this.redisKeys.includes(key) ||
+            (key.includes('db') && key.indexOf('db') === 0)
+          )
         }
-        tempElement.forEach(([key, value]) => {
-          if (this.activeKeys.includes(key)) {
-            restructuredEl.activeKeys[key] = value
-          } else if (this.connectionKeys.includes(key)) {
-            restructuredEl.connectionKeys[key] = value
-          } else if (this.putsbKeys.includes(key)) {
-            restructuredEl.putsbKeys[key] = value
-          } else if (this.memoryUsageKeys.includes(key)) {
-            restructuredEl.memoryUsageKeys[key] = value
-          } else {
-            restructuredEl.dbKeys[key] = value
-          }
-        })
+      )
 
-        return {
-          RedisPool: element.RedisPool,
-          Info: restructuredEl,
+      const restructuredEl:IRestructuredElObj = {
+        activeKeys: {},
+        connectionKeys: {},
+        putsbKeys: {},
+        memoryUsageKeys: {},
+        dbKeys: {},
+      }
+      tempElement.forEach(([key, value]) => {
+        if (this.activeKeys.includes(key)) {
+          restructuredEl.activeKeys[key] = value
+        } else if (this.connectionKeys.includes(key)) {
+          restructuredEl.connectionKeys[key] = value
+        } else if (this.putsbKeys.includes(key)) {
+          restructuredEl.putsbKeys[key] = value
+        } else if (this.memoryUsageKeys.includes(key)) {
+          restructuredEl.memoryUsageKeys[key] = value
+        } else {
+          restructuredEl.dbKeys[key] = value
         }
       })
 
-      return result
-    },
-  },
+      return {
+        RedisPool: element.RedisPool,
+        Info: restructuredEl,
+      }
+    })
+
+    return result
+  }
 }
 </script>
 <style lang="scss" scoped>

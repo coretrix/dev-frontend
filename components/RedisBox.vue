@@ -24,32 +24,14 @@
   </v-card>
 </template>
 
-<script>
-// TODO: rewrite in TS
+<script lang="ts">
+import { Component, Vue, Prop } from 'nuxt-property-decorator';
 
-export default {
-  name: 'RedisBox',
-  props: {
-    focusText: {
-      type: String,
-      default: undefined,
-    },
-    secondaryText: {
-      type: String,
-      default: undefined,
-    },
-    keyType: {
-      type: String,
-      default: undefined,
-    },
-  },
-  data() {
-    return {}
-  },
-  computed: {},
-  watch: {},
-  created() {},
-  methods: {},
+@Component
+export default class RedisBox extends Vue {
+  @Prop({default: undefined}) readonly focusText!:string
+  @Prop({default: undefined}) readonly secondaryText!:string
+  @Prop({default: undefined}) readonly keyType!:string
 }
 </script>
 
