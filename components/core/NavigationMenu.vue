@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-app-bar
+      v-if="$store.state.app.appMode || $config.projectName || isMobile"
       app
       fixed
       outlined
@@ -14,7 +15,7 @@
       elevate-on-scroll
     >
       <v-spacer></v-spacer>
-        <h1 class="white--text">
+        <h1 v-if="$store.state.app.appMode || $config.projectName" class="white--text">
           {{ $config.projectName }}
           <v-chip
             class="ma-2 text-capitalize"
