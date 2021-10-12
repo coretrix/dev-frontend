@@ -18,7 +18,7 @@ export default {
       },
       { hid: 'description', name: 'description', content: '' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }],
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
@@ -91,7 +91,7 @@ export default {
 
   axios: {
     credentials: true,
-    baseURL: process.env.NUXT_API_BASE_URL ||  'https://api.bluconsole.com/' || 'https://dev-panel-demo.projectrivers.com/',
+    baseURL: process.env.NUXT_API_BASE_URL || ' https://dev-panel.demo.projectrivers.com/',
   },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)

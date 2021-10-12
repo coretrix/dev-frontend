@@ -48,7 +48,6 @@ export default class RedisSearchAlters extends Vue {
     await this.fetchData()
   }
 
-
   icons = {
     mdiRefresh,
     mdiLoading,

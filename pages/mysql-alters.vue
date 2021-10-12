@@ -57,6 +57,10 @@ export default class MysqlAlters extends Vue {
       })
       .catch((error) => {
         console.error(error)
+        this.$notification.show({
+          type: 'error',
+          message: error,
+        })
       })
   }
   async execute() {

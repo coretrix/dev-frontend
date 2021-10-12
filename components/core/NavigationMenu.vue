@@ -1,17 +1,24 @@
-import { Component } from 'nuxt-property-decorator';
 <template>
   <div>
     <v-app-bar
-      v-if="isMobile"
-      dense
+      app
       fixed
       outlined
       clipped-right
-      color="white"
+      class="app-bar"
+      :class="{
+        'green': $store.state.app.appMode === 'dev',
+        'orange': $store.state.app.appMode === 'demo',
+        'red': $store.state.app.appMode === 'dev'
+      }"
       elevate-on-scroll
     >
       <v-spacer></v-spacer>
-      <v-btn type="button" @click="drawer = !drawer">Menu</v-btn>
+      <v-app-title class="white--text">
+        <h1> {{$store.state.app.appMode}} </h1>
+      </v-app-title>
+      <v-spacer></v-spacer>
+      <v-btn v-if="isMobile" type="button" @click="drawer = !drawer">Menu</v-btn>
     </v-app-bar>
     <v-navigation-drawer
       v-model="drawer"
@@ -26,12 +33,8 @@ import { Component } from 'nuxt-property-decorator';
     >
       <div class="c-menu__wrapper">
         <div class="c-menu__logo-container">
-          <h1
-            v-show="!configDrawer['mini-variant']"
-            class="m-0 p-0 primary--text"
-          >
-            CoreTrix
-          </h1>
+          <h1 v-show="!configDrawer['mini-variant']" class="m0 primary--text">Dev Panel</h1>
+
           <button
             v-if="!isMobile"
             type="button"
@@ -44,7 +47,7 @@ import { Component } from 'nuxt-property-decorator';
             @click="
               configDrawer['mini-variant'] = !configDrawer['mini-variant']
             "
-          ></button>
+          />
         </div>
         <v-list dense nav class="c-menu__list">
           <v-list-item
@@ -86,7 +89,10 @@ import { Component } from 'nuxt-property-decorator';
           v-show="!configDrawer['mini-variant']"
           class="c-version mb-16 mb-lg-0"
         >
-          <span>Dev Panel powered by CoreTrix</span>
+          <!-- <span>Powered by <span class="coretrix__logo--text">CoreTrix</span></span> -->
+          <span class="d-flex align-center">Powered by
+            <v-img class="ml-1" :src="require('~/static/Coretrix_Logo.png')" contain max-width="100" position="left center"></v-img>
+          </span>
         </div>
       </div>
     </v-navigation-drawer>
@@ -199,7 +205,6 @@ export default class NavigationMenu extends Vue {
     return e
   }
 
-
   created() {
     this.generalMenu = [
       {
@@ -254,6 +259,11 @@ export default class NavigationMenu extends Vue {
 </script>
 
 <style scoped lang="scss">
+::v-deep .app-bar {
+  &.v-app-bar.v-app-bar--fixed {
+    z-index: 22;
+  }
+}
 .flex-start {
   justify-content: flex-start;
 }

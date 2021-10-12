@@ -10,7 +10,7 @@
       hide-default-footer
       class="d-inline-block elevation-1 font-weight-bold"
     >
-      <template v-slot:item.actions="{ item }">
+      <template v-slot:item.actions="{ index, item }">
         <v-tooltip bottom color="grey darken-1" content-class="py-1">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -32,14 +32,14 @@
         <v-tooltip bottom color="grey darken-1" content-class="py-1">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              :loading="reindexing"
-              :disabled="reindexing"
+              :loading="loadingIndex === index"
+              :disabled="loadingIndex === index"
               icon
               dark
               color="primary"
               v-bind="attrs"
               v-on="on"
-              @click="confirm(item)"
+              @click="confirm(item, index)"
             >
               <v-icon>
                 {{ icons.mdiRefresh }}
@@ -70,6 +70,7 @@ type IItem = {
       const { Result: indexes } = await $axios.$get(
         '/dev/redis-search/indexes/'
       )
+
       return { indexes }
     } catch (error) {
       console.error(error)
@@ -94,7 +95,8 @@ export default class RedisSearchIndexesParent extends Vue {
     },
   ]
   indexes = []
-  reindexing = false
+  loadingIndex:number | null = null
+  reindexing = {}
   icons = {
     mdiInformationOutline,
     mdiRefresh,
@@ -104,16 +106,13 @@ export default class RedisSearchIndexesParent extends Vue {
     return this.indexes.map((i) => ({ name: i }))
   }
 
-  async reindex(item: IItem) {
-    console.log('itemReindex')
-
-    this.reindexing = true
+  async reindex(item: IItem, index: number) {
+    this.loadingIndex = index
 
     try {
-      const { Result: indexes } = await this.$axios.$get(
+      const {} = await this.$axios.$get(
         `/dev/redis-search/force-reindex/${item.name}/`
       )
-      this.indexes = indexes
 
       this.$notification.show({
         type: 'success',
@@ -126,11 +125,11 @@ export default class RedisSearchIndexesParent extends Vue {
         message: error,
       })
     } finally {
-      this.reindexing = false
+      this.loadingIndex = null
     }
   }
 
-  confirm(item: IItem) {
+  confirm(item: IItem, index: number) {
     this.confirmationModal
       .show({
         title: 'Wait!!!',
@@ -138,7 +137,7 @@ export default class RedisSearchIndexesParent extends Vue {
       })
       .then((result) => {
         if (result) {
-          this.reindex(item)
+          this.reindex(item, index)
         }
       })
   }

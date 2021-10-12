@@ -1,3 +1,5 @@
+@import './fonts.css';
+
 .expandable-table {
   .v-data-table__expanded.v-data-table__expanded__row {
     background-color: rgba(194, 214, 222, 0.5);
@@ -27,4 +29,12 @@ select:-webkit-autofill:focus {
   box-shadow: 0 0 0 1000px #ffffff inset;
   -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
   padding: 0 !important;
+}
+
+.coretrix__logo--text {
+  font-family: 'zona';
+  font-weight: 800;
+  color: #161945;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }

@@ -6,7 +6,7 @@
           <h1 class="c-title">Dev Panel</h1>
           <span class="c-subtext">
             powered by
-            <strong>CoreTrix</strong>
+            <span class="coretrix__logo--text">CoreTrix</span>
           </span>
         </div>
       </div>

@@ -95,7 +95,6 @@ export default class IndexPage extends Vue {
       })
   }
 
-
   @Ref('confirmationModal') readonly confirmationModal!: Confirmation
 
   confirm(apiURL: string, index: number) {

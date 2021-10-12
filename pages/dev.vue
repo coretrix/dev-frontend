@@ -3,6 +3,10 @@
     <table>
       <tbody>
         <tr>
+          <td>AppMode</td>
+          <td>{{ $store.state.app.appMode }}</td>
+        </tr>
+        <tr>
           <td>process.env.NODE_ENV</td>
           <td>{{ $config.env }}</td>
         </tr>
@@ -22,6 +26,11 @@
     </table>
   </div>
 </template>
+
+<script lang="ts">
+import { Vue } from 'nuxt-property-decorator'
+export default class DefaultLayout extends Vue {}
+</script>
 
 <style lang="scss" scoped>
 table {

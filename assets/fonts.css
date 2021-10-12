@@ -1,0 +1,17 @@
+@font-face {
+  font-family: 'zona';
+  src: url('./fonts/zonapro-extrabolddemo-webfont.woff2') format('woff2'),
+       url('./fonts/zonapro-extrabolddemo-webfont.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+
+}
+
+@font-face {
+  font-family: 'zona';
+  src: url('./fonts/zonapro-lightitalicdemo-webfont.woff2') format('woff2'),
+       url('./fonts/zonapro-lightitalicdemo-webfont.woff') format('woff');
+  font-weight: 300;
+  font-style: italic;
+
+}
