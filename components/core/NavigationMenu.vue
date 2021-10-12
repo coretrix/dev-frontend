@@ -14,8 +14,7 @@
       elevate-on-scroll
     >
       <v-spacer></v-spacer>
-      <v-app-title class="white--text">
-        <h1>
+        <h1 class="white--text">
           {{ $config.projectName }}
           <v-chip
             class="ma-2 text-capitalize"
@@ -44,8 +43,7 @@
             {{$store.state.app.appMode}}
           </span>
           </v-chip>
-          </h1>
-      </v-app-title>
+        </h1>
       <v-spacer></v-spacer>
       <v-btn v-if="isMobile" type="button" @click="drawer = !drawer">Menu</v-btn>
     </v-app-bar>
