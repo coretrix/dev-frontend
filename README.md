@@ -30,6 +30,9 @@ $ NUXT_API_BASE_URL
 
 # Show/hide advanced redis stats - Boolean
 $ SHOW_REDIS_SEARCH
+
+# Sets project name. String - Example: Accrete
+$ PROJECT_NAME
 ```
 
 ##
