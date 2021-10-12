@@ -15,7 +15,36 @@
     >
       <v-spacer></v-spacer>
       <v-app-title class="white--text">
-        <h1> {{$store.state.app.appMode}} </h1>
+        <h1>
+          {{ $config.projectName }}
+          <v-chip
+            class="ma-2 text-capitalize"
+            label
+            outlined
+            color="white"
+            height="36px"
+          >
+          <span class="app-bar__chip">
+            {{$store.state.app.appMode}}
+          </span>
+          </v-chip>
+
+          <v-chip
+            v-if="false"
+            class="ma-2 white text-capitalize"
+            label
+            height="36px"
+            :class="{
+              'green--text': $store.state.app.appMode === 'dev',
+              'orange--text': $store.state.app.appMode === 'demo',
+              'red--text': $store.state.app.appMode === 'dev'
+            }"
+          >
+          <span class="app-bar__chip">
+            {{$store.state.app.appMode}}
+          </span>
+          </v-chip>
+          </h1>
       </v-app-title>
       <v-spacer></v-spacer>
       <v-btn v-if="isMobile" type="button" @click="drawer = !drawer">Menu</v-btn>
@@ -262,6 +291,10 @@ export default class NavigationMenu extends Vue {
 ::v-deep .app-bar {
   &.v-app-bar.v-app-bar--fixed {
     z-index: 22;
+  }
+
+  &__chip {
+    font-size: 22px;
   }
 }
 .flex-start {

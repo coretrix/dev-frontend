@@ -44,10 +44,11 @@ export default {
 
   // https://nuxtjs.org/guide/runtime-config
   publicRuntimeConfig: {
-    everything: process.env, // Do not remove,
-    env: process.env.NODE_ENV, // Do not remove,
-    baseURL: process.env.NUXT_API_BASE_URL, // Do not remove,
+    everything: process.env,
+    env: process.env.NODE_ENV,
+    baseURL: process.env.NUXT_API_BASE_URL,
     showRedisSearch: process.env.SHOW_REDIS_SEARCH,
+    projectName: process.env.PROJECT_NAME
   },
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: {
