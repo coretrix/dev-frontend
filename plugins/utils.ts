@@ -2,7 +2,7 @@ import { Plugin } from "@nuxt/types"
 
 type IUtils = {
   parseReadableNanoSeconds(timeInNanoSeconds:number): string | null,
-  parseThousandsToReadable(value:number|string, separator:string): string,
+  parseThousandsToReadable(value:number|string, separator:string): number|string|null,
 }
 
 const utilsPlugin:Plugin = (_, inject) => {
@@ -19,7 +19,11 @@ const utilsPlugin:Plugin = (_, inject) => {
 
       return `${h}h ${m}m ${s}s`
     },
-    parseThousandsToReadable(value:number|string, separator = ' ') {
+    parseThousandsToReadable(value, separator = ' ') {
+      if (!value) {
+        return 0
+      }
+
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator)
     },
   }

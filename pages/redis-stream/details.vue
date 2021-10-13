@@ -54,14 +54,14 @@
       class="elevation-1 mt-5 expandable-table"
     >
       <!-- 766662986*(1e-9) -->
-      <template v-slot:item.LastDeliveredDuration="{ value }">
+      <template #item.LastDeliveredDuration="{ value }">
         {{ value || 0 }}
         <!-- {{ value === 0 ? 0 : (value * 1e-9).toFixed(2) }}s -->
       </template>
-      <template v-slot:item.LowerDuration="{ value }">
+      <template #item.LowerDuration="{ value }">
         {{ value || 0 }}
       </template>
-      <template v-slot:item.HigherDuration="{ value }">
+      <template #item.HigherDuration="{ value }">
         {{ value || 0 }}
       </template>
 
@@ -100,30 +100,30 @@
         </td>
       </template>
 
-      <template v-slot:item.Consumers="{ value }">
+      <template #item.Consumers="{ value }">
         <td>{{ value.length }}</td>
       </template>
-      <template v-slot:item.SpeedMilliseconds="{ value }">
-        <td>{{ value.toFixed(2) }}ms</td>
+      <template #item.SpeedMilliseconds="{ value }">
+        <td>{{ value ? value.toFixed(2) : 0 }}ms</td>
       </template>
       <!--  -->
-      <template v-slot:item.SpeedEvents="{ value }">
+      <template #item.SpeedEvents="{ value }">
         <td style="white-space: nowrap">
           {{ $utils.parseThousandsToReadable(value) }}
         </td>
       </template>
 
-      <template v-slot:item.DBQueriesPerEvent="{ value }">
-        <td>{{ value.toFixed(2) }}</td>
+      <template #item.DBQueriesPerEvent="{ value }">
+        <td>{{ value ? value.toFixed(2) : 0 }}</td>
       </template>
-      <template v-slot:item.DBQueriesMillisecondsPerEvent="{ value }">
-        <td>{{ value.toFixed(2) }}ms</td>
+      <template #item.DBQueriesMillisecondsPerEvent="{ value }">
+        <td>{{ value ? value.toFixed(2) : 0 }}ms</td>
       </template>
-      <template v-slot:item.RedisQueriesPerEvent="{ value }">
-        <td>{{ value.toFixed(2) }}</td>
+      <template #item.RedisQueriesPerEvent="{ value }">
+        <td>{{ value ? value.toFixed(2) : 0 }}</td>
       </template>
-      <template v-slot:item.RedisQueriesMillisecondsPerEvent="{ value }">
-        <td>{{ value.toFixed(2) }}ms</td>
+      <template #item.RedisQueriesMillisecondsPerEvent="{ value }">
+        <td>{{ value ? value.toFixed(2) : 0 }}ms</td>
       </template>
     </v-data-table>
   </div>
