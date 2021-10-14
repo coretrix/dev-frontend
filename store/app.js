@@ -4,19 +4,19 @@ export const state = () => ({
 })
 
 export const mutations = {
-  SHOW_NOTIFICATION(state, notification) {
+  SHOW_NOTIFICATION (state, notification) {
     state.notification = notification
   },
-  HIDE_NOTIFICATION(state) {
+  HIDE_NOTIFICATION (state) {
     state.notification = null
   },
-  SET_APP_MODE(state, payload) {
+  SET_APP_MODE (state, payload) {
     state.appMode = payload
-  },
+  }
 }
 
 export const getters = {
-  appMode(state) {
+  appMode (state) {
     return state.appMode
   }
 }

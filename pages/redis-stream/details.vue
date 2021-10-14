@@ -9,7 +9,9 @@
         <v-col cols="12" sm="4">
           <v-card height="100px">
             <v-card-title class="justify-center">
-              <div class="text-center">Stream</div>
+              <div class="text-center">
+                Stream
+              </div>
             </v-card-title>
             <v-card-text>
               <div class="text-center">
@@ -21,7 +23,9 @@
         <v-col cols="12" sm="4">
           <v-card height="100px">
             <v-card-title class="justify-center">
-              <div class="text-center">Len</div>
+              <div class="text-center">
+                Len
+              </div>
             </v-card-title>
             <v-card-text>
               <div class="text-center">
@@ -33,7 +37,9 @@
         <v-col cols="12" sm="4">
           <v-card height="100px">
             <v-card-title class="justify-center">
-              <div class="text-center">RedisPool</div>
+              <div class="text-center">
+                RedisPool
+              </div>
             </v-card-title>
             <v-card-text>
               <div class="text-center">
@@ -70,8 +76,12 @@
           <table width="100%" class="table">
             <thead>
               <tr>
-                <td class="table__td table__td--th px-2 py-1">Name</td>
-                <td class="table__td table__td--th px-2 py-1">Pending</td>
+                <td class="table__td table__td--th px-2 py-1">
+                  Name
+                </td>
+                <td class="table__td table__td--th px-2 py-1">
+                  Pending
+                </td>
                 <!-- <td class="table__td table__td--th px-2 py-1">
                   Average speed last 10000
                 </td>
@@ -82,8 +92,12 @@
             </thead>
             <tbody>
               <tr v-for="(row, key) in item.Consumers" :key="key">
-                <td class="table__td px-2 py-1">{{ row.Name }}</td>
-                <td class="table__td px-2 py-1">{{ row.Pending }}</td>
+                <td class="table__td px-2 py-1">
+                  {{ row.Name }}
+                </td>
+                <td class="table__td px-2 py-1">
+                  {{ row.Pending }}
+                </td>
                 <!-- <td class="table__td px-2 py-1">
                   {{ row.SpeedEventNanoseconds / 1000000 || 0 }}ms
                 </td>
@@ -130,7 +144,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
 type IRedisData = {
   [key: string]: string | boolean | number | object[]
@@ -145,71 +159,71 @@ export default class RedisStreamChild extends Vue {
       text: 'Group Name',
       value: 'Group',
       width: '14%',
-      sortable: false,
+      sortable: false
     },
     {
       text: 'Pending',
       value: 'Pending',
       width: '8%',
-      sortable: false,
+      sortable: false
     },
     {
       text: 'LowerDuration',
       value: 'LowerDuration',
       width: '10%',
-      sortable: false,
+      sortable: false
     },
     {
       text: 'HigherDuration',
       value: 'HigherDuration',
       width: '10%',
-      sortable: false,
+      sortable: false
     },
     {
       text: 'Consumers',
       value: 'Consumers',
       width: '8%',
-      sortable: false,
+      sortable: false
     },
     {
       text: 'Events today',
       value: 'SpeedEvents',
       width: '8%',
-      sortable: false,
+      sortable: false
     },
     {
       text: 'Event consume speed',
       value: 'SpeedMilliseconds',
       width: '12%',
-      sortable: false,
+      sortable: false
     },
     {
       text: 'DBq/event',
       value: 'DBQueriesPerEvent',
       width: '12%',
-      sortable: false,
+      sortable: false
     },
     {
       text: 'DBq ms/event',
       value: 'DBQueriesMillisecondsPerEvent',
       width: '12%',
-      sortable: false,
+      sortable: false
     },
     {
       text: 'Redisq/event',
       value: 'RedisQueriesPerEvent',
       width: '12%',
-      sortable: false,
+      sortable: false
     },
     {
       text: 'Redisq ms/event',
       value: 'RedisQueriesMillisecondsPerEvent',
       width: '12%',
-      sortable: false,
-    },
+      sortable: false
+    }
   ]
 
-  get scheme() {
+  get scheme () {
     const streamName = this.$route.query.stream
     const result = this.redisData.filter((stream) => {
       return stream.Stream === streamName
@@ -217,10 +231,12 @@ export default class RedisStreamChild extends Vue {
 
     return result[0]
   }
-  get groupItems() {
+
+  get groupItems () {
     return this.scheme?.Groups
   }
-  get expanded() {
+
+  get expanded () {
     return this.scheme?.Groups
   }
 }

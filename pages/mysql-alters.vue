@@ -11,7 +11,9 @@
         </template>
         <span class="white--text text-caption">Refresh</span>
       </v-tooltip>
-      <v-btn color="primary" @click="confirm">Execute</v-btn>
+      <v-btn color="primary" @click="confirm">
+        Execute
+      </v-btn>
     </v-row>
     <v-card class="mt-5">
       <v-card-text>
@@ -32,24 +34,25 @@
 
 <script lang="ts">
 import { mdiRefresh, mdiLoading } from '@mdi/js'
-import { Component, Ref, Vue } from 'nuxt-property-decorator';
+import { Component, Ref, Vue } from 'nuxt-property-decorator'
 import CoreConfirmation from '~/components/core/Confirmation.vue'
 
 @Component
 export default class MysqlAlters extends Vue {
-  async fetch() {
+  async fetch () {
     await this.fetchData()
   }
 
   icons = {
     mdiRefresh,
-    mdiLoading,
+    mdiLoading
   }
+
   responseData = []
   loading = {}
   @Ref('confirmationModal') readonly confirmationModal!:CoreConfirmation
 
-  async fetchData() {
+  async fetchData () {
     await this.$axios
       .get('/dev/alters/')
       .then((response) => {
@@ -59,11 +62,12 @@ export default class MysqlAlters extends Vue {
         console.error(error)
         this.$notification.show({
           type: 'error',
-          message: error,
+          message: error
         })
       })
   }
-  async execute() {
+
+  async execute () {
     await this.$axios
       .get('/dev/alters/?force=1')
       .then((response) => {
@@ -71,24 +75,24 @@ export default class MysqlAlters extends Vue {
         this.responseData = response.data.Result
         this.$notification.show({
           type: 'success',
-          message: 'Success',
+          message: 'Success'
         })
       })
       .catch((error) => {
         console.error(error)
         this.$notification.show({
           type: 'error',
-          message: error,
+          message: error
         })
       })
       .then(() => {})
   }
 
-  confirm() {
+  confirm () {
     this.confirmationModal
       .show({
         title: 'Wait!!!',
-        message: 'Are you sure you want to proceed? It cannot be undone.',
+        message: 'Are you sure you want to proceed? It cannot be undone.'
       })
       .then((result: any) => {
         if (result) {

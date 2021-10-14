@@ -6,27 +6,29 @@
     <h1 v-else>
       {{ otherError }}
     </h1>
-    <NuxtLink to="/">Home page</NuxtLink>
+    <NuxtLink to="/">
+      Home page
+    </NuxtLink>
   </v-app>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
 @Component({
-  layout: 'empty',
+  layout: 'empty'
 })
 export default class ErrorLayout extends Vue {
   @Prop({ default: null }) readonly appclass!: Object
-  @Prop({default: null}) readonly error!: any
+  @Prop({ default: null }) readonly error!: any
 
   pageNotFound: string = '404 Not Found'
   otherError:string = 'An error occurred'
 
-  head() {
+  head () {
     const title = this.error?.statusCode === 404 ? this.pageNotFound : this.otherError
     return {
-      title,
+      title
     }
   }
 }

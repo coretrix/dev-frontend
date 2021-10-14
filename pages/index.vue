@@ -27,7 +27,7 @@
                 color="white"
                 size="20"
                 class="mb-4"
-              ></v-progress-circular>
+              />
             </template>
             <h2>
               {{ action.Label }}
@@ -54,14 +54,14 @@ export default class IndexPage extends Vue {
     mdiBroom,
     mdiCached,
     mdiLoading,
-    mdiCalculator,
+    mdiCalculator
   }
 
-  async fetch() {
-    this.fetchData()
+  async fetch () {
+    await this.fetchData()
   }
 
-  async fetchData() {
+  async fetchData () {
     await this.$axios
       .get('/dev/action-list/')
       .then((response: any) => {
@@ -72,7 +72,7 @@ export default class IndexPage extends Vue {
       })
   }
 
-  async execute(apiURL: string, index: number) {
+  async execute (apiURL: string, index: number) {
     this.$set(this.loading, index, true)
     this.loading[index] = true
     await this.$axios
@@ -80,13 +80,13 @@ export default class IndexPage extends Vue {
       .then(() => {
         this.$notification.show({
           type: 'success',
-          message: 'Success',
+          message: 'Success'
         })
       })
       .catch((error) => {
         this.$notification.show({
           type: 'error',
-          message: error,
+          message: error
         })
       })
       .then(() => {
@@ -97,11 +97,11 @@ export default class IndexPage extends Vue {
 
   @Ref('confirmationModal') readonly confirmationModal!: Confirmation
 
-  confirm(apiURL: string, index: number) {
+  confirm (apiURL: string, index: number) {
     this.confirmationModal
-    ?.show({
+      ?.show({
         title: 'Wait!!!',
-        message: 'Are you sure you want to proceed? It cannot be undone.',
+        message: 'Are you sure you want to proceed? It cannot be undone.'
       })
       .then((result: any) => {
         if (result) {

@@ -15,7 +15,7 @@ const axiosPlugin:Plugin = ({ $axios, $notification, redirect, $auth }) => {
     if (!code) {
       $notification.show({
         type: 'error',
-        message: 'Oops, something went wrong.',
+        message: 'Oops, something went wrong.'
       })
     }
 
@@ -29,7 +29,7 @@ const axiosPlugin:Plugin = ({ $axios, $notification, redirect, $auth }) => {
         if (!error.GlobalError && !error.FieldsError) {
           $notification.show({
             type: 'error',
-            message: error.response,
+            message: error.response
           })
         }
 
@@ -48,8 +48,8 @@ const axiosPlugin:Plugin = ({ $axios, $notification, redirect, $auth }) => {
             {},
             {
               headers: {
-                Authorization: localStorage.getItem('RefreshToken'),
-              },
+                Authorization: localStorage.getItem('RefreshToken')
+              }
             }
           )
 
@@ -66,7 +66,7 @@ const axiosPlugin:Plugin = ({ $axios, $notification, redirect, $auth }) => {
                 $auth.logout()
                 $notification.show({
                   type: 'error',
-                  message: e.GlobalError || e,
+                  message: e.GlobalError || e
                 })
               })
           }

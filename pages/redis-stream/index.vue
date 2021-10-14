@@ -35,7 +35,9 @@
               {{ $utils.parseThousandsToReadable(entry.Len) }}
             </div>
             <v-card-text class="mt-auto pt-2">
-              <div class="text-center stream">{{ entry.Stream }}</div>
+              <div class="text-center stream">
+                {{ entry.Stream }}
+              </div>
             </v-card-text>
           </v-card>
           <v-btn
@@ -47,7 +49,9 @@
               confirm()
             "
           >
-            <v-icon small>{{ icons.mdiDelete }}</v-icon>
+            <v-icon small>
+              {{ icons.mdiDelete }}
+            </v-icon>
           </v-btn>
         </div>
       </v-col>
@@ -58,7 +62,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Ref } from 'nuxt-property-decorator';
+import { Component, Vue, Prop, Ref } from 'nuxt-property-decorator'
 import { mdiDelete } from '@mdi/js'
 import CoreConfirmation from '~/components/core/Confirmation.vue'
 
@@ -73,33 +77,35 @@ export default class RedisStreamIndex extends Vue {
   @Ref('secondConfirmModal') readonly secondConfirmModal!:CoreConfirmation
 
   icons = {
-    mdiDelete,
+    mdiDelete
   }
+
   dialog = false
   secondDialog = false
   focusStream = undefined
 
-  async removeStream():Promise<void> {
+  async removeStream ():Promise<void> {
     await this.$axios
       .delete(`/dev/delete-redis-stream/${this.focusStream}/`)
       .then(() => {
         this.$notification.show({
           type: 'success',
-          message: 'Success',
+          message: 'Success'
         })
       })
       .catch((error) => {
         this.$notification.show({
           type: 'error',
-          message: error,
+          message: error
         })
       })
   }
-  confirm():void {
+
+  confirm ():void {
     this.confirmationModal
       .show({
         title: 'Delete stream?',
-        message: `Are you sure you want to delete ${this.focusStream}?`,
+        message: `Are you sure you want to delete ${this.focusStream}?`
       })
       .then((result) => {
         if (result) {
@@ -107,11 +113,12 @@ export default class RedisStreamIndex extends Vue {
         }
       })
   }
-  secondConfirm():void {
+
+  secondConfirm ():void {
     this.secondConfirmModal
       .show({
         title: 'Wait!!!',
-        message: `Are you really, really sure you want to delete ${this.focusStream}? It cannot be undone.`,
+        message: `Are you really, really sure you want to delete ${this.focusStream}? It cannot be undone.`
       })
       .then((result) => {
         if (result) {

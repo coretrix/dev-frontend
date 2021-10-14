@@ -15,25 +15,25 @@ type IAuth = {
 
 const authPlugin:Plugin = ({ app }, inject) => {
   const auth:IAuth = {
-    isLoggedIn() {
+    isLoggedIn () {
       return !!localStorage.getItem('Token')
     },
-    login(tokens: AuthPayload) {
+    login (tokens: AuthPayload) {
       auth.clearLocalStorage()
       auth.setTokens(tokens)
     },
-    setTokens(tokens: AuthPayload) {
+    setTokens (tokens: AuthPayload) {
       localStorage.setItem('Token', tokens.Token)
       localStorage.setItem('RefreshToken', tokens.RefreshToken)
     },
-    clearLocalStorage() {
+    clearLocalStorage () {
       localStorage.removeItem('Token')
       localStorage.removeItem('RefreshToken')
     },
-    logout() {
+    logout () {
       auth.clearLocalStorage()
       app?.router?.push('/login')
-    },
+    }
   }
   inject('auth', auth)
 }

@@ -5,7 +5,9 @@
     </v-btn>
     <v-card v-if="details" class="mt-5">
       <v-card-title>
-        <h1 class="m-0 mb-5">{{ details.Name }}</h1>
+        <h1 class="m-0 mb-5">
+          {{ details.Name }}
+        </h1>
       </v-card-title>
       <v-card-text>
         <table class="text-left table">
@@ -37,14 +39,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component({
-  async asyncData({ route, $axios }) {
+  async asyncData ({ route, $axios }) {
     try {
       const name = route.query.name
 
-      if (!name) return
+      if (!name) { return }
 
       const { Result: details } = await $axios.$get(
         `/dev/redis-search/index/info/${name}/`

@@ -11,7 +11,9 @@
         </template>
         <span class="white--text text-caption">Refresh</span>
       </v-tooltip>
-      <v-btn color="primary" @click="confirm">Execute</v-btn>
+      <v-btn color="primary" @click="confirm">
+        Execute
+      </v-btn>
     </v-row>
     <v-card class="mt-5">
       <v-card-text>
@@ -31,12 +33,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref } from 'nuxt-property-decorator';
+import { Component, Vue, Ref } from 'nuxt-property-decorator'
 import { mdiRefresh, mdiLoading } from '@mdi/js'
 import CoreConfirmation from '~/components/core/Confirmation.vue'
 
 @Component({
-  middleware({ app, redirect }) {
+  middleware ({ app, redirect }) {
     console.log(!app.$config.showRedisSearch)
     if (!app.$config.showRedisSearch) {
       return redirect('/')
@@ -44,19 +46,20 @@ import CoreConfirmation from '~/components/core/Confirmation.vue'
   }
 })
 export default class RedisSearchAlters extends Vue {
-  async fetch() {
+  async fetch () {
     await this.fetchData()
   }
 
   icons = {
     mdiRefresh,
-    mdiLoading,
+    mdiLoading
   }
+
   responseData = undefined
   loading = {}
   @Ref('confirmationModal') readonly confirmationModal!:CoreConfirmation
 
-  async fetchData() {
+  async fetchData () {
     await this.$axios
       .get('/dev/redis-search/alters/')
       .then((response) => {
@@ -66,7 +69,8 @@ export default class RedisSearchAlters extends Vue {
         console.error(error)
       })
   }
-  async execute() {
+
+  async execute () {
     await this.$axios
       .get('/dev/redis-search/alters/?force=1')
       .then((response) => {
@@ -74,24 +78,24 @@ export default class RedisSearchAlters extends Vue {
         this.responseData = response.data.Result
         this.$notification.show({
           type: 'success',
-          message: 'Success',
+          message: 'Success'
         })
       })
       .catch((error) => {
         console.error(error)
         this.$notification.show({
           type: 'error',
-          message: error,
+          message: error
         })
       })
       .then(() => {})
   }
 
-  confirm() {
+  confirm () {
     this.confirmationModal
       .show({
         title: 'Wait!!!',
-        message: 'Are you sure you want to proceed? It cannot be undone.',
+        message: 'Are you sure you want to proceed? It cannot be undone.'
       })
       .then((result: any) => {
         if (result) {

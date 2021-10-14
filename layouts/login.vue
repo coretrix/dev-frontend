@@ -8,10 +8,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue} from 'nuxt-property-decorator';
+import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component({
-  middleware: 'unauth',
+  middleware: 'unauth'
 })
 export default class LoginLayout extends Vue {}
 </script>

@@ -14,39 +14,41 @@
       }"
       elevate-on-scroll
     >
-      <v-spacer></v-spacer>
-        <h1 v-if="$store.state.app.appMode || $config.projectName" class="white--text">
-          {{ $config.projectName }}
-          <v-chip
-            class="ma-2 text-capitalize"
-            label
-            outlined
-            color="white"
-            height="36px"
-          >
+      <v-spacer />
+      <h1 v-if="$store.state.app.appMode || $config.projectName" class="white--text">
+        {{ $config.projectName }}
+        <v-chip
+          class="ma-2 text-capitalize"
+          label
+          outlined
+          color="white"
+          height="36px"
+        >
           <span class="app-bar__chip">
-            {{$store.state.app.appMode}}
+            {{ $store.state.app.appMode }}
           </span>
-          </v-chip>
+        </v-chip>
 
-          <v-chip
-            v-if="false"
-            class="ma-2 white text-capitalize"
-            label
-            height="36px"
-            :class="{
-              'green--text': $store.state.app.appMode === 'dev',
-              'orange--text': $store.state.app.appMode === 'demo',
-              'red--text': $store.state.app.appMode === 'dev'
-            }"
-          >
+        <v-chip
+          v-if="false"
+          class="ma-2 white text-capitalize"
+          label
+          height="36px"
+          :class="{
+            'green--text': $store.state.app.appMode === 'dev',
+            'orange--text': $store.state.app.appMode === 'demo',
+            'red--text': $store.state.app.appMode === 'dev'
+          }"
+        >
           <span class="app-bar__chip">
-            {{$store.state.app.appMode}}
+            {{ $store.state.app.appMode }}
           </span>
-          </v-chip>
-        </h1>
-      <v-spacer></v-spacer>
-      <v-btn v-if="isMobile" type="button" @click="drawer = !drawer">Menu</v-btn>
+        </v-chip>
+      </h1>
+      <v-spacer />
+      <v-btn v-if="isMobile" type="button" @click="drawer = !drawer">
+        Menu
+      </v-btn>
     </v-app-bar>
     <v-navigation-drawer
       v-model="drawer"
@@ -61,7 +63,9 @@
     >
       <div class="c-menu__wrapper">
         <div class="c-menu__logo-container">
-          <h1 v-show="!configDrawer['mini-variant']" class="m0 primary--text">Dev Panel</h1>
+          <h1 v-show="!configDrawer['mini-variant']" class="m0 primary--text">
+            Dev Panel
+          </h1>
 
           <button
             v-if="!isMobile"
@@ -109,7 +113,9 @@
               </v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <div class="c-menu__list-text">Logout</div>
+              <div class="c-menu__list-text">
+                Logout
+              </div>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -119,7 +125,7 @@
         >
           <!-- <span>Powered by <span class="coretrix__logo--text">CoreTrix</span></span> -->
           <span class="d-flex align-center">Powered by
-            <v-img class="ml-1" :src="require('~/static/Coretrix_Logo.png')" contain max-width="100" position="left center"></v-img>
+            <v-img class="ml-1" :src="require('~/static/Coretrix_Logo.png')" contain max-width="100" position="left center" />
           </span>
         </div>
       </div>
@@ -134,9 +140,9 @@ import {
   mdiSpeedometer,
   mdiPlaylistPlay,
   mdiAlertDecagramOutline,
-  mdiTable,
+  mdiTable
 } from '@mdi/js'
-import {Vue, Component, Watch, Prop, Emit} from 'nuxt-property-decorator'
+import { Vue, Component, Watch, Prop, Emit } from 'nuxt-property-decorator'
 
 type IAppClass = {
   [key: string]: String | Boolean
@@ -154,8 +160,9 @@ export default class NavigationMenu extends Vue {
     fixed: false,
     'mini-variant': true,
     isMobile: true,
-    right: false,
+    right: false
   }
+
   drawer: Boolean = true
   email: string | null = localStorage.getItem('userEmail')
   icons: Object = {
@@ -164,10 +171,10 @@ export default class NavigationMenu extends Vue {
     mdiSpeedometer,
     mdiAlertDecagramOutline,
     mdiPlaylistPlay,
-    mdiTable,
+    mdiTable
   }
 
-  get filteredGeneralMenu() {
+  get filteredGeneralMenu () {
     const filteredMenu = this.generalMenu.map((item: any) => {
       if (item.iconsSelector) {
         item.iconsSelector.updateIconData(item)
@@ -183,11 +190,11 @@ export default class NavigationMenu extends Vue {
     })
   }
 
-  get isMobile() {
+  get isMobile () {
     return this.$vuetify.breakpoint.mobile
   }
 
-  get organizationLogo() {
+  get organizationLogo () {
     return ''
     // return (
     //   this.$store.state.localStorage.userData?.Personalization?.Logo ||
@@ -195,9 +202,8 @@ export default class NavigationMenu extends Vue {
     // )
   }
 
-
   @Watch('isMobile')
-  updateDrawer() {
+  updateDrawer () {
     if (this.isMobile) {
       this.configDrawer = {
         'mobile-breakpoint': this.$vuetify.breakpoint.mobileBreakpoint,
@@ -205,7 +211,7 @@ export default class NavigationMenu extends Vue {
         fixed: true,
         'mini-variant': false,
         isMobile: true,
-        right: true,
+        right: true
       }
       this.drawer = false
     } else {
@@ -215,69 +221,69 @@ export default class NavigationMenu extends Vue {
         fixed: false,
         'mini-variant': false,
         isMobile: false,
-        right: false,
+        right: false
       }
       this.drawer = true
     }
   }
 
   @Watch('drawer')
-  watchDrawer() {
+  watchDrawer () {
     const appClass:IAppClass = Object.assign({}, this.appclass)
     appClass['bl-menu-drawer-open'] = this.drawer
     this.updateAppClass(appClass)
   }
 
   @Emit('update:appClass')
-  updateAppClass(e: any) {
+  updateAppClass (e: any) {
     return e
   }
 
-  created() {
+  created () {
     this.generalMenu = [
       {
         location: '/',
         name: 'Dashboard',
         icon: 'mdiViewDashboard',
-        isVisible: true,
+        isVisible: true
       },
       {
         location: '/redis-stats',
         name: 'Redis Stats',
         icon: 'mdiSpeedometer',
-        isVisible: true,
+        isVisible: true
       },
       {
         location: '/redis-search-indexes',
         name: 'Redis Search Indexes',
         icon: 'mdiSpeedometer',
-        isVisible: true,
+        isVisible: true
       },
       {
         location: '/redis-stream',
         name: 'Redis Stream',
         icon: 'mdiPlaylistPlay',
-        isVisible: true,
+        isVisible: true
       },
       {
         location: '/mysql-alters',
         name: 'MySQL Alters',
         icon: 'mdiTable',
-        isVisible: true,
+        isVisible: true
       },
       {
         location: '/errors-log',
         name: 'Errors log',
         icon: 'mdiAlertDecagramOutline',
-        isVisible: true,
-      },
+        isVisible: true
+      }
     ]
     if (this.$config.showRedisSearch) {
       this.generalMenu.splice(this.generalMenu.length - 2, 0, {
         location: '/redis-search-alters',
         name: 'Redis Search Alters',
         icon: 'mdiTable',
-        isVisible: true,
+        isVisible: true
       })
     }
     this.updateDrawer()

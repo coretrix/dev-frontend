@@ -16,7 +16,9 @@
         v-bind="attrs"
         @click="$notification.hide()"
       >
-        <v-icon class="notification-close-icon">{{ icons.mdiClose }}</v-icon>
+        <v-icon class="notification-close-icon">
+          {{ icons.mdiClose }}
+        </v-icon>
       </v-btn>
     </template>
   </v-snackbar>
@@ -24,27 +26,28 @@
 
 <script lang="ts">
 import { mdiClose } from '@mdi/js'
-import { Vue, Component } from 'nuxt-property-decorator';
+import { Vue, Component } from 'nuxt-property-decorator'
 import NotificationTypes from '~/interface/notifications'
 
 @Component
 export default class Notification extends Vue {
   icons:Object = {
-    mdiClose,
+    mdiClose
   }
+
   show:Boolean = false
   notification:NotificationTypes = {
     type: '',
     message: ''
   }
 
-  created() {
+  created () {
     this.$store.subscribe((mutation: any) => {
-      if (mutation.type === `app/SHOW_NOTIFICATION`) {
+      if (mutation.type === 'app/SHOW_NOTIFICATION') {
         this.notification = mutation.payload
         this.show = true
       }
-      if (mutation.type === `app/HIDE_NOTIFICATION`) {
+      if (mutation.type === 'app/HIDE_NOTIFICATION') {
         this.show = false
       }
     })

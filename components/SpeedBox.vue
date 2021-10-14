@@ -8,21 +8,21 @@
           transform: `rotate(${Math.round((speed * 180) / 100) - 45}deg)`,
         },
       ]"
-    ></div>
-    <div class="speedbox__groove"></div>
+    />
+    <div class="speedbox__groove" />
     <div class="speedbox__odo">
       <h2>{{ speed }}%</h2>
     </div>
-    <div class="speedbox__base"></div>
+    <div class="speedbox__base" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
 @Component
 export default class SpeedBox extends Vue {
-  @Prop({default: undefined}) readonly speed!:number
+  @Prop({ default: undefined }) readonly speed!:number
 }
 </script>
 

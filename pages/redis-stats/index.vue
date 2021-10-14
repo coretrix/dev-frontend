@@ -40,19 +40,27 @@
                 <template v-slot:top>
                   <div class="px-3 py-2 text-center">
                     <div>
-                      <div class="text-sm">total_system_memory</div>
+                      <div class="text-sm">
+                        total_system_memory
+                      </div>
                       <h4>{{ row['total_system_memory_human'] }}</h4>
                     </div>
                     <div>
-                      <div class="text-sm">maxmemory_human</div>
+                      <div class="text-sm">
+                        maxmemory_human
+                      </div>
                       <h4>{{ row['maxmemory_human'] }}</h4>
                     </div>
                     <div>
-                      <div class="text-sm">used_memory</div>
+                      <div class="text-sm">
+                        used_memory
+                      </div>
                       <h4>{{ row['used_memory_human'] }}</h4>
                     </div>
                     <div>
-                      <div class="text-sm">used_memory_peak</div>
+                      <div class="text-sm">
+                        used_memory_peak
+                      </div>
                       <h4>{{ row['used_memory_peak_human'] }}</h4>
                     </div>
                   </div>
@@ -106,7 +114,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import { mdiCodeBraces } from '@mdi/js'
 
 type IRedisData = {
@@ -129,8 +137,9 @@ type IRestructuredElObj = {
 export default class RedisIndex extends Vue {
   @Prop({ default: [] }) readonly redisData!:IRedisData
   icons = {
-    mdiCodeBraces,
+    mdiCodeBraces
   }
+
   redisKeys = [
     'active_defrag_hits',
     'active_defrag_key_hits',
@@ -152,21 +161,24 @@ export default class RedisIndex extends Vue {
 
     'total_system_memory_human',
     'used_memory_human',
-    'used_memory_peak_human',
+    'used_memory_peak_human'
   ]
+
   activeKeys = [
     'active_defrag_hits',
     'active_defrag_key_hits',
     'active_defrag_key_misses',
     'active_defrag_misses',
-    'active_defrag_running',
+    'active_defrag_running'
   ]
+
   connectionKeys = [
     'connected_clients',
     'blocked_clients',
     'clients_in_timeout_table',
-    'connected_slaves',
+    'connected_slaves'
   ]
+
   dbKeys = []
   putsbKeys = ['pubsub_channels', 'pubsub_patterns']
   memoryUsageKeys = [
@@ -178,13 +190,13 @@ export default class RedisIndex extends Vue {
     'used_memory_peak',
     'total_system_memory_human',
     'used_memory_human',
-    'used_memory_peak_human',
+    'used_memory_peak_human'
   ]
 
-  get filteredData() {
+  get filteredData () {
     const result = this.redisData.map((element) => {
       const tempElement = Object.entries(element.Info).filter(
-        ([key, value]) => {
+        ([key]) => {
           return (
             this.redisKeys.includes(key) ||
             (key.includes('db') && key.indexOf('db') === 0)
@@ -197,7 +209,7 @@ export default class RedisIndex extends Vue {
         connectionKeys: {},
         putsbKeys: {},
         memoryUsageKeys: {},
-        dbKeys: {},
+        dbKeys: {}
       }
       tempElement.forEach(([key, value]) => {
         if (this.activeKeys.includes(key)) {
@@ -215,7 +227,7 @@ export default class RedisIndex extends Vue {
 
       return {
         RedisPool: element.RedisPool,
-        Info: restructuredEl,
+        Info: restructuredEl
       }
     })
 

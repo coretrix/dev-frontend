@@ -13,17 +13,17 @@ import { Component } from 'nuxt-property-decorator';
 import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component({
-  middleware: 'logged',
+  middleware: 'logged'
 })
 export default class DefaultLayout extends Vue {
-  async fetch() {
-    this.$axios.get('/dev/settings/')
-      .then( ({data}) => {
+  async fetch () {
+    await this.$axios.get('/dev/settings/')
+      .then(({ data }) => {
         const appMode = data.Result.AppMode
         this.$store.commit('app/SET_APP_MODE', appMode)
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error)
       })
   }
 }

@@ -1,4 +1,4 @@
-import { Plugin } from "@nuxt/types"
+import { Plugin } from '@nuxt/types'
 
 type IUtils = {
   parseReadableNanoSeconds(timeInNanoSeconds:number): string | null,
@@ -7,7 +7,7 @@ type IUtils = {
 
 const utilsPlugin:Plugin = (_, inject) => {
   const utils:IUtils = {
-    parseReadableNanoSeconds(timeInNanoSeconds:number) {
+    parseReadableNanoSeconds (timeInNanoSeconds:number) {
       if (!timeInNanoSeconds) {
         return null
       }
@@ -19,18 +19,17 @@ const utilsPlugin:Plugin = (_, inject) => {
 
       return `${h}h ${m}m ${s}s`
     },
-    parseThousandsToReadable(value, separator = ' ') {
+    parseThousandsToReadable (value, separator = ' ') {
       if (!value) {
         return 0
       }
 
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator)
-    },
+    }
   }
 
   inject('utils', utils)
 }
-
 
 declare module 'vue/types/vue' {
   // this.$utils inside Vue components

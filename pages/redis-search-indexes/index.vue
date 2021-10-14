@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>Redis Search Indexes</h2>
-    <v-divider class="my-4"></v-divider>
+    <v-divider class="my-4" />
     <v-data-table
       :headers="headers"
       :items="indexesComputed"
@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref } from 'nuxt-property-decorator';
+import { Component, Vue, Ref } from 'nuxt-property-decorator'
 import { mdiInformationOutline, mdiRefresh } from '@mdi/js'
 import CoreConfirmation from '~/components/core/Confirmation.vue'
 
@@ -65,7 +65,7 @@ type IItem = {
 }
 
 @Component({
-  async asyncData({ $axios }) {
+  async asyncData ({ $axios }) {
     try {
       const { Result: indexes } = await $axios.$get(
         '/dev/redis-search/indexes/'
@@ -85,55 +85,56 @@ export default class RedisSearchIndexesParent extends Vue {
       text: 'Index',
       align: 'start',
       sortable: false,
-      value: 'name',
+      value: 'name'
     },
     {
       text: '',
       align: 'end',
       sortable: false,
-      value: 'actions',
-    },
+      value: 'actions'
+    }
   ]
+
   indexes = []
   loadingIndex:number | null = null
   reindexing = {}
   icons = {
     mdiInformationOutline,
-    mdiRefresh,
+    mdiRefresh
   }
 
-  get indexesComputed() {
-    return this.indexes.map((i) => ({ name: i }))
+  get indexesComputed () {
+    return this.indexes.map(i => ({ name: i }))
   }
 
-  async reindex(item: IItem, index: number) {
+  async reindex (item: IItem, index: number) {
     this.loadingIndex = index
 
     try {
-      const {} = await this.$axios.$get(
+      await this.$axios.$get(
         `/dev/redis-search/force-reindex/${item.name}/`
       )
 
       this.$notification.show({
         type: 'success',
-        message: 'Success',
+        message: 'Success'
       })
     } catch (error) {
       console.error(error)
       this.$notification.show({
         type: 'error',
-        message: error,
+        message: error
       })
     } finally {
       this.loadingIndex = null
     }
   }
 
-  confirm(item: IItem, index: number) {
+  confirm (item: IItem, index: number) {
     this.confirmationModal
       .show({
         title: 'Wait!!!',
-        message: 'Are you sure you want to proceed? It cannot be undone.',
+        message: 'Are you sure you want to proceed? It cannot be undone.'
       })
       .then((result) => {
         if (result) {

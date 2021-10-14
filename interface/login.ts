@@ -8,5 +8,4 @@ interface LoginErrors {
   Password: String
 }
 
-export { LoginData, LoginErrors };
-
+export { LoginData, LoginErrors }

@@ -18,7 +18,7 @@
       :expanded.sync="expanded"
       :hide-default-footer="!items.length"
       :footer-props="{ 'items-per-page-options': [5, 15, 50, 100, -1] }"
-      @click:row="onClickRow"
+      @click:row="onClickRow()"
     >
       <template #top>
         <v-toolbar flat>
@@ -34,7 +34,7 @@
               {{ items.length }}
             </v-chip>
           </v-toolbar-title>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <div class="text-center d-flex align-center justify-space-around">
             <v-tooltip bottom color="grey darken-1" content-class="py-1">
               <template v-slot:activator="{ on, attrs }">
@@ -106,7 +106,9 @@
           <span class="white--text text-caption">Remove error</span>
         </v-tooltip>
       </template>
-      <template #item.lp="{ index }">{{ ++index }}</template>
+      <template #item.lp="{ index }">
+        {{ ++index }}
+      </template>
       <template #item.Time="{ item }">
         <span :id="`err-${item.ID}`">
           {{ new Date(item.Time).toLocaleString() }}
@@ -127,18 +129,26 @@
         <td :colspan="headers.length">
           <v-tabs v-model="tab" background-color="transparent">
             <v-tab>
-              <v-subheader class="text-capitalize">Stack</v-subheader>
+              <v-subheader class="text-capitalize">
+                Stack
+              </v-subheader>
             </v-tab>
             <v-tab :disabled="!item.Request">
-              <v-subheader class="text-capitalize">Request</v-subheader>
+              <v-subheader class="text-capitalize">
+                Request
+              </v-subheader>
             </v-tab>
           </v-tabs>
           <v-tabs-items v-model="tab" class="mb-4 stack-window">
             <v-tab-item>
-              <div class="pb-6 stack">{{ item.Stack }}</div>
+              <div class="pb-6 stack">
+                {{ item.Stack }}
+              </div>
             </v-tab-item>
             <v-tab-item>
-              <div class="pb-6 stack">{{ item.Request }}</div>
+              <div class="pb-6 stack">
+                {{ item.Request }}
+              </div>
             </v-tab-item>
           </v-tabs-items>
         </td>
@@ -153,15 +163,14 @@ import {
   mdiDelete,
   mdiRefresh,
   mdiDeleteAlertOutline,
-  mdiPlaylistPlus,
+  mdiPlaylistPlus
 } from '@mdi/js'
+import { Component, mixins } from 'nuxt-property-decorator'
 import { ApiUtilities } from '~/components/mixins/Global'
-import { Component, mixins } from 'nuxt-property-decorator';
 
 @Component
-export default class ErrorsLog extends mixins( ApiUtilities ) {
-
-  async fetch() {
+export default class ErrorsLog extends mixins(ApiUtilities) {
+  fetch () {
     this.setHeaders()
     this.getErrorsList()
   }
@@ -171,15 +180,16 @@ export default class ErrorsLog extends mixins( ApiUtilities ) {
     mdiDelete,
     mdiRefresh,
     mdiDeleteAlertOutline,
-    mdiPlaylistPlus,
+    mdiPlaylistPlus
   }
+
   headers:any = []
   items:any = []
   expanded:any = []
   tab:number = 0
   isLoading:boolean = false
 
-  created() {
+  created () {
     if (this.$route.hash.substr(0, 5) === '#err-') {
       this.expanded = [
         { ID: this.$route.hash.substr(5) }
@@ -187,25 +197,25 @@ export default class ErrorsLog extends mixins( ApiUtilities ) {
     }
   }
 
-  setHeaders() {
+  setHeaders () {
     this.headers = [
       {
         text: '#',
         align: 'start',
         sortable: false,
         width: '50px',
-        value: 'lp',
+        value: 'lp'
       },
       { text: 'Counter', value: 'Counter', align: 'center' },
       { text: 'Application', value: 'AppName', width: '150px' },
       { text: 'Time', value: 'Time' },
       { text: 'Description', value: 'Description', sortable: false },
       { text: '', value: 'data-table-expand' },
-      { text: '', value: 'actions', sortable: false },
+      { text: '', value: 'actions', sortable: false }
     ]
   }
 
-  getErrorsList(force = false) {
+  getErrorsList (force = false) {
     if (!force && this.isLoading) {
       return false
     }
@@ -224,13 +234,14 @@ export default class ErrorsLog extends mixins( ApiUtilities ) {
       .catch(this.apiOnCatchError)
       .then(this.apiOnFinishRequest)
   }
-  async deleteItem(item:any) {
+
+  async deleteItem (item:any) {
     const confirm = await this.$dialog.confirm({
       title: 'Are you sure?',
       text: 'Delete current error?',
       actions: {
         false: 'Cancel',
-        true: 'Confirm',
+        true: 'Confirm'
       }
     })
     if (confirm) {
@@ -239,7 +250,7 @@ export default class ErrorsLog extends mixins( ApiUtilities ) {
         .then(() => {
           this.$dialog.message.success('Deleted', {
             position: 'botton-right',
-            timeout: 3000,
+            timeout: 3000
           })
           this.getErrorsList(true)
         })
@@ -247,13 +258,14 @@ export default class ErrorsLog extends mixins( ApiUtilities ) {
         .then(this.apiOnFinishRequest)
     }
   }
-  async clearAll() {
+
+  async clearAll () {
     const confirm = await this.$dialog.confirm({
       title: 'Are you sure?',
       text: 'Delete all errors?',
       actions: {
         false: 'Cancel',
-        true: 'Confirm',
+        true: 'Confirm'
       }
     })
     if (confirm) {
@@ -266,7 +278,8 @@ export default class ErrorsLog extends mixins( ApiUtilities ) {
         .then(this.apiOnFinishRequest)
     }
   }
-  generateError() {
+
+  generateError () {
     if (this.isLoading) {
       return false
     }
@@ -278,7 +291,8 @@ export default class ErrorsLog extends mixins( ApiUtilities ) {
       .catch(this.apiOnCatchError)
       .then(this.apiOnFinishRequest)
   }
-  onClickRow(row: any, slotData: any) {
+
+  onClickRow (slotData: any) {
     this.tab = 0
     slotData.expand(!slotData.isExpanded)
   }

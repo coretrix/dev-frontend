@@ -3,7 +3,9 @@
     <div>
       <div class="mb-8">
         <div class="mb-lg-0 text-center primary--text">
-          <h1 class="c-title">Dev Panel</h1>
+          <h1 class="c-title">
+            Dev Panel
+          </h1>
           <span class="c-subtext">
             powered by
             <span class="coretrix__logo--text">CoreTrix</span>
@@ -15,7 +17,7 @@
         <v-card-title class="justify-center p-6">
           <h2>Login</h2>
         </v-card-title>
-        <v-divider class="my-2"></v-divider>
+        <v-divider class="my-2" />
         <v-card-text class="px-6 pb-6">
           <v-form ref="form" v-model="valid">
             <v-row no-gutters>
@@ -28,7 +30,7 @@
                 :error-messages="formErrors.Username"
                 placeholder="Username"
                 outlined
-              ></v-text-field>
+              />
             </v-row>
             <v-row no-gutters>
               <v-text-field
@@ -41,7 +43,7 @@
                 type="password"
                 placeholder="Password"
                 outlined
-              ></v-text-field>
+              />
             </v-row>
             <v-row no-gutters>
               <v-btn
@@ -62,7 +64,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref } from 'nuxt-property-decorator';
+import { Component, Vue, Ref } from 'nuxt-property-decorator'
 import { LoginData, LoginErrors } from '~/interface/login'
 
 @Component({
@@ -72,16 +74,18 @@ import { LoginData, LoginErrors } from '~/interface/login'
 export default class LoginPage extends Vue {
   loginData: LoginData = {
     Username: '',
-    Password: '',
+    Password: ''
   }
+
   formErrors: LoginErrors = {
     Username: '',
-    Password: '',
+    Password: ''
   }
+
   valid:boolean = false
 
   @Ref('form') readonly form!: any
-  async login() {
+  async login () {
     this.form.resetValidation()
     await this.$axios
       .post('/dev/login/', this.loginData)
@@ -98,7 +102,7 @@ export default class LoginPage extends Vue {
         } else if (error.response?.data?.GlobalError) {
           this.$notification.show({
             type: 'error',
-            message: error.response?.data?.GlobalError,
+            message: error.response?.data?.GlobalError
           })
         }
       })

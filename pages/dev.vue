@@ -18,8 +18,7 @@
           <td colspan="2">
             <pre>
             {{ $config.everything }}
-          </pre
-            >
+          </pre>
           </td>
         </tr>
       </tbody>

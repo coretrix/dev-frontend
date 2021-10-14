@@ -1,9 +1,13 @@
 <template>
   <div>
-    <v-btn to="/redis-stats" class="mr-4 white--text" color="blue">Back</v-btn>
+    <v-btn to="/redis-stats" class="mr-4 white--text" color="blue">
+      Back
+    </v-btn>
     <v-card v-if="pool" class="mt-5">
       <v-card-title>
-        <h1 class="m-0 mb-5">{{ pool.RedisPool }}</h1>
+        <h1 class="m-0 mb-5">
+          {{ pool.RedisPool }}
+        </h1>
       </v-card-title>
       <v-card-text>
         <table class="text-left table">
@@ -35,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
 type IRedisData = {
   [key: string]: string | boolean | number | object[]
@@ -45,7 +49,7 @@ type IRedisData = {
 export default class RedisStatsChild extends Vue {
   @Prop({ default: [] }) readonly redisData!: IRedisData
 
-  get pool() {
+  get pool () {
     const redisPool = this.$route.query.RedisPool
     const result = this.redisData.find((pool) => {
       return pool.RedisPool === redisPool

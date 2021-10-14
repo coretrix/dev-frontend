@@ -14,11 +14,11 @@ export default {
       {
         name: 'viewport',
         content:
-          'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0',
+          'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'
       },
-      { hid: 'description', name: 'description', content: '' },
+      { hid: 'description', name: 'description', content: '' }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }]
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
@@ -29,8 +29,8 @@ export default {
   // Vue.config (https://nuxtjs.org/guides/configuration-glossary/configuration-vue-config)
   vue: {
     config: {
-      productionTip: false,
-    },
+      productionTip: false
+    }
   },
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
@@ -39,7 +39,7 @@ export default {
     '~/plugins/validate',
     '~/plugins/auth',
     '~/plugins/axios',
-    '~/plugins/utils',
+    '~/plugins/utils'
   ],
 
   // https://nuxtjs.org/guide/runtime-config
@@ -55,13 +55,13 @@ export default {
     dirs: [
       {
         path: '~/components/core/',
-        prefix: 'Core',
+        prefix: 'Core'
       },
       {
         path: '~/components/',
-        prefix: '',
-      },
-    ],
+        prefix: ''
+      }
+    ]
   },
 
   // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
@@ -80,19 +80,19 @@ export default {
     // ],
     // '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
-    'nuxt-typed-vuex',
+    'nuxt-typed-vuex'
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
     '@nuxtjs/axios',
     'nuxt-vuex-localstorage',
-    ['vuetify-dialog/nuxt', { error: { icon: 'mdi-alert-circle' } }],
+    ['vuetify-dialog/nuxt', { error: { icon: 'mdi-alert-circle' } }]
   ],
 
   axios: {
     credentials: true,
-    baseURL: process.env.NUXT_API_BASE_URL || ' https://dev-panel.demo.projectrivers.com/',
+    baseURL: process.env.NUXT_API_BASE_URL || ' https://dev-panel.demo.projectrivers.com/'
   },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
@@ -100,9 +100,9 @@ export default {
     customVariables: ['~/assets/variables.scss'],
     optionsPath: '~/plugins/vuetify.options.ts',
     defaultAssets: false,
-    treeShake: true,
+    treeShake: true
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {},
+  build: {}
 }

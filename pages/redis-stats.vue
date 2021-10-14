@@ -5,18 +5,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
 export default class RedisStatsParent extends Vue {
-  async fetch() {
+  async fetch () {
     await this.fetchData()
   }
 
   redisData = []
   loopRequest = setInterval(this.fetchData, 5000)
 
-  async fetchData() {
+  async fetchData () {
     await this.$axios
       .get('dev/redis-statistics/')
       .then((response) => {
@@ -29,7 +29,7 @@ export default class RedisStatsParent extends Vue {
       })
   }
 
-  beforeRouteLeave(to: string, from: string, next: any) {
+  beforeRouteLeave (_to: string, _from: string, next: any) {
     clearInterval(this.loopRequest)
     next()
   }
