@@ -55,7 +55,7 @@ export default class RedisSearchAlters extends Vue {
     mdiLoading
   }
 
-  responseData = undefined
+  responseData:string[] = []
   loading = {}
   @Ref('confirmationModal') readonly confirmationModal!:CoreConfirmation
 
