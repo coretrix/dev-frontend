@@ -140,7 +140,8 @@ import {
   mdiSpeedometer,
   mdiPlaylistPlay,
   mdiAlertDecagramOutline,
-  mdiTable
+  mdiTable,
+  mdiFeatureSearch
 } from '@mdi/js'
 import { Vue, Component, Watch, Prop, Emit } from 'nuxt-property-decorator'
 
@@ -171,7 +172,8 @@ export default class NavigationMenu extends Vue {
     mdiSpeedometer,
     mdiAlertDecagramOutline,
     mdiPlaylistPlay,
-    mdiTable
+    mdiTable,
+    mdiFeatureSearch
   }
 
   get filteredGeneralMenu () {
@@ -275,6 +277,12 @@ export default class NavigationMenu extends Vue {
         location: '/errors-log',
         name: 'Errors log',
         icon: 'mdiAlertDecagramOutline',
+        isVisible: true
+      },
+      {
+        location: '/feature-flag',
+        name: 'Feature flag',
+        icon: 'mdiFeatureSearch',
         isVisible: true
       }
     ]
