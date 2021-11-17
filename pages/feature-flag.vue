@@ -68,7 +68,12 @@
           'red white--text': !item.Registered && item.Enabled
         }"
       >
-        {{ item.Registered }}
+        <v-icon v-if="item.Registered" color="green">
+          {{ icons.mdiCheckCircle }}
+        </v-icon>
+        <v-icon v-else color="white">
+          {{ icons.mdiCloseCircle }}
+        </v-icon>
       </div>
     </template>
 
@@ -93,7 +98,10 @@
 
 <script lang="ts">
 import {
-  mdiRefresh
+  mdiRefresh,
+  mdiCheckCircle,
+  mdiCloseCircle
+  , mdiClose
 } from '@mdi/js'
 import { Component, mixins } from 'nuxt-property-decorator'
 import { ApiUtilities } from '~/components/mixins/Global'
@@ -108,7 +116,9 @@ type FeatureItem = {
 @Component
 export default class FeatureFlag extends mixins(ApiUtilities) {
   icons:object = {
-    mdiRefresh
+    mdiRefresh,
+    mdiCheckCircle,
+    mdiCloseCircle
   }
 
   headers:Object[] = []
