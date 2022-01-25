@@ -1,6 +1,12 @@
 <template>
   <div>
-    <h2>Redis Search Indexes</h2>
+    <div class="d-flex">
+      <h2>Redis Search Indexes</h2>
+      <v-spacer />
+      <v-btn color="primary" :loading="loadingAll" :disabled="loadingAll" @click="confirmAll()">
+        Reindex All
+      </v-btn>
+    </div>
     <v-divider class="my-4" />
     <v-data-table
       :headers="headers"
@@ -32,8 +38,8 @@
         <v-tooltip bottom color="grey darken-1" content-class="py-1">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              :loading="loadingIndex === index"
-              :disabled="loadingIndex === index"
+              :loading="loadingIndex === index || loadingAll"
+              :disabled="loadingIndex === index || loadingAll"
               icon
               dark
               color="primary"
@@ -97,6 +103,7 @@ export default class RedisSearchIndexesParent extends Vue {
 
   indexes = []
   loadingIndex:number | null = null
+  loadingAll:boolean = false
   reindexing = {}
   icons = {
     mdiInformationOutline,
@@ -130,6 +137,31 @@ export default class RedisSearchIndexesParent extends Vue {
     }
   }
 
+  async reindexAll () {
+    // dev/redis-search/force-reindex-all/
+    console.log(1111)
+    this.loadingAll = true
+
+    try {
+      await this.$axios.$get(
+        '/dev/redis-search/force-reindex-all/'
+      )
+
+      this.$notification.show({
+        type: 'success',
+        message: 'Success'
+      })
+    } catch (error) {
+      console.error(error)
+      this.$notification.show({
+        type: 'error',
+        message: error
+      })
+    } finally {
+      this.loadingAll = false
+    }
+  }
+
   confirm (item: IItem, index: number) {
     this.confirmationModal
       .show({
@@ -139,6 +171,19 @@ export default class RedisSearchIndexesParent extends Vue {
       .then((result) => {
         if (result) {
           this.reindex(item, index)
+        }
+      })
+  }
+
+  confirmAll () {
+    this.confirmationModal
+      .show({
+        title: 'Wait!!!',
+        message: 'Are you sure you want to proceed? It cannot be undone.'
+      })
+      .then((result) => {
+        if (result) {
+          this.reindexAll()
         }
       })
   }
