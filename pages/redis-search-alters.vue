@@ -18,13 +18,29 @@
     <v-card class="mt-5">
       <v-card-text>
         <div
-          v-for="(query, index) in responseData"
+          v-for="(alter, index) in responseData"
           :key="index"
           :class="{ 'mt-5': index !== 0 }"
         >
-          <code>
-            {{ query }}
-          </code>
+          <template v-if="alter.Query">
+            <code>
+              {{ alter.Query }}
+            </code>
+
+            <div class="mt-2">
+              <div class=" pa-1 rounded p-comment">
+                {{ alter.Changes }}
+              </div>
+            </div>
+
+            <v-divider class="mt-5" />
+          </template>
+
+          <template v-else>
+            <code>
+              {{ alter }}
+            </code>
+          </template>
         </div>
       </v-card-text>
     </v-card>
@@ -36,6 +52,11 @@
 import { Component, Vue, Ref } from 'nuxt-property-decorator'
 import { mdiRefresh, mdiLoading } from '@mdi/js'
 import CoreConfirmation from '~/components/core/Confirmation.vue'
+
+type IResponseData = {
+  Query: string,
+  Change: string,
+}
 
 @Component({
   middleware ({ app, redirect }) {
@@ -55,7 +76,7 @@ export default class RedisSearchAlters extends Vue {
     mdiLoading
   }
 
-  responseData:string[] = []
+  responseData:IResponseData[] = []
   loading = {}
   @Ref('confirmationModal') readonly confirmationModal!:CoreConfirmation
 
@@ -105,3 +126,12 @@ export default class RedisSearchAlters extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+$primary: var(--v-primary-base);
+
+.p-comment {
+  background: rgba(0, 155, 212, .1);
+  font-size: 10px;
+}
+</style>
