@@ -29,7 +29,7 @@
                   v-bind="attrs"
                   v-on="on"
                 >
-                  <v-icon size="18px" @click="getErrorsList(false)">
+                  <v-icon size="18px" @click="getFeaturesList()">
                     {{ icons.mdiRefresh }}
                   </v-icon>
                 </v-btn>
@@ -105,7 +105,6 @@ import {
   mdiRefresh,
   mdiCheckCircle,
   mdiCloseCircle
-  , mdiClose
 } from '@mdi/js'
 import { Component, mixins, Ref } from 'nuxt-property-decorator'
 import { ApiUtilities } from '~/components/mixins/Global'
@@ -160,14 +159,14 @@ export default class FeatureFlag extends mixins(ApiUtilities) {
     this.api()
       .get('/dev/feature-flag/list/')
       .then((resp) => {
-        console.log(resp.data)
-
+        const respData = resp.data?.Result
         const rows:object[] = []
+
         if (resp.data?.Result) {
-          Object.keys(resp.data.Result).forEach((key) => {
-            rows.push({ ...resp.data.Result[key], ID: key })
+          Object.keys(respData).forEach((key) => {
+            rows.push({ ...respData[key], ID: key })
           })
-          this.items = resp.data.Result
+          this.items = respData
         }
         this.items = rows
       })
