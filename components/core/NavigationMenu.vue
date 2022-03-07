@@ -61,7 +61,7 @@
       :class="['c-menu', { 'bl-mobile': isMobile }]"
       :right="configDrawer.right"
     >
-      <div class="c-menu__wrapper">
+      <div class="c-menu__wrapper fill-height d-flex flex-column">
         <div class="c-menu__logo-container">
           <h1 v-show="!configDrawer['mini-variant']" class="m0 primary--text">
             Dev Panel
@@ -81,6 +81,7 @@
             "
           />
         </div>
+
         <v-list dense nav class="c-menu__list">
           <v-list-item
             v-for="(menuItem, i) in filteredGeneralMenu"
@@ -101,7 +102,7 @@
           </v-list-item>
         </v-list>
 
-        <v-list dense nav class="c-menu__list mt-auto">
+        <v-list dense nav class="c-menu__list">
           <v-list-item
             v-ripple="{ class: 'primary--text' }"
             :class="['flex-start c-menu__list-item']"
@@ -127,7 +128,14 @@
           <span class="d-flex align-center">Powered by
             <v-img class="ml-1" :src="require('~/static/Coretrix_Logo.png')" contain max-width="100" position="left center" />
           </span>
+          <div class="c-version pa-0 mt-0">
+            {{ `v${$store.state.app.version}` }}
+          </div>
         </div>
+
+        <!-- <div class="c-version mt-auto mb-n7">
+          {{ `v${$store.state.app.version}` }}
+        </div> -->
       </div>
     </v-navigation-drawer>
   </div>

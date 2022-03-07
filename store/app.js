@@ -1,6 +1,7 @@
 export const state = () => ({
   notification: null,
-  appMode: null
+  appMode: null,
+  version: '1.0.0'
 })
 
 export const mutations = {

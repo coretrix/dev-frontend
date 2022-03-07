@@ -1,5 +1,5 @@
 <template>
-  <v-row class="fill-height d-flex justify-center align-center" no-gutters>
+  <v-row class="fill-height d-flex flex-column justify-center align-center" no-gutters>
     <div>
       <div class="mb-8">
         <div class="mb-lg-0 text-center primary--text">
@@ -59,6 +59,10 @@
           </v-form>
         </v-card-text>
       </v-card>
+    </div>
+
+    <div class="c-subtext mt-auto mr-auto mb-n9 ml-n4">
+      {{ `v${$store.state.app.version}` }}
     </div>
   </v-row>
 </template>
