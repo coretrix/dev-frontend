@@ -223,11 +223,11 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
       .get('/error-log/errors/')
       .then((resp) => {
         const rows:object[] = []
-        if (resp.data?.Result) {
-          Object.keys(resp.data.Result).forEach((key) => {
-            rows.push({ ...resp.data.Result[key], ID: key })
+        if (resp.data) {
+          Object.keys(resp.data).forEach((key) => {
+            rows.push({ ...resp.data[key], ID: key })
           })
-          this.items = resp.data.Result
+          this.items = resp.data
         }
         this.items = rows
       })

@@ -21,7 +21,7 @@ export default class RedisStreamParent extends Vue {
       .get('dev/redis-streams/')
       .then((response) => {
         if (response) {
-          this.redisData = response.data.Result
+          this.redisData = response.data
         }
       })
       .catch((error) => {

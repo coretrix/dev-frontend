@@ -73,7 +73,7 @@ type IItem = {
 @Component({
   async asyncData ({ $axios }) {
     try {
-      const { Result: indexes } = await $axios.$get(
+      const indexes = await $axios.$get(
         '/dev/redis-search/indexes/'
       )
 
@@ -111,7 +111,9 @@ export default class RedisSearchIndexesParent extends Vue {
   }
 
   get indexesComputed () {
-    return this.indexes.map(i => ({ name: i }))
+    return this.indexes.map((i) => {
+      return { name: i }
+    })
   }
 
   async reindex (item: IItem, index: number) {

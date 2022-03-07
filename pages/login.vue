@@ -90,7 +90,7 @@ export default class LoginPage extends Vue {
     await this.$axios
       .post('/dev/login/', this.loginData)
       .then((response) => {
-        this.$auth.login(response.data?.Result)
+        this.$auth.login(response.data)
         this.$router.push('/')
       })
       .catch((error) => {

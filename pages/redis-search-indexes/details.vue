@@ -48,7 +48,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
       if (!name) { return }
 
-      const { Result: details } = await $axios.$get(
+      const details = await $axios.$get(
         `/dev/redis-search/index/info/${name}/`
       )
       return { details }

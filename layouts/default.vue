@@ -19,7 +19,7 @@ export default class DefaultLayout extends Vue {
   async fetch () {
     await this.$axios.get('/dev/settings/')
       .then(({ data }) => {
-        const appMode = data.Result.AppMode
+        const appMode = data.AppMode
         this.$store.commit('app/SET_APP_MODE', appMode)
       })
       .catch((error) => {

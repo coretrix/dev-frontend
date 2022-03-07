@@ -21,7 +21,7 @@ export default class RedisStatsParent extends Vue {
       .get('dev/redis-statistics/')
       .then((response) => {
         if (response) {
-          this.redisData = response.data.Result
+          this.redisData = response.data
         }
       })
       .catch((error) => {

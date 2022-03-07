@@ -92,7 +92,7 @@ export default {
 
   axios: {
     credentials: true,
-    baseURL: process.env.NUXT_API_BASE_URL || 'https://dev-panel-api.dev.lys.ice.global/' || ' https://dev-panel.demo.projectrivers.com/'
+    baseURL: process.env.NUXT_API_BASE_URL || 'https://dev-panel-api.dev.multispace.to/' || 'https://dev-panel-api.dev.lys.ice.global/' || ' https://dev-panel.demo.projectrivers.com/'
   },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)

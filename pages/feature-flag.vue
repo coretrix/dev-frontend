@@ -159,10 +159,10 @@ export default class FeatureFlag extends mixins(ApiUtilities) {
     this.api()
       .get('/dev/feature-flag/list/')
       .then((resp) => {
-        const respData = resp.data?.Result
+        const respData = resp.data
         const rows:object[] = []
 
-        if (resp.data?.Result) {
+        if (resp.data) {
           Object.keys(respData).forEach((key) => {
             rows.push({ ...respData[key], ID: key })
           })

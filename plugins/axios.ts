@@ -54,7 +54,7 @@ const axiosPlugin:Plugin = ({ $axios, $notification, redirect, $auth }) => {
           )
 
           if (response.data) {
-            $auth.setTokens(response.data.Result)
+            $auth.setTokens(response.data)
             error.config.headers.Authorization = localStorage.getItem('Token')
             await $axios(error.config)
               .then((resp) => {
