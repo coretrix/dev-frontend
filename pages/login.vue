@@ -1,6 +1,6 @@
 <template>
   <v-row class="fill-height d-flex flex-column justify-center align-center" no-gutters>
-    <div>
+    <div class="mt-auto">
       <div class="mb-8">
         <div class="mb-lg-0 text-center primary--text">
           <h1 class="c-title">
