@@ -8,54 +8,56 @@
       </v-btn>
     </div>
     <v-divider class="my-4" />
-    <v-data-table
-      :headers="headers"
-      :items="indexesComputed"
-      :items-per-page="-1"
-      hide-default-header
-      hide-default-footer
-      class="d-inline-block elevation-1 font-weight-bold"
-    >
-      <template v-slot:item.actions="{ index, item }">
-        <v-tooltip bottom color="grey darken-1" content-class="py-1">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              :to="`/redis-search-indexes/details?name=${item.name}`"
-              icon
-              dark
-              color="primary"
-              class="mr-1"
-              v-bind="attrs"
-              v-on="on"
-            >
-              <v-icon>
-                {{ icons.mdiInformationOutline }}
-              </v-icon>
-            </v-btn>
-          </template>
-          <span class="white--text text-caption">Info</span>
-        </v-tooltip>
-        <v-tooltip bottom color="grey darken-1" content-class="py-1">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              :loading="loadingIndex === index || loadingAll"
-              :disabled="loadingIndex === index || loadingAll"
-              icon
-              dark
-              color="primary"
-              v-bind="attrs"
-              v-on="on"
-              @click="confirm(item, index)"
-            >
-              <v-icon>
-                {{ icons.mdiRefresh }}
-              </v-icon>
-            </v-btn>
-          </template>
-          <span class="white--text text-caption">Re-Index</span>
-        </v-tooltip>
-      </template>
-    </v-data-table>
+    <div>
+      <v-data-table
+        :headers="headers"
+        :items="indexesComputed"
+        :items-per-page="-1"
+        hide-default-header
+        hide-default-footer
+        class="d-inline-block elevation-1 font-weight-bold"
+      >
+        <template v-slot:item.actions="{ index, item }">
+          <v-tooltip bottom color="grey darken-1" content-class="py-1">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                :to="`/redis-search-indexes/details?name=${item.name}`"
+                icon
+                dark
+                color="primary"
+                class="mr-1"
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon>
+                  {{ icons.mdiInformationOutline }}
+                </v-icon>
+              </v-btn>
+            </template>
+            <span class="white--text text-caption">Info</span>
+          </v-tooltip>
+          <v-tooltip bottom color="grey darken-1" content-class="py-1">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                :loading="loadingIndex === index || loadingAll"
+                :disabled="loadingIndex === index || loadingAll"
+                icon
+                dark
+                color="primary"
+                v-bind="attrs"
+                v-on="on"
+                @click="confirm(item, index)"
+              >
+                <v-icon>
+                  {{ icons.mdiRefresh }}
+                </v-icon>
+              </v-btn>
+            </template>
+            <span class="white--text text-caption">Re-Index</span>
+          </v-tooltip>
+        </template>
+      </v-data-table>
+    </div>
 
     <CoreConfirmation ref="confirmationModal" />
   </div>

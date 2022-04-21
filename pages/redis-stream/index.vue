@@ -2,7 +2,7 @@
   <div>
     <v-row v-if="redisData">
       <v-col
-        v-for="entry in redisData"
+        v-for="(entry, index) in redisData"
         :key="entry.stream"
         cols="12"
         sm="4"
@@ -14,39 +14,49 @@
             height="150px"
             class="d-flex flex-column"
           >
-            <h3
-              class="text-center mt-7 len"
-              :class="{
-                'green--text': entry.Minutes < 2 && !entry.Hours,
-                'orange--text':
-                  entry.Minutes >= 2 && entry.Minutes < 5 && !entry.Hours,
-                'red--text': entry.Minutes > 5 || entry.Hours,
-              }"
-            >
-              <span v-if="entry.Hours" class="mx-1">{{ entry.Hours }}h</span>
-              <span v-if="entry.Minutes" class="mx-1">
-                {{ entry.Minutes }}m
-              </span>
-              <span v-if="entry.Seconds" class="mx-1">
-                {{ entry.Seconds }}s
-              </span>
-            </h3>
-            <div v-show="entry.Len >= 100000" class="text-center mt-1">
-              {{ $utils.parseThousandsToReadable(entry.Len) }}
-            </div>
-            <v-card-text class="mt-auto pt-2">
-              <div class="text-center stream">
-                {{ entry.Stream }}
+            <template v-if="loadingIndex !== index">
+              <h3
+                class="text-center mt-7 len"
+                :class="{
+                  'green--text': entry.Minutes < 2 && !entry.Hours,
+                  'orange--text':
+                    entry.Minutes >= 2 && entry.Minutes < 5 && !entry.Hours,
+                  'red--text': entry.Minutes > 5 || entry.Hours,
+                }"
+              >
+                <span v-if="entry.Hours" class="mx-1">{{ entry.Hours }}h</span>
+                <span v-if="entry.Minutes" class="mx-1">
+                  {{ entry.Minutes }}m
+                </span>
+                <span v-if="entry.Seconds" class="mx-1">
+                  {{ entry.Seconds }}s
+                </span>
+              </h3>
+              <div v-show="entry.Len >= 100000" class="text-center mt-1">
+                {{ $utils.parseThousandsToReadable(entry.Len) }}
               </div>
-            </v-card-text>
+              <v-card-text class="mt-auto pt-2">
+                <div class="text-center stream">
+                  {{ entry.Stream }}
+                </div>
+              </v-card-text>
+            </template>
+
+            <div v-else class="fill-height d-flex align-center justify-center">
+              <v-progress-circular
+                indeterminate
+                color="primary"
+              />
+            </div>
           </v-card>
           <v-btn
+            v-if="loadingIndex !== index"
             color="red"
             icon
             class="action-btn"
             @click="
               focusStream = entry.Stream
-              confirm()
+              confirm(index)
             "
           >
             <v-icon small>
@@ -83,8 +93,10 @@ export default class RedisStreamIndex extends Vue {
   dialog = false
   secondDialog = false
   focusStream = undefined
+  loadingIndex:Number | null = null
 
-  async removeStream ():Promise<void> {
+  async removeStream (index: Number):Promise<void> {
+    this.loadingIndex = index
     await this.$axios
       .delete(`/dev/delete-redis-stream/${this.focusStream}/`)
       .then(() => {
@@ -98,10 +110,12 @@ export default class RedisStreamIndex extends Vue {
           type: 'error',
           message: error
         })
+      }).then(() => {
+        this.loadingIndex = null
       })
   }
 
-  confirm ():void {
+  confirm (index: Number):void {
     this.confirmationModal
       .show({
         title: 'Delete stream?',
@@ -109,12 +123,12 @@ export default class RedisStreamIndex extends Vue {
       })
       .then((result) => {
         if (result) {
-          this.secondConfirm()
+          this.secondConfirm(index)
         }
       })
   }
 
-  secondConfirm ():void {
+  secondConfirm (index: Number):void {
     this.secondConfirmModal
       .show({
         title: 'Wait!!!',
@@ -122,7 +136,7 @@ export default class RedisStreamIndex extends Vue {
       })
       .then((result) => {
         if (result) {
-          this.removeStream()
+          this.removeStream(index)
         }
       })
   }

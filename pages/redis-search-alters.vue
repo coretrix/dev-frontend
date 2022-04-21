@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row no-gutters class="text-center d-flex align-center justify-end">
+    <div class="text-center d-flex align-center justify-end shrink">
       <v-tooltip bottom color="grey darken-1" content-class="py-1">
         <template v-slot:activator="{ on, attrs }">
           <v-btn color="primary" dark class="mr-2" v-bind="attrs" v-on="on">
@@ -14,37 +14,50 @@
       <v-btn color="primary" @click="confirm">
         Execute
       </v-btn>
-    </v-row>
-    <v-card class="mt-5">
-      <v-card-text>
-        <div
-          v-for="(alter, index) in responseData"
-          :key="index"
-          :class="{ 'mt-5': index !== 0 }"
-        >
-          <template v-if="alter.Query">
-            <code>
-              {{ alter.Query }}
-            </code>
+    </div>
+    <v-card class="mt-5 grow pa-4 d-flex flex-column">
+      <div v-if="pageLoading" class="ma-auto">
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        />
+      </div>
 
-            <div class="mt-2">
-              <div class=" pa-1 rounded p-comment">
-                {{ alter.Changes }}
-              </div>
-            </div>
-
-            <v-divider class="mt-5" />
-          </template>
-
-          <template v-else>
-            <code>
-              {{ alter }}
-            </code>
-          </template>
+      <template v-else>
+        <div v-if="!responseData.length" class="ma-auto">
+          No data available...
         </div>
-      </v-card-text>
+        <template v-else>
+          <div
+            v-for="(alter, index) in responseData"
+            :key="index"
+            :class="{ 'mt-5': index !== 0 }"
+          >
+            <template v-if="alter.Query">
+              <code>
+                {{ alter.Query }}
+              </code>
+
+              <div class="mt-2">
+                <div class=" pa-1 rounded p-comment">
+                  {{ alter.Changes }}
+                </div>
+              </div>
+
+              <v-divider class="mt-5" />
+            </template>
+
+            <template v-else>
+              <code>
+                {{ alter }}
+              </code>
+            </template>
+          </div>
+          </v-card-text>
+        </template>
+      </template>
+      <CoreConfirmation ref="confirmationModal" />
     </v-card>
-    <CoreConfirmation ref="confirmationModal" />
   </div>
 </template>
 
@@ -77,10 +90,13 @@ export default class RedisSearchAlters extends Vue {
   }
 
   responseData:IResponseData[] = []
+  pageLoading = false
   loading = {}
   @Ref('confirmationModal') readonly confirmationModal!:CoreConfirmation
 
   async fetchData () {
+    this.pageLoading = true
+
     await this.$axios
       .get('/dev/redis-search/alters/')
       .then((response) => {
@@ -88,6 +104,8 @@ export default class RedisSearchAlters extends Vue {
       })
       .catch((error) => {
         console.error(error)
+      }).then(() => {
+        this.pageLoading = false
       })
   }
 

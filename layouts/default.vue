@@ -34,10 +34,15 @@ export default class DefaultLayout extends Vue {
   background-color: #fafafa;
 }
 .r-body {
+  min-height: calc(100vh - 64px);
   padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 
   &.mobile {
     padding-top: 75px;
+  min-height: calc(100vh - 75px);
   }
 }
 </style>
