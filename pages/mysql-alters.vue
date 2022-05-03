@@ -25,7 +25,7 @@
 
       <template v-else>
         <div v-if="!responseData.length" class="ma-auto">
-          No data available...
+          No data available
         </div>
         <template v-else>
           <div
