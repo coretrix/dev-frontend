@@ -41,23 +41,25 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 
-@Component({
-  async asyncData ({ route, $axios }) {
-    try {
-      const name = route.query.name
-
-      if (!name) { return }
-
-      const details = await $axios.$get(
-        `/dev/redis-search/index/info/${name}/`
-      )
-      return { details }
-    } catch (error) {
-      console.error(error)
-    }
-  }
-})
+@Component
 export default class RedisSearchIndexesChild extends Vue {
+  async fetch () {
+    const name = this.$route.query.name
+
+    if (!name) { return }
+
+    await this.$axios
+      .get(`/dev/redis-search/index/info/${name}/`)
+      .then(({ data }) => {
+        if (data) {
+          this.details = data
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
+
   details = null
 }
 </script>

@@ -73,7 +73,6 @@ type IResponseData = {
 
 @Component({
   middleware ({ app, redirect }) {
-    console.log(!app.$config.showRedisSearch)
     if (!app.$config.showRedisSearch) {
       return redirect('/')
     }
@@ -113,7 +112,6 @@ export default class RedisSearchAlters extends Vue {
     await this.$axios
       .get('/dev/redis-search/alters/?force=1')
       .then((response) => {
-        console.log(response)
         this.responseData = response.data
         this.$notification.show({
           type: 'success',

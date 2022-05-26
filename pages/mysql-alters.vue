@@ -89,7 +89,6 @@ export default class MysqlAlters extends Vue {
     await this.$axios
       .get('/dev/alters/?force=1')
       .then((response) => {
-        console.log(response)
         this.responseData = response.data
         this.$notification.show({
           type: 'success',

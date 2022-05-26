@@ -1,6 +1,6 @@
 import { Plugin } from '@nuxt/types'
 
-const axiosPlugin:Plugin = ({ $axios, $notification, redirect, $auth }) => {
+const axiosPlugin:Plugin = ({ $axios, $notification, $auth }) => {
   let isRefreshing = false
 
   $axios.onRequest((config: any) => {
@@ -72,13 +72,13 @@ const axiosPlugin:Plugin = ({ $axios, $notification, redirect, $auth }) => {
           }
         } catch (err) {
           isRefreshing = false
+          // @ts-ignore
           if (err.response && err.response.status !== 401) {
             return
           }
 
           $notification.show({ type: 'error', message: 'ERROR: 401' })
           $auth.logout()
-          return redirect('/login')
         }
         break
       default:

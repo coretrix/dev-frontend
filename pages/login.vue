@@ -49,6 +49,7 @@
               <v-btn
                 color="primary"
                 :disabled="!valid"
+                :loading="loading"
                 width="100%"
                 large
                 @click="login"
@@ -87,15 +88,24 @@ export default class LoginPage extends Vue {
   }
 
   valid:boolean = false
+  loading:boolean = false
 
   @Ref('form') readonly form!: any
   async login () {
+    this.loading = true
+
     this.form.resetValidation()
     await this.$axios
       .post('/dev/login/', this.loginData)
       .then((response) => {
         this.$auth.login(response.data)
-        this.$router.push('/')
+        const queryParams:any = this.$route.query.redirectUrl
+
+        if (queryParams) {
+          this.$router.push(queryParams)
+        } else {
+          this.$router.push('/')
+        }
       })
       .catch((error) => {
         if (error.response?.data?.FieldsError) {
@@ -109,6 +119,9 @@ export default class LoginPage extends Vue {
             message: error.response?.data?.GlobalError
           })
         }
+      })
+      .then(() => {
+        this.loading = false
       })
   }
 }

@@ -106,7 +106,7 @@
           <v-list-item
             v-ripple="{ class: 'primary--text' }"
             :class="['flex-start c-menu__list-item']"
-            @click="$auth.logout()"
+            @click="$auth.logout(true)"
           >
             <v-list-item-icon>
               <v-icon style="color: currentColor">

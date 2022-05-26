@@ -13,7 +13,7 @@ type IAuth = {
   logout(): void,
 }
 
-const authPlugin:Plugin = ({ app }, inject) => {
+const authPlugin:Plugin = ({ app, route }, inject) => {
   const auth:IAuth = {
     isLoggedIn () {
       return !!localStorage.getItem('Token')
@@ -30,9 +30,19 @@ const authPlugin:Plugin = ({ app }, inject) => {
       localStorage.removeItem('Token')
       localStorage.removeItem('RefreshToken')
     },
-    logout () {
+    logout (manual?:boolean) {
       auth.clearLocalStorage()
-      app?.router?.push('/login')
+
+      if (manual) {
+        app?.router?.push('/login')
+      } else {
+        app?.router?.push({
+          path: '/login',
+          query: {
+            redirectUrl: `${window.location.pathname}${window.location.search}`
+          }
+        })
+      }
     }
   }
   inject('auth', auth)

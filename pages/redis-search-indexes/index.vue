@@ -72,20 +72,21 @@ type IItem = {
   [key: string]: string | boolean | number
 }
 
-@Component({
-  async asyncData ({ $axios }) {
-    try {
-      const indexes = await $axios.$get(
-        '/dev/redis-search/indexes/'
-      )
-
-      return { indexes }
-    } catch (error) {
-      console.error(error)
-    }
-  }
-})
+@Component
 export default class RedisSearchIndexesParent extends Vue {
+  async fetch () {
+    await this.$axios
+      .get('/dev/redis-search/indexes/')
+      .then(({ data }) => {
+        if (data) {
+          this.indexes = data
+        }
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
+
   @Ref('confirmationModal') readonly confirmationModal!:CoreConfirmation
 
   headers = [
@@ -142,8 +143,6 @@ export default class RedisSearchIndexesParent extends Vue {
   }
 
   async reindexAll () {
-    // dev/redis-search/force-reindex-all/
-    console.log(1111)
     this.loadingAll = true
 
     try {

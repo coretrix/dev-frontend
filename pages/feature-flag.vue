@@ -194,7 +194,6 @@ export default class FeatureFlag extends mixins(ApiUtilities) {
         Name: item.Name
       })
       .then((resp) => {
-        console.log(resp.data)
         this.$notification.show({
           type: 'success',
           message: `${item.Name} is Enabled`
@@ -213,7 +212,6 @@ export default class FeatureFlag extends mixins(ApiUtilities) {
         Name: item.Name
       })
       .then((resp) => {
-        console.log(resp.data)
         this.$notification.show({
           type: 'success',
           message: `${item.Name} is Disabled`
