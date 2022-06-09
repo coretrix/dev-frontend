@@ -18,7 +18,7 @@
       :expanded.sync="expanded"
       :hide-default-footer="!items.length"
       :footer-props="{ 'items-per-page-options': [5, 15, 50, 100, -1] }"
-      @click:row="onClickRow()"
+      @click:row="onClickRow"
     >
       <template #top>
         <v-toolbar flat>
@@ -159,11 +159,7 @@
 
 <script lang="ts">
 import {
-  mdiEyeOutline,
-  mdiDelete,
-  mdiRefresh,
-  mdiDeleteAlertOutline,
-  mdiPlaylistPlus
+  mdiDelete, mdiDeleteAlertOutline, mdiEyeOutline, mdiPlaylistPlus, mdiRefresh
 } from '@mdi/js'
 import { Component, mixins } from 'nuxt-property-decorator'
 import { ApiUtilities } from '~/components/mixins/Global'
@@ -292,9 +288,15 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
       .then(this.apiOnFinishRequest)
   }
 
-  onClickRow (slotData: any) {
+  onClickRow (slotData?: any) {
+    this.expanded = [
+      { ID: slotData.ID }
+    ]
+
     this.tab = 0
-    slotData.expand(!slotData.isExpanded)
+
+    // This doesnt work for some reason. Perhaps Vuetify docs have not been updated?
+    // slotData.expand(!slotData.isExpanded)
   }
 }
 </script>
