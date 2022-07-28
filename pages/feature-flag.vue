@@ -193,7 +193,7 @@ export default class FeatureFlag extends mixins(ApiUtilities) {
       .post(`/dev/feature-flag/enable/${item.Name}/`, {
         Name: item.Name
       })
-      .then((resp) => {
+      .then(() => {
         this.$notification.show({
           type: 'success',
           message: `${item.Name} is Enabled`
@@ -211,7 +211,7 @@ export default class FeatureFlag extends mixins(ApiUtilities) {
       .post(`/dev/feature-flag/disable/${item.Name}/`, {
         Name: item.Name
       })
-      .then((resp) => {
+      .then(() => {
         this.$notification.show({
           type: 'success',
           message: `${item.Name} is Disabled`
