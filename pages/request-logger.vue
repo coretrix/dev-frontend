@@ -56,7 +56,10 @@
           </tr>
         </thead>
       </template>
-      <template #item.ResponseText="{ value }">
+      <template #item.Request="{ value }">
+        <pre v-if="value"><code>{{ JSON.parse(value.trim()) }}</code></pre>
+      </template>
+      <template #item.Response="{ value }">
         <pre v-if="value"><code>{{ JSON.parse(value.trim()) }}</code></pre>
       </template>
       <template #item.Log="{ value }">
