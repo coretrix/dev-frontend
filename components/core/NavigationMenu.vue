@@ -302,8 +302,9 @@ export default class NavigationMenu extends Vue {
         isVisible: true
       }
     ]
+
     if (this.$config.showRedisSearch) {
-      this.generalMenu.splice(this.generalMenu.length - 2, 0, {
+      this.generalMenu.splice(this.generalMenu.length - 4, 0, {
         location: '/redis-search-alters',
         name: 'Redis Search Alters',
         icon: 'mdiTable',
