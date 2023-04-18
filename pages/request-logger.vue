@@ -57,7 +57,7 @@
         </thead>
       </template>
       <template #item.Request="{ value }">
-        <pre v-if="value"><code>{{ JSON.parse(value.trim()) }}</code></pre>
+        <pre v-if="value"><code>{{ value.trim() }}</code></pre>
       </template>
       <template #item.Response="{ value }">
         <pre v-if="value"><code>{{ JSON.parse(value.trim()) }}</code></pre>
@@ -177,6 +177,7 @@ export default class RequestLogger extends mixins(ApiUtilities) {
       .then(({ data }) => {
         this.headers = data.Columns
         this.items = data.Rows
+        console.log(data.Rows)
         this.totalItems = data.Total
       })
       .catch(this.apiOnCatchError)
