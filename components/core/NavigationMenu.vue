@@ -63,9 +63,11 @@
     >
       <div class="c-menu__wrapper fill-height d-flex flex-column">
         <div class="c-menu__logo-container">
-          <h1 v-show="!configDrawer['mini-variant']" class="m0 primary--text">
-            Dev Panel
-          </h1>
+          <nuxt-link to="/" class="no-decoration">
+            <h1 v-show="!configDrawer['mini-variant']" class="m0 primary--text">
+              Dev Panel
+            </h1>
+          </nuxt-link>
 
           <button
             v-if="!isMobile"
@@ -460,5 +462,9 @@ export default class NavigationMenu extends Vue {
   font-weight: 300;
   color: #737373;
   padding: 0 10px;
+}
+
+.no-decoration {
+  text-decoration: none;
 }
 </style>

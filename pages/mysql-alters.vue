@@ -88,12 +88,14 @@ export default class MysqlAlters extends Vue {
   async execute () {
     await this.$axios
       .get('/dev/alters/?force=1')
-      .then((response) => {
+      .then(async (response) => {
         this.responseData = response.data
         this.$notification.show({
           type: 'success',
           message: 'Success'
         })
+        
+        await this.fetchData()
       })
       .catch((error) => {
         console.error(error)

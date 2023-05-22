@@ -111,12 +111,14 @@ export default class RedisSearchAlters extends Vue {
   async execute () {
     await this.$axios
       .get('/dev/redis-search/alters/?force=1')
-      .then((response) => {
+      .then(async (response) => {
         this.responseData = response.data
         this.$notification.show({
           type: 'success',
           message: 'Success'
         })
+
+        await this.fetchData()
       })
       .catch((error) => {
         console.error(error)
