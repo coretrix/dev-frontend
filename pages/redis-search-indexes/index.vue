@@ -11,17 +11,27 @@
     <div>
       <v-data-table
         :headers="headers"
-        :items="indexesComputed"
+        :items="indexes"
         :items-per-page="-1"
-        hide-default-header
         hide-default-footer
-        class="d-inline-block elevation-1 font-weight-bold"
+        class="elevation-1 font-weight-bold"
+        :class="{
+          'd-inline-block column-spacer': $vuetify.breakpoint.mdAndUp
+        }"
       >
+        <template v-slot:item.TotalDocs="{ value }">
+          {{ $utils.parseThousandsToReadable(value) }}
+        </template>
+
+        <template v-slot:item.TotalSize="{ value }">
+          {{ `${value} ${value ? 'mb': ''}` }}
+        </template>
+
         <template v-slot:item.actions="{ index, item }">
           <v-tooltip bottom color="grey darken-1" content-class="py-1">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
-                :to="`/redis-search-indexes/details?name=${item.name}`"
+                :to="`/redis-search-indexes/details?name=${item.Name}`"
                 icon
                 dark
                 color="primary"
@@ -79,7 +89,7 @@ export default class RedisSearchIndexesParent extends Vue {
       .get('/dev/redis-search/indexes/')
       .then(({ data }) => {
         if (data) {
-          this.indexes = data
+          this.indexes = data.Indexes
         }
       })
       .catch((error) => {
@@ -91,13 +101,25 @@ export default class RedisSearchIndexesParent extends Vue {
 
   headers = [
     {
-      text: 'Index',
+      text: 'Name',
       align: 'start',
       sortable: false,
-      value: 'name'
+      value: 'Name'
     },
     {
-      text: '',
+      text: 'Total Docs',
+      align: 'start',
+      sortable: false,
+      value: 'TotalDocs'
+    },
+    {
+      text: 'Total Size',
+      align: 'start',
+      sortable: false,
+      value: 'TotalSize'
+    },
+    {
+      text: 'Actions',
       align: 'end',
       sortable: false,
       value: 'actions'
@@ -192,3 +214,13 @@ export default class RedisSearchIndexesParent extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+::v-deep .column-spacer {
+  th:not(:first-of-type):not(:last-of-type),
+  td:not(:first-of-type):not(:last-of-type) {
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+  }
+}
+</style>
