@@ -146,7 +146,7 @@ export default class RedisSearchIndexesParent extends Vue {
 
     try {
       await this.$axios.$get(
-        `/dev/redis-search/force-reindex/${item.name}/`
+        `/dev/redis-search/force-reindex/${item.Name}/`
       )
 
       this.$notification.show({
