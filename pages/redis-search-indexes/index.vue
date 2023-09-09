@@ -169,6 +169,7 @@ export default class RedisSearchIndexesParent extends Vue {
 
   async reindexAll (concurrently:boolean) {
     this.loadingAll = true
+    console.log("testt")
     try {
       if (concurrently) {
         await this.$axios.$get(
