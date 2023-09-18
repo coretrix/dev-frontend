@@ -14,6 +14,7 @@
     "*.{js,vue}": "eslint --fix"
   },
   "dependencies": {
+    "@amcharts/amcharts5": "^5.4.6",
     "@nuxt/typescript-runtime": "^2.1.0",
     "@nuxtjs/axios": "^5.11.0",
     "core-js": "^3.6.5",

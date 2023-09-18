@@ -152,7 +152,8 @@ import {
   mdiAlertDecagramOutline,
   mdiTable,
   mdiFeatureSearch,
-  mdiServerNetwork
+  mdiServerNetwork,
+  mdiChartLine
 } from '@mdi/js'
 import { Vue, Component, Watch, Prop, Emit } from 'nuxt-property-decorator'
 
@@ -185,7 +186,8 @@ export default class NavigationMenu extends Vue {
     mdiPlaylistPlay,
     mdiTable,
     mdiFeatureSearch,
-    mdiServerNetwork
+    mdiServerNetwork,
+    mdiChartLine
   }
 
   get filteredGeneralMenu () {
@@ -301,6 +303,12 @@ export default class NavigationMenu extends Vue {
         location: '/request-logger',
         name: 'Request Logger',
         icon: 'mdiServerNetwork',
+        isVisible: true
+      },
+      {
+        location: '/metrics',
+        name: 'Metrics',
+        icon: 'mdiChartLine',
         isVisible: true
       }
     ]
