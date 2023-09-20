@@ -3,6 +3,7 @@ import { Plugin } from '@nuxt/types'
 type IUtils = {
   parseReadableNanoSeconds(timeInNanoSeconds:number): string | null,
   parseThousandsToReadable(value:number|string, separator:string): number|string|null,
+  computeDate(input: any): string
 }
 
 const utilsPlugin:Plugin = (_, inject) => {
@@ -25,7 +26,20 @@ const utilsPlugin:Plugin = (_, inject) => {
       }
 
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator)
-    }
+    },
+    computeDate (input) {
+      if (!input || isNaN(input)) {
+        return ''
+      }
+
+      const dateFromTimestamp = new Date(input)
+      const month = dateFromTimestamp.getMonth()
+      const date = dateFromTimestamp.getDate()
+      const year = dateFromTimestamp.getFullYear()
+      const realMonth = month + 1
+
+      return `${date < 10 ? '0' + date : date}.${realMonth < 10 ? '0' + realMonth : realMonth}.${year} ${dateFromTimestamp.toLocaleTimeString('en-GB', { hour12: false }).substring(0, 5)}`
+    },
   }
 
   inject('utils', utils)

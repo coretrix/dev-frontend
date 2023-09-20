@@ -153,7 +153,8 @@ import {
   mdiTable,
   mdiFeatureSearch,
   mdiServerNetwork,
-  mdiChartLine
+  mdiChartLine,
+  mdiTrayFull
 } from '@mdi/js'
 import { Vue, Component, Watch, Prop, Emit } from 'nuxt-property-decorator'
 
@@ -187,7 +188,8 @@ export default class NavigationMenu extends Vue {
     mdiTable,
     mdiFeatureSearch,
     mdiServerNetwork,
-    mdiChartLine
+    mdiChartLine,
+    mdiTrayFull
   }
 
   get filteredGeneralMenu () {
@@ -283,8 +285,8 @@ export default class NavigationMenu extends Vue {
       },
       {
         location: '/redis-delayed-queues',
-        name: 'Redis Delayed queues',
-        icon: 'mdiPlaylistPlay',
+        name: 'Redis Delayed Queues',
+        icon: 'mdiTrayFull',
         isVisible: true
       },
       {
@@ -295,13 +297,13 @@ export default class NavigationMenu extends Vue {
       },
       {
         location: '/errors-log',
-        name: 'Errors log',
+        name: 'Errors Log',
         icon: 'mdiAlertDecagramOutline',
         isVisible: true
       },
       {
         location: '/feature-flag',
-        name: 'Feature flag',
+        name: 'Feature Flag',
         icon: 'mdiFeatureSearch',
         isVisible: true
       },

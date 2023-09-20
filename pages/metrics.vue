@@ -169,7 +169,7 @@ export default class Metrics extends Vue {
         // As series list is data of a legend, dataContext is series
         const series = itemContainer.dataItem.dataContext
 
-        chart.series.each(function (chartSeries: LineSeries) {
+        chart.series.each(function (chartSeries: typeof LineSeries) {
           // eslint-disable-next-line eqeqeq
           if (chartSeries != series) {
             chartSeries.strokes.template.setAll({
@@ -186,7 +186,7 @@ export default class Metrics extends Vue {
 
       // When legend item container is unhovered, make all series as they are
       legend.itemContainers.template.events.on('pointerout', function () {
-        chart.series.each(function (chartSeries: LineSeries) {
+        chart.series.each(function (chartSeries: typeof LineSeries) {
           chartSeries.strokes.template.setAll({
             strokeOpacity: 1,
             strokeWidth: 1,
