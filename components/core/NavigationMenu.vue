@@ -282,6 +282,12 @@ export default class NavigationMenu extends Vue {
         isVisible: true
       },
       {
+        location: '/redis-delayed-queues',
+        name: 'Redis Delayed queues',
+        icon: 'mdiPlaylistPlay',
+        isVisible: true
+      },
+      {
         location: '/mysql-alters',
         name: 'MySQL Alters',
         icon: 'mdiTable',
