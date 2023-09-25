@@ -1,12 +1,14 @@
 <template>
   <div>
-    <div id="Alloc" class="chart-container" />
-    <hr>
-    <div id="StackInuse" class="chart-container" />
-    <hr>
-    <div id="PauseTotalNs" class="chart-container" />
-    <hr>
-    <div id="NumGoroutine" class="chart-container" />
+    <div v-if="isLoading" class="ma-auto">
+      <v-progress-circular
+        indeterminate
+        color="primary"
+      />
+    </div>
+    <div v-for="(data, index) in responseData" :id="index" :key="index" class="chart-container">
+      <hr>
+    </div>
   </div>
 </template>
 
@@ -22,23 +24,17 @@ import { LineSeries } from '@amcharts/amcharts5/xy'
 @Component
 export default class Metrics extends Vue {
     root: any
+    responseData?:[] = []
+    isLoading:boolean = false
 
     async fetch () {
-      await this.$axios
-        .get('/dev/metrics/get/')
-        .then((response) => {
-        // this.responseData = response.data
-          for (const key in response.data) {
-            this.initChart(key, response.data[key])
-          }
-        })
-        .catch((error) => {
-          console.error(error)
-          this.$notification.show({
-            type: 'error',
-            message: error
-          })
-        })
+      await this.fetchData().then((data) => {
+        for (const key in data) {
+          this.initChart(key, data[key])
+        }
+
+        this.isLoading = false
+      })
     }
 
     beforeDestroy () {
@@ -47,6 +43,24 @@ export default class Metrics extends Vue {
           this.root[key].dispose()
         }
       }
+    }
+
+    async fetchData () {
+      this.isLoading = true
+
+      return await this.$axios
+        .get<any>('/dev/metrics/get/')
+        .then(({ data }) => {
+          this.responseData = data
+          return data
+        })
+        .catch((error) => {
+          console.error(error)
+          this.$notification.show({
+            type: 'error',
+            message: error
+          })
+        })
     }
 
     initChart (title: string, seriesResult: any) {
