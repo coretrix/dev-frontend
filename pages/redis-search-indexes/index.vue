@@ -3,8 +3,11 @@
     <div class="d-flex">
       <h2>Redis Search Indexes</h2>
       <v-spacer />
-      <v-btn color="primary" :loading="loadingAll" :disabled="loadingAll" @click="confirmAll()">
+      <v-btn color="primary" :loading="loadingAll" :disabled="loadingAll" @click="confirmAll(false)">
         Reindex All
+      </v-btn>
+      <v-btn color="primary" :loading="loadingAll" :disabled="loadingAll" @click="confirmAll(true)">
+        Reindex All (concurrently)
       </v-btn>
     </div>
     <v-divider class="my-4" />
@@ -164,14 +167,18 @@ export default class RedisSearchIndexesParent extends Vue {
     }
   }
 
-  async reindexAll () {
+  async reindexAll (concurrently:boolean) {
     this.loadingAll = true
-
     try {
-      await this.$axios.$get(
+      if (concurrently) {
+        await this.$axios.$get(
+        '/dev/redis-search/force-reindex-all/?concurrently=true'
+      )
+      }else{
+        await this.$axios.$get(
         '/dev/redis-search/force-reindex-all/'
       )
-
+      }
       this.$notification.show({
         type: 'success',
         message: 'Success'
@@ -200,7 +207,7 @@ export default class RedisSearchIndexesParent extends Vue {
       })
   }
 
-  confirmAll () {
+  confirmAll (concurrently:boolean) {
     this.confirmationModal
       .show({
         title: 'Wait!!!',
@@ -208,7 +215,7 @@ export default class RedisSearchIndexesParent extends Vue {
       })
       .then((result) => {
         if (result) {
-          this.reindexAll()
+          this.reindexAll(concurrently)
         }
       })
   }
