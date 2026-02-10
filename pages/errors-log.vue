@@ -1,19 +1,14 @@
 <template>
   <div>
-    <v-tabs v-model="logsTab" class="mb-2" hide-slider @change="onTabChange">
+    <v-tabs v-model="logsTab" class="mb-2" @change="onTabChange">
       <v-tab
-        v-for="(tabItem, index) in tabs"
+        v-for="tabItem in tabs"
         :key="tabItem.key"
-        :class="[
-          'error-log-tab',
-          `error-log-tab--${tabItem.key}`,
-          { 'error-log-tab--active': logsTab === index }
-        ]"
       >
         <span>{{ tabItem.label }}</span>
         <v-chip
           x-small
-          color="primary"
+          :color="getTabItemsColor(tabItem.key)"
           dark
           class="ml-2"
         >
@@ -251,6 +246,15 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
     return this.countersByTab[tabKey] ?? (this.itemsByTab[tabKey] || []).length
   }
 
+  getTabItemsColor (tabKey:string) {
+    const colors:any = {
+      errors: 'red',
+      warnings: 'blue',
+      missingTranslations: 'purple'
+    }
+    return colors[tabKey] || 'primary'
+  }
+
   fetchCounters () {
     this.$axios
       .get('/error-log/counters/')
@@ -399,37 +403,6 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
 </script>
 
 <style scoped lang="scss">
-.error-log-tab {
-  border: 2px solid #d7dce2;
-  border-radius: 12px 12px 0 0;
-  margin-right: 8px;
-  min-width: 170px;
-  transition: all 0.2s ease;
-
-  &:not(.error-log-tab--active) {
-    background-color: #f8f9fb !important;
-    color: #5f6b7a !important;
-  }
-
-  &.error-log-tab--active.error-log-tab--errors {
-    border-color: #d32f2f;
-    background-color: #ffe9e9 !important;
-    color: #b71c1c !important;
-  }
-
-  &.error-log-tab--active.error-log-tab--warnings {
-    border-color: #1976d2;
-    background-color: #e7f1ff !important;
-    color: #0d47a1 !important;
-  }
-
-  &.error-log-tab--active.error-log-tab--missingTranslations {
-    border-color: #7b1fa2;
-    background-color: #f3e8fb !important;
-    color: #4a148c !important;
-  }
-}
-
 .v-data-table::v-deep {
   th {
     white-space: nowrap;
