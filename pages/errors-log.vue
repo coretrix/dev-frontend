@@ -83,6 +83,7 @@
             <v-tooltip bottom color="grey darken-1" content-class="py-1">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
+                  v-if="currentTab.key === 'errors'"
                   color="indigo"
                   small
                   dark
@@ -113,7 +114,7 @@
               {{ icons.mdiDelete }}
             </v-icon>
           </template>
-          <span class="white--text text-caption">Remove entry</span>
+          <span class="white--text text-caption">Delete {{ getCurrentTabItemLabel() }}</span>
         </v-tooltip>
       </template>
       <template #item.lp="{ index }">
@@ -268,6 +269,15 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
       missingTranslations: 'var(--v-purple-base)'
     }
     return colors[tabKey] || 'var(--v-primary-base)'
+  }
+
+  getCurrentTabItemLabel () {
+    const labels:any = {
+      errors: 'error',
+      warnings: 'warning',
+      missingTranslations: 'missing translation'
+    }
+    return labels[this.currentTab.key] || 'entry'
   }
 
   formatDateTime (time:string) {
