@@ -10,7 +10,7 @@
       :class="{
         'green': $store.state.app.appMode === 'dev',
         'orange': $store.state.app.appMode === 'demo',
-        'app-bar--prod': $store.state.app.appMode === 'prod'
+        'red': $store.state.app.appMode === 'prod'
       }"
       elevate-on-scroll
     >
@@ -339,11 +339,6 @@ export default class NavigationMenu extends Vue {
 ::v-deep .app-bar {
   &.v-app-bar.v-app-bar--fixed {
     z-index: 22;
-  }
-
-  &.app-bar--prod {
-    background-color: #8b0000 !important;
-    border-color: #8b0000 !important;
   }
 
   &__chip {
