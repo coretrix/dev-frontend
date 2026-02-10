@@ -1,6 +1,12 @@
 <template>
   <div>
-    <v-tabs v-model="logsTab" class="mb-2" @change="onTabChange">
+    <v-tabs
+      v-model="logsTab"
+      class="mb-2 error-log-tabs"
+      :slider-color="getTabItemsColor(currentTab.key)"
+      :style="{ borderBottomColor: getTabItemsBorderColor(currentTab.key) }"
+      @change="onTabChange"
+    >
       <v-tab
         v-for="tabItem in tabs"
         :key="tabItem.key"
@@ -255,6 +261,15 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
     return colors[tabKey] || 'primary'
   }
 
+  getTabItemsBorderColor (tabKey:string) {
+    const colors:any = {
+      errors: 'var(--v-red-base)',
+      warnings: 'var(--v-blue-base)',
+      missingTranslations: 'var(--v-purple-base)'
+    }
+    return colors[tabKey] || 'var(--v-primary-base)'
+  }
+
   formatDateTime (time:string) {
     const date = new Date(time)
     const pad = (value:number) => String(value).padStart(2, '0')
@@ -410,6 +425,10 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
 </script>
 
 <style scoped lang="scss">
+.error-log-tabs {
+  border-bottom: 2px solid;
+}
+
 .v-data-table::v-deep {
   th {
     white-space: nowrap;
