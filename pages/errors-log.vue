@@ -8,8 +8,12 @@
       @change="onTabChange"
     >
       <v-tab
-        v-for="tabItem in tabs"
+        v-for="(tabItem, index) in tabs"
         :key="tabItem.key"
+        :class="[
+          `error-log-tab--${tabItem.key}`,
+          { 'error-log-tab--active': logsTab === index }
+        ]"
       >
         <span>{{ tabItem.label }}</span>
         <v-chip
@@ -26,7 +30,6 @@
       :headers="headers"
       :items="displayedItems"
       :loading="isLoading"
-      :style="{ '--log-expanded-bg': getTabExpandedBgColor(currentTab.key) }"
       loading-text="Loading... Please wait"
       class="elevation-1"
       :items-per-page="50"
@@ -272,15 +275,6 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
     return colors[tabKey] || '#1976d2'
   }
 
-  getTabExpandedBgColor (tabKey:string) {
-    const colors:any = {
-      errors: '#f7ecec6e',
-      warnings: '#e7f1ff',
-      missingTranslations: '#f3e8fb'
-    }
-    return colors[tabKey] || '#f7ecec6e'
-  }
-
   getCurrentTabItemLabel () {
     const labels:any = {
       errors: 'error',
@@ -449,6 +443,20 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
   border-bottom: 2px solid;
 }
 
+.v-tabs::v-deep {
+  .v-tab.error-log-tab--active.error-log-tab--errors {
+    color: #f44336 !important;
+  }
+
+  .v-tab.error-log-tab--active.error-log-tab--warnings {
+    color: #2196f3 !important;
+  }
+
+  .v-tab.error-log-tab--active.error-log-tab--missingTranslations {
+    color: #9c27b0 !important;
+  }
+}
+
 .v-data-table::v-deep {
   th {
     white-space: nowrap;
@@ -463,11 +471,11 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
     min-height: 300px;
     padding: 16px;
     &-window {
-      background-color: var(--log-expanded-bg, #f7ecec6e) !important;
+      background-color: #f7ecec6e !important;
     }
   }
   .v-data-table__expanded {
-    background-color: var(--log-expanded-bg, #f7ecec6e) !important;
+    background-color: #f7ecec6e !important;
   }
   .v-data-table__wrapper {
     position: relative;
