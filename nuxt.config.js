@@ -44,7 +44,6 @@ export default {
 
   // https://nuxtjs.org/guide/runtime-config
   publicRuntimeConfig: {
-    everything: process.env,
     env: process.env.NODE_ENV,
     baseURL: process.env.NUXT_API_BASE_URL,
     showRedisSearch: process.env.SHOW_REDIS_SEARCH,
