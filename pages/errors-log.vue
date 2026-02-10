@@ -172,6 +172,7 @@ import { ApiUtilities } from '~/components/mixins/Global'
 export default class ErrorsLog extends mixins(ApiUtilities) {
   fetch () {
     this.setHeaders()
+    this.fetchCounters()
     this.fetchCurrentList()
   }
 
@@ -222,6 +223,11 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
     warnings: [],
     missingTranslations: []
   }
+  countersByTab:any = {
+    errors: 0,
+    warnings: 0,
+    missingTranslations: 0
+  }
 
   expanded:any = []
   logsTab:number = 0
@@ -237,7 +243,22 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
   }
 
   getTabItemsCount (tabKey:string) {
-    return (this.itemsByTab[tabKey] || []).length
+    return this.countersByTab[tabKey] ?? (this.itemsByTab[tabKey] || []).length
+  }
+
+  fetchCounters () {
+    this.api()
+      .get('/error-log/counters/')
+      .then((resp) => {
+        const counters = resp.data || {}
+        this.countersByTab = {
+          errors: counters.errors || 0,
+          warnings: counters.warnings || 0,
+          missingTranslations: counters.missingTranslations || 0
+        }
+      })
+      .catch(this.apiOnCatchError)
+      .then(this.apiOnFinishRequest)
   }
 
   created () {
@@ -286,6 +307,7 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
           })
         }
         this.itemsByTab[tabKey] = rows
+        this.countersByTab[tabKey] = rows.length
       })
       .catch(this.apiOnCatchError)
       .then(this.apiOnFinishRequest)
@@ -316,6 +338,7 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
             timeout: 3000
           })
           this.fetchCurrentList(true)
+          this.fetchCounters()
         })
         .catch(this.apiOnCatchError)
         .then(this.apiOnFinishRequest)
@@ -337,6 +360,7 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
         .get(this.currentTab.endpoints.removeAll)
         .then(() => {
           this.fetchCurrentList(true)
+          this.fetchCounters()
         })
         .catch(this.apiOnCatchError)
         .then(this.apiOnFinishRequest)
@@ -351,6 +375,7 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
       .get(this.currentTab.endpoints.generate)
       .then(() => {
         this.fetchCurrentList(true)
+        this.fetchCounters()
       })
       .catch(this.apiOnCatchError)
       .then(this.apiOnFinishRequest)
