@@ -1,188 +1,167 @@
 <template>
   <div>
-    <v-tabs v-model="logsTab" class="mb-2">
-      <v-tab>
-        Errors
-      </v-tab>
-      <v-tab>
-        Warnings
-      </v-tab>
-      <v-tab>
-        Missing translations
+    <v-tabs v-model="logsTab" class="mb-2" @change="onTabChange">
+      <v-tab
+        v-for="tabItem in tabs"
+        :key="tabItem.key"
+      >
+        {{ tabItem.label }}
       </v-tab>
     </v-tabs>
-    <v-tabs-items v-model="logsTab" class="transparent">
-      <v-tab-item>
-        <v-data-table
-          :headers="headers"
-          :items="items"
-          :loading="isLoading"
-          loading-text="Loading... Please wait"
-          class="elevation-1"
-          :items-per-page="15"
-          fixed-header
-          :height="$vuetify.breakpoint.height - 200"
-          sort-by="Counter"
-          sort-desc
-          must-sort
-          single-expand
-          show-expand
-          item-key="ID"
-          :expanded.sync="expanded"
-          :hide-default-footer="!items.length"
-          :footer-props="{ 'items-per-page-options': [5, 15, 50, 100, -1] }"
-          @click:row="onClickRow"
-        >
-          <template #top>
-            <v-toolbar flat>
-              <v-toolbar-title class="primary--text">
-                Errors log
-                <v-chip
-                  v-if="items.length"
-                  color="primary"
-                  dark
-                  x-small
-                  class="mt-n4"
-                >
-                  {{ items.length }}
-                </v-chip>
-              </v-toolbar-title>
-              <v-spacer />
-              <div class="text-center d-flex align-center justify-space-around">
-                <v-tooltip bottom color="grey darken-1" content-class="py-1">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      color="primary"
-                      small
-                      dark
-                      class="mr-2"
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      <v-icon size="18px" @click="getErrorsList(false)">
-                        {{ icons.mdiRefresh }}
-                      </v-icon>
-                    </v-btn>
-                  </template>
-                  <span class="white--text text-caption">Refresh</span>
-                </v-tooltip>
-                <v-tooltip bottom color="grey darken-1" content-class="py-1">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      color="red"
-                      small
-                      dark
-                      class="mr-2"
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      <v-icon size="18px" @click="clearAll">
-                        {{ icons.mdiDeleteAlertOutline }}
-                      </v-icon>
-                    </v-btn>
-                  </template>
-                  <span class="white--text text-caption">Remove all errors</span>
-                </v-tooltip>
-                <v-tooltip bottom color="grey darken-1" content-class="py-1">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                      color="indigo"
-                      small
-                      dark
-                      class="mr-2"
-                      v-bind="attrs"
-                      v-on="on"
-                    >
-                      <v-icon size="18px" @click="generateError">
-                        {{ icons.mdiPlaylistPlus }}
-                      </v-icon>
-                    </v-btn>
-                  </template>
-                  <span class="white--text text-caption">Generate error</span>
-                </v-tooltip>
-              </div>
-            </v-toolbar>
-          </template>
-          <template #item.actions="{ item }">
+    <v-data-table
+      :headers="headers"
+      :items="displayedItems"
+      :loading="isLoading"
+      loading-text="Loading... Please wait"
+      class="elevation-1"
+      :items-per-page="15"
+      fixed-header
+      :height="$vuetify.breakpoint.height - 200"
+      sort-by="Counter"
+      sort-desc
+      must-sort
+      single-expand
+      show-expand
+      item-key="ID"
+      :expanded.sync="expanded"
+      :hide-default-footer="!displayedItems.length"
+      :footer-props="{ 'items-per-page-options': [5, 15, 50, 100, -1] }"
+      @click:row="onClickRow"
+    >
+      <template #top>
+        <v-toolbar flat>
+          <v-toolbar-title class="primary--text">
+            {{ currentTab.label }} log
+            <v-chip
+              v-if="displayedItems.length"
+              color="primary"
+              dark
+              x-small
+              class="mt-n4"
+            >
+              {{ displayedItems.length }}
+            </v-chip>
+          </v-toolbar-title>
+          <v-spacer />
+          <div class="text-center d-flex align-center justify-space-around">
             <v-tooltip bottom color="grey darken-1" content-class="py-1">
               <template v-slot:activator="{ on, attrs }">
-                <v-icon
+                <v-btn
+                  color="primary"
                   small
+                  dark
                   class="mr-2"
                   v-bind="attrs"
-                  @click.stop="deleteItem(item)"
                   v-on="on"
                 >
-                  {{ icons.mdiDelete }}
-                </v-icon>
+                  <v-icon size="18px" @click="fetchCurrentList(false)">
+                    {{ icons.mdiRefresh }}
+                  </v-icon>
+                </v-btn>
               </template>
-              <span class="white--text text-caption">Remove error</span>
+              <span class="white--text text-caption">Refresh</span>
             </v-tooltip>
+            <v-tooltip bottom color="grey darken-1" content-class="py-1">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="red"
+                  small
+                  dark
+                  class="mr-2"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon size="18px" @click="clearAll">
+                    {{ icons.mdiDeleteAlertOutline }}
+                  </v-icon>
+                </v-btn>
+              </template>
+              <span class="white--text text-caption">Remove all {{ currentTab.label.toLowerCase() }}</span>
+            </v-tooltip>
+            <v-tooltip bottom color="grey darken-1" content-class="py-1">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="indigo"
+                  small
+                  dark
+                  class="mr-2"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon size="18px" @click="generateError">
+                    {{ icons.mdiPlaylistPlus }}
+                  </v-icon>
+                </v-btn>
+              </template>
+              <span class="white--text text-caption">Generate sample entry</span>
+            </v-tooltip>
+          </div>
+        </v-toolbar>
+      </template>
+      <template #item.actions="{ item }">
+        <v-tooltip bottom color="grey darken-1" content-class="py-1">
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon
+              small
+              class="mr-2"
+              v-bind="attrs"
+              @click.stop="deleteItem(item)"
+              v-on="on"
+            >
+              {{ icons.mdiDelete }}
+            </v-icon>
           </template>
-          <template #item.lp="{ index }">
-            {{ ++index }}
-          </template>
-          <template #item.Time="{ item }">
-            <span :id="`err-${item.ID}`">
-              {{ new Date(item.Time).toLocaleString() }}
-            </span>
-          </template>
-          <template #item.Description="{ item }">
-            <div class="px-1 py-2 text-break">
-              <div class="text-subtitle-2">
-                {{ item.File }}
-                <span class="text-caption">(Line: {{ item.Line }})</span>
+          <span class="white--text text-caption">Remove entry</span>
+        </v-tooltip>
+      </template>
+      <template #item.lp="{ index }">
+        {{ ++index }}
+      </template>
+      <template #item.Time="{ item }">
+        <span :id="`err-${item.ID}`">
+          {{ new Date(item.Time).toLocaleString() }}
+        </span>
+      </template>
+      <template #item.Description="{ item }">
+        <div class="px-1 py-2 text-break">
+          <div class="text-subtitle-2">
+            {{ item.File }}
+            <span class="text-caption">(Line: {{ item.Line }})</span>
+          </div>
+          <div class="error--text">
+            {{ item.Message }}
+          </div>
+        </div>
+      </template>
+      <template #expanded-item="{ headers, item }">
+        <td :colspan="headers.length">
+          <v-tabs v-model="tab" background-color="transparent">
+            <v-tab>
+              <v-subheader class="text-capitalize">
+                Stack
+              </v-subheader>
+            </v-tab>
+            <v-tab :disabled="!item.Request">
+              <v-subheader class="text-capitalize">
+                Request
+              </v-subheader>
+            </v-tab>
+          </v-tabs>
+          <v-tabs-items v-model="tab" class="mb-4 stack-window">
+            <v-tab-item>
+              <div class="pb-6 stack">
+                {{ item.Stack }}
               </div>
-              <div class="error--text">
-                {{ item.Message }}
+            </v-tab-item>
+            <v-tab-item>
+              <div class="pb-6 stack">
+                {{ item.Request }}
               </div>
-            </div>
-          </template>
-          <template #expanded-item="{ headers, item }">
-            <td :colspan="headers.length">
-              <v-tabs v-model="tab" background-color="transparent">
-                <v-tab>
-                  <v-subheader class="text-capitalize">
-                    Stack
-                  </v-subheader>
-                </v-tab>
-                <v-tab :disabled="!item.Request">
-                  <v-subheader class="text-capitalize">
-                    Request
-                  </v-subheader>
-                </v-tab>
-              </v-tabs>
-              <v-tabs-items v-model="tab" class="mb-4 stack-window">
-                <v-tab-item>
-                  <div class="pb-6 stack">
-                    {{ item.Stack }}
-                  </div>
-                </v-tab-item>
-                <v-tab-item>
-                  <div class="pb-6 stack">
-                    {{ item.Request }}
-                  </div>
-                </v-tab-item>
-              </v-tabs-items>
-            </td>
-          </template>
-        </v-data-table>
-      </v-tab-item>
-      <v-tab-item>
-        <v-card class="elevation-1">
-          <v-card-text class="py-8 text-center">
-            Warnings log is not configured yet.
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item>
-        <v-card class="elevation-1">
-          <v-card-text class="py-8 text-center">
-            Missing translations log is not configured yet.
-          </v-card-text>
-        </v-card>
-      </v-tab-item>
-    </v-tabs-items>
+            </v-tab-item>
+          </v-tabs-items>
+        </td>
+      </template>
+    </v-data-table>
   </div>
 </template>
 
@@ -197,7 +176,7 @@ import { ApiUtilities } from '~/components/mixins/Global'
 export default class ErrorsLog extends mixins(ApiUtilities) {
   fetch () {
     this.setHeaders()
-    this.getErrorsList()
+    this.fetchCurrentList()
   }
 
   icons = {
@@ -209,11 +188,57 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
   }
 
   headers:any = []
-  items:any = []
+  tabs:any = [
+    {
+      key: 'errors',
+      label: 'Errors',
+      endpoints: {
+        list: '/error-log/errors/',
+        removePrefix: '/error-log/remove/',
+        removeAll: '/error-log/remove-all/',
+        generate: '/error-log/panic/'
+      }
+    },
+    {
+      key: 'warnings',
+      label: 'Warnings',
+      endpoints: {
+        list: '/error-log/errors/',
+        removePrefix: '/error-log/remove/',
+        removeAll: '/error-log/remove-all/',
+        generate: '/error-log/panic/'
+      }
+    },
+    {
+      key: 'missingTranslations',
+      label: 'Missing translations',
+      endpoints: {
+        list: '/error-log/errors/',
+        removePrefix: '/error-log/remove/',
+        removeAll: '/error-log/remove-all/',
+        generate: '/error-log/panic/'
+      }
+    }
+  ]
+
+  itemsByTab:any = {
+    errors: [],
+    warnings: [],
+    missingTranslations: []
+  }
+
   expanded:any = []
   logsTab:number = 0
   tab:number = 0
   isLoading:boolean = false
+
+  get currentTab () {
+    return this.tabs[this.logsTab] || this.tabs[0]
+  }
+
+  get displayedItems () {
+    return this.itemsByTab[this.currentTab.key] || []
+  }
 
   created () {
     if (this.$route.hash.substr(0, 5) === '#err-') {
@@ -241,24 +266,35 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
     ]
   }
 
-  getErrorsList (force = false) {
+  fetchCurrentList (force = false) {
+    return this.getListByTabKey(this.currentTab.key, force)
+  }
+
+  getListByTabKey (tabKey:string, force = false) {
     if (!force && this.isLoading) {
       return false
     }
+    const activeTab = this.tabs.find((tabItem:any) => tabItem.key === tabKey) || this.tabs[0]
+
     this.api()
-      .get('/error-log/errors/')
+      .get(activeTab.endpoints.list)
       .then((resp) => {
         const rows:object[] = []
         if (resp.data) {
           Object.keys(resp.data).forEach((key) => {
             rows.push({ ...resp.data[key], ID: key })
           })
-          this.items = resp.data
         }
-        this.items = rows
+        this.itemsByTab[tabKey] = rows
       })
       .catch(this.apiOnCatchError)
       .then(this.apiOnFinishRequest)
+  }
+
+  onTabChange () {
+    this.expanded = []
+    this.tab = 0
+    this.fetchCurrentList()
   }
 
   async deleteItem (item:any) {
@@ -272,13 +308,13 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
     })
     if (confirm) {
       this.api()
-        .get(`/error-log/remove/${item.ID}/`)
+        .get(`${this.currentTab.endpoints.removePrefix}${item.ID}/`)
         .then(() => {
           this.$dialog.message.success('Deleted', {
             position: 'botton-right',
             timeout: 3000
           })
-          this.getErrorsList(true)
+          this.fetchCurrentList(true)
         })
         .catch(this.apiOnCatchError)
         .then(this.apiOnFinishRequest)
@@ -296,9 +332,9 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
     })
     if (confirm) {
       this.api()
-        .get('/error-log/remove-all/')
+        .get(this.currentTab.endpoints.removeAll)
         .then(() => {
-          this.getErrorsList(true)
+          this.fetchCurrentList(true)
         })
         .catch(this.apiOnCatchError)
         .then(this.apiOnFinishRequest)
@@ -310,9 +346,9 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
       return false
     }
     this.api()
-      .get('/error-log/panic/')
+      .get(this.currentTab.endpoints.generate)
       .then(() => {
-        this.getErrorsList(true)
+        this.fetchCurrentList(true)
       })
       .catch(this.apiOnCatchError)
       .then(this.apiOnFinishRequest)
