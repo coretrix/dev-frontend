@@ -5,7 +5,15 @@
         v-for="tabItem in tabs"
         :key="tabItem.key"
       >
-        {{ tabItem.label }} ({{ getTabItemsCount(tabItem.key) }})
+        <span>{{ tabItem.label }}</span>
+        <v-chip
+          x-small
+          color="primary"
+          dark
+          class="ml-2"
+        >
+          {{ getTabItemsCount(tabItem.key) }}
+        </v-chip>
       </v-tab>
     </v-tabs>
     <v-data-table
