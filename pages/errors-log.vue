@@ -252,7 +252,7 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
   }
 
   fetchCounters () {
-    this.api()
+    this.$axios
       .get('/error-log/counters/')
       .then((resp) => {
         const counters = resp.data || {}
@@ -262,8 +262,7 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
           missingTranslations: counters.missingTranslations || 0
         }
       })
-      .catch(this.apiOnCatchError)
-      .then(this.apiOnFinishRequest)
+      .catch(this.apiOnCatchError(''))
   }
 
   created () {
