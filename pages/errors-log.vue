@@ -5,7 +5,7 @@
         v-for="tabItem in tabs"
         :key="tabItem.key"
       >
-        {{ tabItem.label }}
+        {{ tabItem.label }} ({{ getTabItemsCount(tabItem.key) }})
       </v-tab>
     </v-tabs>
     <v-data-table
@@ -14,7 +14,7 @@
       :loading="isLoading"
       loading-text="Loading... Please wait"
       class="elevation-1"
-      :items-per-page="15"
+      :items-per-page="50"
       fixed-header
       :height="$vuetify.breakpoint.height - 200"
       sort-by="Counter"
@@ -25,23 +25,11 @@
       item-key="ID"
       :expanded.sync="expanded"
       :hide-default-footer="!displayedItems.length"
-      :footer-props="{ 'items-per-page-options': [5, 15, 50, 100, -1] }"
+      :footer-props="{ 'items-per-page-options': [50, 100, 1000, -1] }"
       @click:row="onClickRow"
     >
       <template #top>
         <v-toolbar flat>
-          <v-toolbar-title class="primary--text">
-            {{ currentTab.label }} log
-            <v-chip
-              v-if="displayedItems.length"
-              color="primary"
-              dark
-              x-small
-              class="mt-n4"
-            >
-              {{ displayedItems.length }}
-            </v-chip>
-          </v-toolbar-title>
           <v-spacer />
           <div class="text-center d-flex align-center justify-space-around">
             <v-tooltip bottom color="grey darken-1" content-class="py-1">
@@ -194,8 +182,8 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
       label: 'Errors',
       endpoints: {
         list: '/error-log/errors/',
-        removePrefix: '/error-log/remove/',
-        removeAll: '/error-log/remove-all/',
+        removePrefix: '/error-log/errors/remove/',
+        removeAll: '/error-log/errors/remove-all/',
         generate: '/error-log/panic/'
       }
     },
@@ -203,9 +191,9 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
       key: 'warnings',
       label: 'Warnings',
       endpoints: {
-        list: '/error-log/errors/',
-        removePrefix: '/error-log/remove/',
-        removeAll: '/error-log/remove-all/',
+        list: '/error-log/warnings/',
+        removePrefix: '/error-log/warnings/remove/',
+        removeAll: '/error-log/warnings/remove-all/',
         generate: '/error-log/panic/'
       }
     },
@@ -213,9 +201,9 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
       key: 'missingTranslations',
       label: 'Missing translations',
       endpoints: {
-        list: '/error-log/errors/',
-        removePrefix: '/error-log/remove/',
-        removeAll: '/error-log/remove-all/',
+        list: '/error-log/missing-translations/',
+        removePrefix: '/error-log/missing-translations/remove/',
+        removeAll: '/error-log/missing-translations/remove-all/',
         generate: '/error-log/panic/'
       }
     }
@@ -238,6 +226,10 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
 
   get displayedItems () {
     return this.itemsByTab[this.currentTab.key] || []
+  }
+
+  getTabItemsCount (tabKey:string) {
+    return (this.itemsByTab[tabKey] || []).length
   }
 
   created () {
@@ -298,9 +290,10 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
   }
 
   async deleteItem (item:any) {
+    const tabLabel = this.currentTab.label.toLowerCase().replace(/s$/, '')
     const confirm = await this.$dialog.confirm({
       title: 'Are you sure?',
-      text: 'Delete current error?',
+      text: `Delete current ${tabLabel}?`,
       actions: {
         false: 'Cancel',
         true: 'Confirm'
@@ -322,9 +315,10 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
   }
 
   async clearAll () {
+    const tabLabel = this.currentTab.label.toLowerCase()
     const confirm = await this.$dialog.confirm({
       title: 'Are you sure?',
-      text: 'Delete all errors?',
+      text: `Delete all ${tabLabel}?`,
       actions: {
         false: 'Cancel',
         true: 'Confirm'
