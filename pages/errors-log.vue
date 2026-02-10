@@ -26,6 +26,7 @@
       :headers="headers"
       :items="displayedItems"
       :loading="isLoading"
+      :style="{ '--log-expanded-bg': getTabExpandedBgColor(currentTab.key) }"
       loading-text="Loading... Please wait"
       class="elevation-1"
       :items-per-page="50"
@@ -271,6 +272,15 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
     return colors[tabKey] || '#1976d2'
   }
 
+  getTabExpandedBgColor (tabKey:string) {
+    const colors:any = {
+      errors: '#f7ecec6e',
+      warnings: '#e7f1ff',
+      missingTranslations: '#f3e8fb'
+    }
+    return colors[tabKey] || '#f7ecec6e'
+  }
+
   getCurrentTabItemLabel () {
     const labels:any = {
       errors: 'error',
@@ -453,11 +463,11 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
     min-height: 300px;
     padding: 16px;
     &-window {
-      background-color: #f7ecec6e !important;
+      background-color: var(--log-expanded-bg, #f7ecec6e) !important;
     }
   }
   .v-data-table__expanded {
-    background-color: #f7ecec6e !important;
+    background-color: var(--log-expanded-bg, #f7ecec6e) !important;
   }
   .v-data-table__wrapper {
     position: relative;
