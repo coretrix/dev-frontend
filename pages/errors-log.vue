@@ -264,11 +264,11 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
 
   getTabItemsBorderColor (tabKey:string) {
     const colors:any = {
-      errors: 'var(--v-red-base)',
-      warnings: 'var(--v-blue-base)',
-      missingTranslations: 'var(--v-purple-base)'
+      errors: '#f44336',
+      warnings: '#2196f3',
+      missingTranslations: '#9c27b0'
     }
-    return colors[tabKey] || 'var(--v-primary-base)'
+    return colors[tabKey] || '#1976d2'
   }
 
   getCurrentTabItemLabel () {
