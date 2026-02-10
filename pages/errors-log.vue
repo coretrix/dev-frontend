@@ -115,7 +115,7 @@
       </template>
       <template #item.Time="{ item }">
         <span :id="`err-${item.ID}`">
-          {{ new Date(item.Time).toLocaleString() }}
+          {{ formatDateTime(item.Time) }}
         </span>
       </template>
       <template #item.Description="{ item }">
@@ -253,6 +253,13 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
       missingTranslations: 'purple'
     }
     return colors[tabKey] || 'primary'
+  }
+
+  formatDateTime (time:string) {
+    const date = new Date(time)
+    const pad = (value:number) => String(value).padStart(2, '0')
+
+    return `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
   }
 
   fetchCounters () {
