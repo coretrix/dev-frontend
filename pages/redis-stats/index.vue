@@ -8,12 +8,13 @@
         </h2>
         <v-btn
           :to="`/redis-stats/details?RedisPool=${entry.RedisPool}`"
-          icon
+          text
           small
           color="primary"
-          class="ml-3"
+          class="ml-3 text-none redis-address-btn"
+          :title="entry.RedisAddress"
         >
-          <v-icon>{{ icons.mdiCodeBraces }}</v-icon>
+          {{ `{${entry.RedisAddress || ''}}` }}
         </v-btn>
       </div>
       <v-divider class="my-3" />
@@ -115,7 +116,6 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
-import { mdiCodeBraces } from '@mdi/js'
 
 type IRedisData = {
   [key: string]: string | boolean | number | object[]
@@ -136,9 +136,6 @@ type IRestructuredElObj = {
 @Component
 export default class RedisIndex extends Vue {
   @Prop({ default: [] }) readonly redisData!:IRedisData
-  icons = {
-    mdiCodeBraces
-  }
 
   redisKeys = [
     'active_defrag_hits',
@@ -227,6 +224,7 @@ export default class RedisIndex extends Vue {
 
       return {
         RedisPool: element.RedisPool,
+        RedisAddress: element.RedisAddress,
         Info: restructuredEl
       }
     })
@@ -247,5 +245,9 @@ export default class RedisIndex extends Vue {
 .text-sm {
   font-size: 13px;
   color: rgba(0, 0, 0, 0.6);
+}
+
+.redis-address-btn {
+  max-width: 640px;
 }
 </style>
