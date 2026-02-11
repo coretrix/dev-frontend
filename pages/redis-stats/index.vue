@@ -6,16 +6,13 @@
         <h2>
           {{ entry.RedisPool }}
         </h2>
-        <v-btn
+        <nuxt-link
           :to="`/redis-stats/details?RedisPool=${entry.RedisPool}`"
-          text
-          small
-          color="primary"
-          class="ml-3 text-none redis-address-btn"
+          class="ml-3 primary--text no-decoration redis-address-link"
           :title="entry.RedisAddress"
         >
           {{ '{' + (entry.RedisAddress || '') + '}' }}
-        </v-btn>
+        </nuxt-link>
       </div>
       <v-divider class="my-3" />
       <v-row>
@@ -247,7 +244,14 @@ export default class RedisIndex extends Vue {
   color: rgba(0, 0, 0, 0.6);
 }
 
-.redis-address-btn {
-  max-width: 640px;
+.redis-address-link {
+  display: inline-block;
+  max-width: min(100%, 760px);
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
