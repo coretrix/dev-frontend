@@ -1,12 +1,38 @@
 <template>
   <div>
+    <v-tabs
+      v-model="logsTab"
+      class="mb-2 error-log-tabs"
+      :slider-color="getTabItemsColor(currentTab.key)"
+      :style="{ borderBottomColor: getTabItemsBorderColor(currentTab.key) }"
+      @change="onTabChange"
+    >
+      <v-tab
+        v-for="(tabItem, index) in tabs"
+        :key="tabItem.key"
+        :class="[
+          `error-log-tab--${tabItem.key}`,
+          { 'error-log-tab--active': logsTab === index }
+        ]"
+      >
+        <span>{{ tabItem.label }}</span>
+        <v-chip
+          x-small
+          :color="getTabItemsColor(tabItem.key)"
+          dark
+          class="ml-2"
+        >
+          {{ getTabItemsCount(tabItem.key) }}
+        </v-chip>
+      </v-tab>
+    </v-tabs>
     <v-data-table
       :headers="headers"
-      :items="items"
+      :items="displayedItems"
       :loading="isLoading"
       loading-text="Loading... Please wait"
       class="elevation-1"
-      :items-per-page="15"
+      :items-per-page="50"
       fixed-header
       :height="$vuetify.breakpoint.height - 200"
       sort-by="Counter"
@@ -16,24 +42,12 @@
       show-expand
       item-key="ID"
       :expanded.sync="expanded"
-      :hide-default-footer="!items.length"
-      :footer-props="{ 'items-per-page-options': [5, 15, 50, 100, -1] }"
+      :hide-default-footer="!displayedItems.length"
+      :footer-props="{ 'items-per-page-options': [50, 100, 1000, -1] }"
       @click:row="onClickRow"
     >
       <template #top>
         <v-toolbar flat>
-          <v-toolbar-title class="primary--text">
-            Errors log
-            <v-chip
-              v-if="items.length"
-              color="primary"
-              dark
-              x-small
-              class="mt-n4"
-            >
-              {{ items.length }}
-            </v-chip>
-          </v-toolbar-title>
           <v-spacer />
           <div class="text-center d-flex align-center justify-space-around">
             <v-tooltip bottom color="grey darken-1" content-class="py-1">
@@ -46,7 +60,7 @@
                   v-bind="attrs"
                   v-on="on"
                 >
-                  <v-icon size="18px" @click="getErrorsList(false)">
+                  <v-icon size="18px" @click="fetchCurrentList(false)">
                     {{ icons.mdiRefresh }}
                   </v-icon>
                 </v-btn>
@@ -68,11 +82,12 @@
                   </v-icon>
                 </v-btn>
               </template>
-              <span class="white--text text-caption">Remove all errors</span>
+              <span class="white--text text-caption">Remove all {{ currentTab.label.toLowerCase() }}</span>
             </v-tooltip>
             <v-tooltip bottom color="grey darken-1" content-class="py-1">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
+                  v-if="currentTab.key === 'errors'"
                   color="indigo"
                   small
                   dark
@@ -85,7 +100,7 @@
                   </v-icon>
                 </v-btn>
               </template>
-              <span class="white--text text-caption">Generate error</span>
+              <span class="white--text text-caption">Generate sample entry</span>
             </v-tooltip>
           </div>
         </v-toolbar>
@@ -103,7 +118,7 @@
               {{ icons.mdiDelete }}
             </v-icon>
           </template>
-          <span class="white--text text-caption">Remove error</span>
+          <span class="white--text text-caption">Delete {{ getCurrentTabItemLabel() }}</span>
         </v-tooltip>
       </template>
       <template #item.lp="{ index }">
@@ -111,7 +126,7 @@
       </template>
       <template #item.Time="{ item }">
         <span :id="`err-${item.ID}`">
-          {{ new Date(item.Time).toLocaleString() }}
+          {{ formatDateTime(item.Time) }}
         </span>
       </template>
       <template #item.Description="{ item }">
@@ -168,7 +183,8 @@ import { ApiUtilities } from '~/components/mixins/Global'
 export default class ErrorsLog extends mixins(ApiUtilities) {
   fetch () {
     this.setHeaders()
-    this.getErrorsList()
+    this.fetchCounters()
+    this.fetchCurrentList()
   }
 
   icons = {
@@ -180,10 +196,114 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
   }
 
   headers:any = []
-  items:any = []
+  tabs:any = [
+    {
+      key: 'errors',
+      label: 'Errors',
+      endpoints: {
+        list: '/error-log/errors/',
+        removePrefix: '/error-log/errors/remove/',
+        removeAll: '/error-log/errors/remove-all/',
+        generate: '/error-log/panic/'
+      }
+    },
+    {
+      key: 'warnings',
+      label: 'Warnings',
+      endpoints: {
+        list: '/error-log/warnings/',
+        removePrefix: '/error-log/warnings/remove/',
+        removeAll: '/error-log/warnings/remove-all/',
+        generate: '/error-log/panic/'
+      }
+    },
+    {
+      key: 'missingTranslations',
+      label: 'Missing translations',
+      endpoints: {
+        list: '/error-log/missing-translations/',
+        removePrefix: '/error-log/missing-translations/remove/',
+        removeAll: '/error-log/missing-translations/remove-all/',
+        generate: '/error-log/panic/'
+      }
+    }
+  ]
+
+  itemsByTab:any = {
+    errors: [],
+    warnings: [],
+    missingTranslations: []
+  }
+  countersByTab:any = {
+    errors: 0,
+    warnings: 0,
+    missingTranslations: 0
+  }
+
   expanded:any = []
+  logsTab:number = 0
   tab:number = 0
   isLoading:boolean = false
+
+  get currentTab () {
+    return this.tabs[this.logsTab] || this.tabs[0]
+  }
+
+  get displayedItems () {
+    return this.itemsByTab[this.currentTab.key] || []
+  }
+
+  getTabItemsCount (tabKey:string) {
+    return this.countersByTab[tabKey] ?? (this.itemsByTab[tabKey] || []).length
+  }
+
+  getTabItemsColor (tabKey:string) {
+    const colors:any = {
+      errors: 'red',
+      warnings: 'blue',
+      missingTranslations: 'purple'
+    }
+    return colors[tabKey] || 'primary'
+  }
+
+  getTabItemsBorderColor (tabKey:string) {
+    const colors:any = {
+      errors: '#f44336',
+      warnings: '#2196f3',
+      missingTranslations: '#9c27b0'
+    }
+    return colors[tabKey] || '#1976d2'
+  }
+
+  getCurrentTabItemLabel () {
+    const labels:any = {
+      errors: 'error',
+      warnings: 'warning',
+      missingTranslations: 'missing translation'
+    }
+    return labels[this.currentTab.key] || 'entry'
+  }
+
+  formatDateTime (time:string) {
+    const date = new Date(time)
+    const pad = (value:number) => String(value).padStart(2, '0')
+
+    return `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
+  }
+
+  fetchCounters () {
+    this.$axios
+      .get('/error-log/counters/')
+      .then((resp) => {
+        const counters = resp.data || {}
+        this.countersByTab = {
+          errors: counters.errors || 0,
+          warnings: counters.warnings || 0,
+          missingTranslations: counters.missingTranslations || 0
+        }
+      })
+      .catch(this.apiOnCatchError(''))
+  }
 
   created () {
     if (this.$route.hash.substr(0, 5) === '#err-') {
@@ -211,30 +331,43 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
     ]
   }
 
-  getErrorsList (force = false) {
+  fetchCurrentList (force = false) {
+    return this.getListByTabKey(this.currentTab.key, force)
+  }
+
+  getListByTabKey (tabKey:string, force = false) {
     if (!force && this.isLoading) {
       return false
     }
+    const activeTab = this.tabs.find((tabItem:any) => tabItem.key === tabKey) || this.tabs[0]
+
     this.api()
-      .get('/error-log/errors/')
+      .get(activeTab.endpoints.list)
       .then((resp) => {
         const rows:object[] = []
         if (resp.data) {
           Object.keys(resp.data).forEach((key) => {
             rows.push({ ...resp.data[key], ID: key })
           })
-          this.items = resp.data
         }
-        this.items = rows
+        this.itemsByTab[tabKey] = rows
+        this.countersByTab[tabKey] = rows.length
       })
       .catch(this.apiOnCatchError)
       .then(this.apiOnFinishRequest)
   }
 
+  onTabChange () {
+    this.expanded = []
+    this.tab = 0
+    this.fetchCurrentList()
+  }
+
   async deleteItem (item:any) {
+    const tabLabel = this.currentTab.label.toLowerCase().replace(/s$/, '')
     const confirm = await this.$dialog.confirm({
       title: 'Are you sure?',
-      text: 'Delete current error?',
+      text: `Delete current ${tabLabel}?`,
       actions: {
         false: 'Cancel',
         true: 'Confirm'
@@ -242,13 +375,14 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
     })
     if (confirm) {
       this.api()
-        .get(`/error-log/remove/${item.ID}/`)
+        .get(`${this.currentTab.endpoints.removePrefix}${item.ID}/`)
         .then(() => {
           this.$dialog.message.success('Deleted', {
             position: 'botton-right',
             timeout: 3000
           })
-          this.getErrorsList(true)
+          this.fetchCurrentList(true)
+          this.fetchCounters()
         })
         .catch(this.apiOnCatchError)
         .then(this.apiOnFinishRequest)
@@ -256,9 +390,10 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
   }
 
   async clearAll () {
+    const tabLabel = this.currentTab.label.toLowerCase()
     const confirm = await this.$dialog.confirm({
       title: 'Are you sure?',
-      text: 'Delete all errors?',
+      text: `Delete all ${tabLabel}?`,
       actions: {
         false: 'Cancel',
         true: 'Confirm'
@@ -266,9 +401,10 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
     })
     if (confirm) {
       this.api()
-        .get('/error-log/remove-all/')
+        .get(this.currentTab.endpoints.removeAll)
         .then(() => {
-          this.getErrorsList(true)
+          this.fetchCurrentList(true)
+          this.fetchCounters()
         })
         .catch(this.apiOnCatchError)
         .then(this.apiOnFinishRequest)
@@ -280,9 +416,10 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
       return false
     }
     this.api()
-      .get('/error-log/panic/')
+      .get(this.currentTab.endpoints.generate)
       .then(() => {
-        this.getErrorsList(true)
+        this.fetchCurrentList(true)
+        this.fetchCounters()
       })
       .catch(this.apiOnCatchError)
       .then(this.apiOnFinishRequest)
@@ -302,6 +439,24 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
 </script>
 
 <style scoped lang="scss">
+.error-log-tabs {
+  border-bottom: 2px solid;
+}
+
+.v-tabs::v-deep {
+  .v-tab.error-log-tab--active.error-log-tab--errors {
+    color: #f44336 !important;
+  }
+
+  .v-tab.error-log-tab--active.error-log-tab--warnings {
+    color: #2196f3 !important;
+  }
+
+  .v-tab.error-log-tab--active.error-log-tab--missingTranslations {
+    color: #9c27b0 !important;
+  }
+}
+
 .v-data-table::v-deep {
   th {
     white-space: nowrap;

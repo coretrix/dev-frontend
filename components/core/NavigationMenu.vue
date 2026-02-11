@@ -10,7 +10,7 @@
       :class="{
         'green': $store.state.app.appMode === 'dev',
         'orange': $store.state.app.appMode === 'demo',
-        'red': $store.state.app.appMode === 'dev'
+        'red': $store.state.app.appMode === 'prod'
       }"
       elevate-on-scroll
     >
@@ -37,7 +37,7 @@
           :class="{
             'green--text': $store.state.app.appMode === 'dev',
             'orange--text': $store.state.app.appMode === 'demo',
-            'red--text': $store.state.app.appMode === 'dev'
+            'red--text': $store.state.app.appMode === 'prod'
           }"
         >
           <span class="app-bar__chip">

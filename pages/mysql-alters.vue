@@ -94,7 +94,7 @@ export default class MysqlAlters extends Vue {
           type: 'success',
           message: 'Success'
         })
-        
+
         await this.fetchData()
       })
       .catch((error) => {

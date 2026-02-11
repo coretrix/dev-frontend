@@ -86,7 +86,7 @@
           }"
         >
           <v-tooltip bottom color="grey darken-1" content-class="py-1">
-            <template v-slot:activator="{ on, attrs }">
+            <template v-slot:activator>
               <div>
                 <v-switch v-model="item.Enabled" readonly @click="toggleFeature(item)" />
               </div>

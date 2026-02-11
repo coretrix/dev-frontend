@@ -5,6 +5,9 @@
       <div class="d-flex align-center">
         <h2>
           {{ entry.RedisPool }}
+          <span class="redis-address-inline">
+            ({{ entry.RedisAddress }})
+          </span>
         </h2>
         <v-btn
           :to="`/redis-stats/details?RedisPool=${entry.RedisPool}`"
@@ -227,6 +230,7 @@ export default class RedisIndex extends Vue {
 
       return {
         RedisPool: element.RedisPool,
+        RedisAddress: element.RedisAddress,
         Info: restructuredEl
       }
     })
@@ -246,6 +250,13 @@ export default class RedisIndex extends Vue {
 }
 .text-sm {
   font-size: 13px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.redis-address-inline {
+  margin-left: 8px;
+  font-size: 0.95rem;
+  font-weight: 400;
   color: rgba(0, 0, 0, 0.6);
 }
 </style>

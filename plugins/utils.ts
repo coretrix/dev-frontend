@@ -39,7 +39,7 @@ const utilsPlugin:Plugin = (_, inject) => {
       const realMonth = month + 1
 
       return `${date < 10 ? '0' + date : date}.${realMonth < 10 ? '0' + realMonth : realMonth}.${year} ${dateFromTimestamp.toLocaleTimeString('en-GB', { hour12: false }).substring(0, 5)}`
-    },
+    }
   }
 
   inject('utils', utils)

@@ -14,21 +14,21 @@
               height="150px"
               class="d-flex flex-column"
             >
-                <h3
-                  class="text-center mt-7 len"
-                  :class="{
-                  }"
-                >
-                  {{entry.Total}}
-                </h3>
-                <v-card-text class="mb-auto pt-2">
-                  <div v-if="entry.Queue" class="text-center stream">
-                    {{ entry.Queue }}
-                  </div>
-                  <div v-if="entry.LatestItem" class="mt-5 text-center stream">
-                    <span>Latest item: </span> <span class="font-weight-bold">{{ $utils.computeDate(entry.LatestItem) }}</span>
-                  </div>
-                </v-card-text>
+              <h3
+                class="text-center mt-7 len"
+                :class="{
+                }"
+              >
+                {{ entry.Total }}
+              </h3>
+              <v-card-text class="mb-auto pt-2">
+                <div v-if="entry.Queue" class="text-center stream">
+                  {{ entry.Queue }}
+                </div>
+                <div v-if="entry.LatestItem" class="mt-5 text-center stream">
+                  <span>Latest item: </span> <span class="font-weight-bold">{{ $utils.computeDate(entry.LatestItem) }}</span>
+                </div>
+              </v-card-text>
             </v-card>
             <v-btn
               v-if="false"
@@ -54,7 +54,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import {mdiRefresh, mdiLoading, mdiDelete} from '@mdi/js'
+import { mdiRefresh, mdiLoading, mdiDelete } from '@mdi/js'
 
 type IResponseData = {
   Queue: string,
@@ -71,7 +71,7 @@ export default class RedisSearchAlters extends Vue {
   icons = {
     mdiRefresh,
     mdiLoading,
-    mdiDelete,
+    mdiDelete
   }
 
   responseData:IResponseData[] = []
@@ -83,7 +83,7 @@ export default class RedisSearchAlters extends Vue {
 
     await this.$axios
       .get('/dev/redis-delayed-queues/list/')
-      .then(({data}) => {
+      .then(({ data }) => {
         this.responseData = data.Rows
       })
       .catch((error) => {

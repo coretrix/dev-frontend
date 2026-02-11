@@ -13,7 +13,7 @@ type IAuth = {
   logout(): void,
 }
 
-const authPlugin:Plugin = ({ app, route }, inject) => {
+const authPlugin:Plugin = ({ app }, inject) => {
   const auth:IAuth = {
     isLoggedIn () {
       return !!localStorage.getItem('Token')

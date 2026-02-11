@@ -54,7 +54,7 @@
                 large
                 @click="login"
               >
-                Submit
+                Login
               </v-btn>
             </v-row>
           </v-form>
