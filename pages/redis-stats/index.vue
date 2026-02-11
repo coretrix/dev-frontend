@@ -14,7 +14,7 @@
           class="ml-3 text-none redis-address-btn"
           :title="entry.RedisAddress"
         >
-          {{ `{${entry.RedisAddress || ''}}` }}
+          {{ '{' + (entry.RedisAddress || '') + '}' }}
         </v-btn>
       </div>
       <v-divider class="my-3" />
