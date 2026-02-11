@@ -5,14 +5,19 @@
       <div class="d-flex align-center">
         <h2>
           {{ entry.RedisPool }}
+          <span class="redis-address-inline">
+            ({{ entry.RedisAddress }})
+          </span>
         </h2>
-        <nuxt-link
+        <v-btn
           :to="`/redis-stats/details?RedisPool=${entry.RedisPool}`"
-          class="ml-3 primary--text no-decoration redis-address-link"
-          :title="entry.RedisAddress"
+          icon
+          small
+          color="primary"
+          class="ml-3"
         >
-          {{ '{' + (entry.RedisAddress || '') + '}' }}
-        </nuxt-link>
+          <v-icon>{{ icons.mdiCodeBraces }}</v-icon>
+        </v-btn>
       </div>
       <v-divider class="my-3" />
       <v-row>
@@ -113,6 +118,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { mdiCodeBraces } from '@mdi/js'
 
 type IRedisData = {
   [key: string]: string | boolean | number | object[]
@@ -133,6 +139,9 @@ type IRestructuredElObj = {
 @Component
 export default class RedisIndex extends Vue {
   @Prop({ default: [] }) readonly redisData!:IRedisData
+  icons = {
+    mdiCodeBraces
+  }
 
   redisKeys = [
     'active_defrag_hits',
@@ -244,14 +253,10 @@ export default class RedisIndex extends Vue {
   color: rgba(0, 0, 0, 0.6);
 }
 
-.redis-address-link {
-  display: inline-block;
-  max-width: min(100%, 760px);
-  font-size: 1.5rem;
-  line-height: 1.5rem;
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.redis-address-inline {
+  margin-left: 8px;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.6);
 }
 </style>
