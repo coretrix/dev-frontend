@@ -111,12 +111,12 @@
             <v-icon
               small
               class="mr-2"
-              :color="getTicketLink(item) ? 'primary' : ''"
+              :color="getTicketLink(item) ? 'primary' : 'orange'"
               v-bind="attrs"
               @click.stop="onJiraAction(item)"
               v-on="on"
             >
-              {{ getTicketLink(item) ? icons.mdiOpenInNew : icons.mdiTicketConfirmationOutline }}
+              {{ getTicketLink(item) ? icons.mdiJira : icons.mdiPlusCircleOutline }}
             </v-icon>
           </template>
           <span class="white--text text-caption">
@@ -191,7 +191,7 @@
 
 <script lang="ts">
 import {
-  mdiDelete, mdiDeleteAlertOutline, mdiEyeOutline, mdiOpenInNew, mdiPlaylistPlus, mdiRefresh, mdiTicketConfirmationOutline
+  mdiDelete, mdiDeleteAlertOutline, mdiEyeOutline, mdiJira, mdiPlusCircleOutline, mdiPlaylistPlus, mdiRefresh
 } from '@mdi/js'
 import { Component, mixins } from 'nuxt-property-decorator'
 import { ApiUtilities } from '~/components/mixins/Global'
@@ -210,8 +210,8 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
     mdiRefresh,
     mdiDeleteAlertOutline,
     mdiPlaylistPlus,
-    mdiTicketConfirmationOutline,
-    mdiOpenInNew
+    mdiJira,
+    mdiPlusCircleOutline
   }
 
   headers:any = []
