@@ -111,6 +111,23 @@
             <v-icon
               small
               class="mr-2"
+              :color="getTicketLink(item) ? 'primary' : ''"
+              v-bind="attrs"
+              @click.stop="onJiraAction(item)"
+              v-on="on"
+            >
+              {{ getTicketLink(item) ? icons.mdiOpenInNew : icons.mdiTicketConfirmationOutline }}
+            </v-icon>
+          </template>
+          <span class="white--text text-caption">
+            {{ getTicketLink(item) ? 'Open Jira ticket' : `Create Jira ticket for ${getCurrentTabItemLabel()}` }}
+          </span>
+        </v-tooltip>
+        <v-tooltip bottom color="grey darken-1" content-class="py-1">
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon
+              small
+              class="mr-2"
               v-bind="attrs"
               @click.stop="deleteItem(item)"
               v-on="on"
@@ -174,7 +191,7 @@
 
 <script lang="ts">
 import {
-  mdiDelete, mdiDeleteAlertOutline, mdiEyeOutline, mdiPlaylistPlus, mdiRefresh
+  mdiDelete, mdiDeleteAlertOutline, mdiEyeOutline, mdiOpenInNew, mdiPlaylistPlus, mdiRefresh, mdiTicketConfirmationOutline
 } from '@mdi/js'
 import { Component, mixins } from 'nuxt-property-decorator'
 import { ApiUtilities } from '~/components/mixins/Global'
@@ -192,7 +209,9 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
     mdiDelete,
     mdiRefresh,
     mdiDeleteAlertOutline,
-    mdiPlaylistPlus
+    mdiPlaylistPlus,
+    mdiTicketConfirmationOutline,
+    mdiOpenInNew
   }
 
   headers:any = []
@@ -204,6 +223,7 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
         list: '/error-log/errors/',
         removePrefix: '/error-log/errors/remove/',
         removeAll: '/error-log/errors/remove-all/',
+        createTicketPrefix: '/error-log/errors/create-jira-ticket/',
         generate: '/error-log/panic/'
       }
     },
@@ -214,6 +234,7 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
         list: '/error-log/warnings/',
         removePrefix: '/error-log/warnings/remove/',
         removeAll: '/error-log/warnings/remove-all/',
+        createTicketPrefix: '/error-log/warnings/create-jira-ticket/',
         generate: '/error-log/panic/'
       }
     },
@@ -224,6 +245,7 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
         list: '/error-log/missing-translations/',
         removePrefix: '/error-log/missing-translations/remove/',
         removeAll: '/error-log/missing-translations/remove-all/',
+        createTicketPrefix: '/error-log/missing-translations/create-jira-ticket/',
         generate: '/error-log/panic/'
       }
     }
@@ -282,6 +304,10 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
       missingTranslations: 'missing translation'
     }
     return labels[this.currentTab.key] || 'entry'
+  }
+
+  getTicketLink (item:any) {
+    return item?.ticketLink || ''
   }
 
   formatDateTime (time:string) {
@@ -387,6 +413,29 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
         .catch(this.apiOnCatchError)
         .then(this.apiOnFinishRequest)
     }
+  }
+
+  onJiraAction (item:any) {
+    const ticketLink = this.getTicketLink(item)
+    if (ticketLink) {
+      window.open(ticketLink, '_blank', 'noopener')
+      return
+    }
+
+    this.api()
+      .post(`${this.currentTab.endpoints.createTicketPrefix}${item.ID}/`)
+      .then((resp) => {
+        const payload = resp?.data || {}
+        this.$set(item, 'ticketLink', payload.ticketLink || '')
+        this.$set(item, 'ticketKey', payload.ticketKey || '')
+        this.$dialog.message.success(payload.ticketKey ? `Jira ticket ${payload.ticketKey} linked` : 'Jira ticket linked', {
+          position: 'botton-right',
+          timeout: 3000
+        })
+        this.fetchCurrentList(true)
+      })
+      .catch(this.apiOnCatchError)
+      .then(this.apiOnFinishRequest)
   }
 
   async clearAll () {
