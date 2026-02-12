@@ -108,16 +108,27 @@
       <template #item.actions="{ item }">
         <v-tooltip bottom color="grey darken-1" content-class="py-1">
           <template v-slot:activator="{ on, attrs }">
-            <v-icon
-              small
-              class="mr-2"
-              :color="getTicketLink(item) ? 'primary' : 'orange'"
+            <span
+              class="mr-2 jira-action-icon-wrap"
               v-bind="attrs"
               @click.stop="onJiraAction(item)"
               v-on="on"
             >
-              {{ getTicketLink(item) ? icons.mdiJira : icons.mdiPlusCircleOutline }}
-            </v-icon>
+              <v-icon
+                size="20"
+                :color="getTicketLink(item) ? 'primary' : 'grey darken-1'"
+              >
+                {{ icons.mdiJira }}
+              </v-icon>
+              <v-icon
+                v-if="!getTicketLink(item)"
+                class="jira-action-icon-plus"
+                size="12"
+                color="orange"
+              >
+                {{ icons.mdiPlusCircle }}
+              </v-icon>
+            </span>
           </template>
           <span class="white--text text-caption">
             {{ getTicketLink(item) ? 'Open Jira ticket' : `Create Jira ticket for ${getCurrentTabItemLabel()}` }}
@@ -191,7 +202,7 @@
 
 <script lang="ts">
 import {
-  mdiDelete, mdiDeleteAlertOutline, mdiEyeOutline, mdiJira, mdiPlusCircleOutline, mdiPlaylistPlus, mdiRefresh
+  mdiDelete, mdiDeleteAlertOutline, mdiEyeOutline, mdiJira, mdiPlusCircle, mdiPlaylistPlus, mdiRefresh
 } from '@mdi/js'
 import { Component, mixins } from 'nuxt-property-decorator'
 import { ApiUtilities } from '~/components/mixins/Global'
@@ -211,7 +222,7 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
     mdiDeleteAlertOutline,
     mdiPlaylistPlus,
     mdiJira,
-    mdiPlusCircleOutline
+    mdiPlusCircle
   }
 
   headers:any = []
@@ -504,6 +515,24 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
   .v-tab.error-log-tab--active.error-log-tab--missingTranslations {
     color: #9c27b0 !important;
   }
+}
+
+.jira-action-icon-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+}
+
+.jira-action-icon-plus {
+  position: absolute;
+  right: -4px;
+  bottom: -2px;
+  background: white;
+  border-radius: 50%;
 }
 
 .v-data-table::v-deep {
