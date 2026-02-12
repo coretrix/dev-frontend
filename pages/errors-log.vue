@@ -106,34 +106,16 @@
         </v-toolbar>
       </template>
       <template #item.actions="{ item }">
-        <v-tooltip bottom color="grey darken-1" content-class="py-1">
-          <template v-slot:activator="{ on, attrs }">
-            <span
-              class="mr-2 jira-action-icon-wrap"
-              v-bind="attrs"
-              @click.stop="onJiraAction(item)"
-              v-on="on"
-            >
-              <v-icon
-                size="20"
-                :color="getTicketLink(item) ? 'primary' : 'grey darken-1'"
-              >
-                {{ icons.mdiJira }}
-              </v-icon>
-              <v-icon
-                v-if="!getTicketLink(item)"
-                class="jira-action-icon-plus"
-                size="12"
-                color="orange"
-              >
-                {{ icons.mdiPlusCircle }}
-              </v-icon>
-            </span>
-          </template>
-          <span class="white--text text-caption">
-            {{ getTicketLink(item) ? 'Open Jira ticket' : `Create Jira ticket for ${getCurrentTabItemLabel()}` }}
-          </span>
-        </v-tooltip>
+        <v-btn
+          x-small
+          text
+          class="mr-2 text-none"
+          :color="getTicketLink(item) ? 'primary' : 'orange'"
+          :loading="jiraActionLoadingByItem[item.ID]"
+          @click.stop="onJiraAction(item)"
+        >
+          {{ getTicketLink(item) ? 'Ticket' : 'Create Ticket' }}
+        </v-btn>
         <v-tooltip bottom color="grey darken-1" content-class="py-1">
           <template v-slot:activator="{ on, attrs }">
             <v-icon
@@ -202,7 +184,7 @@
 
 <script lang="ts">
 import {
-  mdiDelete, mdiDeleteAlertOutline, mdiEyeOutline, mdiJira, mdiPlusCircle, mdiPlaylistPlus, mdiRefresh
+  mdiDelete, mdiDeleteAlertOutline, mdiEyeOutline, mdiPlaylistPlus, mdiRefresh
 } from '@mdi/js'
 import { Component, mixins } from 'nuxt-property-decorator'
 import { ApiUtilities } from '~/components/mixins/Global'
@@ -220,9 +202,7 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
     mdiDelete,
     mdiRefresh,
     mdiDeleteAlertOutline,
-    mdiPlaylistPlus,
-    mdiJira,
-    mdiPlusCircle
+    mdiPlaylistPlus
   }
 
   headers:any = []
@@ -274,6 +254,7 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
   }
 
   expanded:any = []
+  jiraActionLoadingByItem:any = {}
   logsTab:number = 0
   tab:number = 0
   isLoading:boolean = false
@@ -318,7 +299,7 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
   }
 
   getTicketLink (item:any) {
-    return item?.ticketLink || ''
+    return item?.ticketLink || item?.TicketLink || ''
   }
 
   formatDateTime (time:string) {
@@ -433,20 +414,29 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
       return
     }
 
+    if (this.jiraActionLoadingByItem[item.ID]) {
+      return
+    }
+
+    this.$set(this.jiraActionLoadingByItem, item.ID, true)
     this.api()
       .post(`${this.currentTab.endpoints.createTicketPrefix}${item.ID}/`)
       .then((resp) => {
         const payload = resp?.data || {}
-        this.$set(item, 'ticketLink', payload.ticketLink || '')
+        const createdTicketLink = payload.ticketLink || payload.TicketLink || ''
+        this.$set(item, 'ticketLink', createdTicketLink)
+        this.$set(item, 'TicketLink', createdTicketLink)
         this.$set(item, 'ticketKey', payload.ticketKey || '')
         this.$dialog.message.success(payload.ticketKey ? `Jira ticket ${payload.ticketKey} linked` : 'Jira ticket linked', {
           position: 'botton-right',
           timeout: 3000
         })
-        this.fetchCurrentList(true)
       })
       .catch(this.apiOnCatchError)
-      .then(this.apiOnFinishRequest)
+      .then(() => {
+        this.$set(this.jiraActionLoadingByItem, item.ID, false)
+        this.apiOnFinishRequest()
+      })
   }
 
   async clearAll () {
@@ -515,24 +505,6 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
   .v-tab.error-log-tab--active.error-log-tab--missingTranslations {
     color: #9c27b0 !important;
   }
-}
-
-.jira-action-icon-wrap {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  width: 24px;
-  height: 24px;
-}
-
-.jira-action-icon-plus {
-  position: absolute;
-  right: -4px;
-  bottom: -2px;
-  background: white;
-  border-radius: 50%;
 }
 
 .v-data-table::v-deep {
