@@ -106,30 +106,31 @@
         </v-toolbar>
       </template>
       <template #item.actions="{ item }">
-        <v-btn
-          x-small
-          text
-          class="mr-2 text-none"
-          :color="getTicketLink(item) ? 'primary' : 'orange'"
-          :loading="jiraActionLoadingByItem[item.ID]"
-          @click.stop="onJiraAction(item)"
-        >
-          {{ getTicketLink(item) ? 'Ticket' : 'Create Ticket' }}
-        </v-btn>
-        <v-tooltip bottom color="grey darken-1" content-class="py-1">
-          <template v-slot:activator="{ on, attrs }">
-            <v-icon
-              small
-              class="mr-2"
-              v-bind="attrs"
-              @click.stop="deleteItem(item)"
-              v-on="on"
-            >
-              {{ icons.mdiDelete }}
-            </v-icon>
-          </template>
-          <span class="white--text text-caption">Delete {{ getCurrentTabItemLabel() }}</span>
-        </v-tooltip>
+        <div class="actions-cell">
+          <v-btn
+            x-small
+            text
+            class="text-none ticket-action-btn"
+            :color="getTicketLink(item) ? 'primary' : 'orange'"
+            :loading="jiraActionLoadingByItem[item.ID]"
+            @click.stop="onJiraAction(item)"
+          >
+            {{ getTicketLink(item) ? 'Ticket' : 'Create Ticket' }}
+          </v-btn>
+          <v-tooltip bottom color="grey darken-1" content-class="py-1">
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon
+                small
+                v-bind="attrs"
+                @click.stop="deleteItem(item)"
+                v-on="on"
+              >
+                {{ icons.mdiDelete }}
+              </v-icon>
+            </template>
+            <span class="white--text text-caption">Delete {{ getCurrentTabItemLabel() }}</span>
+          </v-tooltip>
+        </div>
       </template>
       <template #item.lp="{ index }">
         {{ ++index }}
@@ -343,9 +344,9 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
       { text: 'Counter', value: 'Counter', align: 'center' },
       { text: 'Application', value: 'AppName', width: '150px' },
       { text: 'Time', value: 'Time' },
-      { text: 'Description', value: 'Description', sortable: false },
+      { text: 'Description', value: 'Description', sortable: false, width: '45%' },
       { text: '', value: 'data-table-expand' },
-      { text: '', value: 'actions', sortable: false }
+      { text: '', value: 'actions', sortable: false, width: '240px' }
     ]
   }
 
@@ -508,8 +509,25 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
 }
 
 .v-data-table::v-deep {
+  table {
+    table-layout: fixed;
+  }
   th {
     white-space: nowrap;
+  }
+  .actions-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+  .ticket-action-btn {
+    min-width: 120px;
+    white-space: nowrap;
+  }
+  .text-break {
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
   .error--text {
     font-size: 13px;
