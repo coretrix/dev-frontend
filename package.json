@@ -3,7 +3,7 @@
   "version": "1.1.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt --port 9000 --fix",
+    "dev": "NODE_OPTIONS=--openssl-legacy-provider nuxt --port 9000 --fix",
     "dev-local": "cross-env NUXT_API_BASE_URL=http://localhost:18080 nuxt --port 9000",
     "build": "nuxt build",
     "start": "nuxt start --port 9000",

@@ -46,24 +46,39 @@
       <template #header="{ props }">
         <thead class="v-data-table-header">
           <tr>
-            <th v-for="(header, index) in props.headers" :key="index" style="vertical-align: top;">
+            <th
+              v-for="(header, index) in props.headers"
+              :key="index"
+              style="vertical-align: top"
+            >
               <div>
                 {{ header.text }}
               </div>
 
-              <v-text-field v-if="header.searchable" v-model="searchFilters[header.value]" outlined flat dense />
+              <v-text-field
+                v-if="header.searchable"
+                v-model="searchFilters[header.value]"
+                outlined
+                flat
+                dense
+              />
             </th>
           </tr>
         </thead>
+      </template>
+      <template #item.URL="{ value }">
+        <div class="url-column">
+          {{ value }}
+        </div>
       </template>
       <template #item.Request="{ value }">
         <pre v-if="value"><code>{{ value.trim() }}</code></pre>
       </template>
       <template #item.Response="{ value }">
-        <pre v-if="value"><code>{{ JSON.parse(value.trim()) }}</code></pre>
+        <pre v-if="value"><code>{{ safeParseJSON(value) }}</code></pre>
       </template>
       <template #item.Log="{ value }">
-        <pre v-if="value"><code>{{ JSON.parse(value.trim()) }}</code></pre>
+        <pre v-if="value"><code>{{ safeParseJSON(value) }}</code></pre>
       </template>
     </v-data-table>
     <CoreConfirmation ref="confirmationModal" />
@@ -71,18 +86,14 @@
 </template>
 
 <script lang="ts">
-import {
-  mdiRefresh,
-  mdiCheckCircle,
-  mdiCloseCircle
-} from '@mdi/js'
+import { mdiRefresh, mdiCheckCircle, mdiCloseCircle } from '@mdi/js'
 import { Component, mixins, Watch } from 'nuxt-property-decorator'
 import { ApiUtilities } from '~/components/mixins/Global'
 
 @Component
 export default class RequestLogger extends mixins(ApiUtilities) {
   async fetch () {
-    const query:any = this.$route.query
+    const query: any = this.$route.query
 
     if (Object.keys(query).length) {
       this.searchFilters = { ...this.searchFilters, ...query }
@@ -93,25 +104,25 @@ export default class RequestLogger extends mixins(ApiUtilities) {
     await this.fetchData()
   }
 
-  icons:object = {
+  icons: object = {
     mdiRefresh,
     mdiCheckCircle,
     mdiCloseCircle
   }
 
-  totalItems:number = 0
-  headers:Object[] = []
-  items:Object[] = []
-  isLoading:boolean = false
-  searchFilters:any = {
+  totalItems: number = 0
+  headers: Object[] = []
+  items: Object[] = []
+  isLoading: boolean = false
+  searchFilters: any = {
     Page: 1,
     PageSize: 10
   }
 
-  timeout:any = undefined
+  timeout: any = undefined
 
   get headersResult () {
-    return this.headers.map((el:any) => {
+    return this.headers.map((el: any) => {
       return {
         value: el.Key,
         text: el.Label,
@@ -125,8 +136,8 @@ export default class RequestLogger extends mixins(ApiUtilities) {
   }
 
   @Watch('searchFilters', { immediate: false, deep: true })
-  searchFiltersWatcher (val:any) {
-    const updateQuery = ():void => {
+  searchFiltersWatcher (val: any) {
+    const updateQuery = (): void => {
       const oldQuery = this.$route.query
       const newQuery = { ...oldQuery, ...val }
 
@@ -145,7 +156,7 @@ export default class RequestLogger extends mixins(ApiUtilities) {
       clearTimeout(this.timeout)
     }
 
-    this.timeout = setTimeout(updateQuery, 450) // reset timer
+    this.timeout = setTimeout(updateQuery, 450)
   }
 
   @Watch('$route.query')
@@ -161,7 +172,7 @@ export default class RequestLogger extends mixins(ApiUtilities) {
     }
 
     const query = this.parseQuery()
-    let searchFilters:any = {}
+    let searchFilters: any = {}
     const tempData = Object.assign({}, query || this.searchFilters)
 
     searchFilters = {
@@ -185,19 +196,30 @@ export default class RequestLogger extends mixins(ApiUtilities) {
   }
 
   parseQuery () {
-    const result:any = this.$route.query
+    const result: any = this.$route.query
 
     if (!Object.keys(result).length) {
       return undefined
     }
 
-    Object.entries(this.$route.query).forEach(([key, val]:any) => {
+    Object.entries(this.$route.query).forEach(([key, val]: any) => {
       if (!isNaN(parseInt(val))) {
         result[key] = parseInt(val)
       }
     })
 
     return result
+  }
+
+  safeParseJSON (value: any) {
+    if (!value) {
+      return value
+    }
+    try {
+      return JSON.parse(value.trim())
+    } catch (e) {
+      return value.trim()
+    }
   }
 }
 </script>
@@ -208,5 +230,10 @@ pre {
   max-width: 500px;
   white-space: pre-wrap;
   word-wrap: break-word;
+}
+.url-column {
+  max-width: 500px;
+  word-wrap: break-word;
+  //word-break: break-all;
 }
 </style>

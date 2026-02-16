@@ -248,6 +248,7 @@ export default class ErrorsLog extends mixins(ApiUtilities) {
     warnings: [],
     missingTranslations: []
   }
+
   countersByTab:any = {
     errors: 0,
     warnings: 0,

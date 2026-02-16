@@ -91,7 +91,7 @@ export default {
 
   axios: {
     credentials: true,
-    baseURL: process.env.NUXT_API_BASE_URL || 'https://dev-panel-api.demo.mobzzo.bg/'
+    baseURL: process.env.NUXT_API_BASE_URL || 'https://dev-panel-api.mobzzo.bg/'
   },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
